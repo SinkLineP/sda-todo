@@ -2,26 +2,34 @@ import React, {useState} from "react";
 import "./styles/table.css";
 import {Link, useNavigate} from "react-router-dom";
 import {StatusColor, StatusesColors} from "../Variables";
+import {useSelector} from "react-redux";
 
 export default function SelectProjects() {
-  const projectData = [
-    {
-      id: 1,
-      title: "project 1",
-      status: "Done"
-    },
-    {
-      id: 23,
-      title: "project 23",
-      status: "Development"
-    },
-  ]
   const navigate = useNavigate();
+  const projectsStore = useSelector(state => state.projects.projects);
+  const usersStore = useSelector(state => state.auth.users);
 
+  const getAuthorProject = (project_user_id) => {
+    if (project_user_id !== null) {
+      const author = usersStore.find(user => {
+        return user.id === project_user_id
+      })
 
+      if (author !== undefined) {
+        return author;
+      }
+
+      return "Пользователь не найден";
+    } else {
+      return "Пользователь не найден";
+    }
+  }
 
   return (
     <div className={"container"}>
+      <div className={"container-create-project"}>
+        <button className={"btn-create-project"}>Добавить проект</button>
+      </div>
       <table className={"table"}
         style={{
           fontWeight: "bold"
@@ -37,6 +45,9 @@ export default function SelectProjects() {
             }}>Номер проекта</th>
             <th>Название проекта</th>
             <th style={{
+              width: "20rem"
+            }}>Владец пректа</th>
+            <th style={{
               width: "10rem"
             }}>Статус</th>
           </tr>
@@ -44,7 +55,7 @@ export default function SelectProjects() {
         <tbody style={{
           backgroundColor: "#f5eaea"
         }}>
-          {projectData.map((item) => {
+          {projectsStore.map((item) => {
             return (
               <tr onClick={() => {
                 navigate(`${item.id}`);
@@ -52,6 +63,9 @@ export default function SelectProjects() {
                 <td>{item.id}</td>
                 <td>
                   <p>{item.title}</p>
+                </td>
+                <td>
+                  <p>{getAuthorProject(item.user_id)}</p>
                 </td>
                 <td style={{
                   backgroundColor: StatusColor(item.status),

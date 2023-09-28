@@ -4,15 +4,6 @@
     width: 100%;
 }
 
-/*thead {*/
-/*}*/
-
-/*tbody {*/
-/*}*/
-
-/*tr {*/
-/*}*/
-
 th {
     border: 1px solid black;
     padding: 10px;
@@ -32,4 +23,19 @@ td {
 
 .item {
     background-color: rgba(0, 255, 255, 0.46);
+}
+
+.btn-create-project {
+    background-color: #054F7C;
+    color: white;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: bold;
+}
+
+.container-create-project {
+    width: 100%;
+    text-align: right;
+    margin-bottom: 1rem;
 }
