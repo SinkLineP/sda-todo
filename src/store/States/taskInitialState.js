@@ -3,7 +3,7 @@ export const initialState = {
     {
       id: 1,
       projectId: 1,
-      title: "Задача 1",
+      title: "Задача",
       description: "Описание задачи 1",
       dateOfCreation: "2023-09-27",
       timeInWork: "2 часа",
@@ -18,7 +18,7 @@ export const initialState = {
     {
       id: 23,
       projectId: 23,
-      title: "Задача 2",
+      title: "Задача",
       description: "Описание задачи 2",
       dateOfCreation: "2023-09-27",
       timeInWork: "5 часа",
