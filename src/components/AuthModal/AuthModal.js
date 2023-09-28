@@ -78,7 +78,6 @@ export default function AuthModal({ show, onClose }) {
 
             if (user !== undefined) {
               dispatch(setCurrentUser(user.id, user.username, user.password));
-            } else {
             }
 
             setErrorUsername("");

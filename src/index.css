@@ -203,35 +203,13 @@ select {
   border-radius: 5px;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  box-sizing: border-box;
-}
 
-.table {
-  border-radius: 7px;
-  overflow: hidden;
-}
 
-td {
-  text-align: center;
-}
 
-tbody > tr:hover {
-  background-color: var(--background-color-hover);
-  cursor: pointer;
-}
 
-.no-select-text {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
+
+
+
 
 
 

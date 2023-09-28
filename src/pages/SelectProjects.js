@@ -54,14 +54,14 @@ export default function SelectProjects() {
             color: "white"
           }}>
           <tr>
-            <th style={{
+            <th className={"no-select-text"} style={{
               width: "10rem"
             }}>Номер проекта</th>
-            <th>Название проекта</th>
-            <th style={{
+            <th className={"no-select-text"}>Название проекта</th>
+            <th className={"no-select-text"} style={{
               width: "20rem"
             }}>Владец пректа</th>
-            <th style={{
+            <th  className={"no-select-text"} style={{
               width: "10rem"
             }}>Статус</th>
           </tr>
@@ -69,7 +69,7 @@ export default function SelectProjects() {
           <tbody style={{
             backgroundColor: "#f5eaea"
           }}>
-          {projectsStore.map((item) => {
+          {projectsStore.length !== 0 ? projectsStore.map((item) => {
             return (
               <tr onClick={() => {
                 navigate(`${item.id}`);
@@ -87,7 +87,13 @@ export default function SelectProjects() {
                 }}>{item.status}</td>
               </tr>
             )
-          })}
+          }) : (
+            <tr id={"projects-not-found"}>
+              <td colSpan={4}>
+                Проектов не найдено
+              </td>
+            </tr>
+          )}
           </tbody>
         </table>
       </div>
