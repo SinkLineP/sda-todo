@@ -1,0 +1,9 @@
+.button-auth {
+    background-color: #70a138;
+    color: white;
+    font-size: 1.2rem;
+    height: 2.5rem;
+    border: none;
+    padding: 0 10px 0 10px;
+    border-radius: 5px;
+}

@@ -13,7 +13,7 @@ html {
 }
 
 body {
-  color: var(--text-color);
+  /*color: var(--text-color);*/
   font-family: sans-serif;
   margin: 0;
 }
@@ -35,12 +35,12 @@ label {
   display: block;
 }
 
-button, input {
+.button, .input {
   padding: 4px;
   border: 1px solid var(--disabled-color);
 }
 
-button {
+.button {
   outline: none;
   background: transparent;
   border-radius: 5px;
@@ -49,11 +49,11 @@ button {
   cursor: pointer;
 }
 
-button.active {
+.button.active {
   color: var(--primary-color);
 }
 
-button.active:after {
+.button.active:after {
   content: "";
   display: block;
   margin: 0 auto;
@@ -230,11 +230,5 @@ tbody > tr:hover {
   user-select: none;
 }
 
-.button-auth {
-  background-color: #70a138;
-  color: white;
-  font-size: 1.2rem;
-  height: 2.5rem;
-  border: none;
-  padding: 0 10px 0 10px;
-}
+
+
