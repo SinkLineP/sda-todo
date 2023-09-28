@@ -72,7 +72,7 @@ const Item = ({ item, index, moveItem, status }) => {
         onClick={onOpen}
       >
         <div className={"color-bar"} style={{ backgroundColor: status.color }}/>
-        <p className={"item-title"}>{item.title} #{item.id}</p>
+        <p className={"item-title"}>{item.title} #{item.numberTask}</p>
         <p className={"item-status"}>{item.icon}</p>
       </div>
 

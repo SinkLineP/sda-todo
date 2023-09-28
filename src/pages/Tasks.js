@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Item from "../components/Item/Item";
 import DropWrapper from "../components/DropWrapper/DropWrapper";
 import Col from "../components/Col/Col";
@@ -11,8 +11,6 @@ export default function Tasks() {
   const statuses = useSelector(state => state.categories);
   const [items, setItems] = useState(taskData);
   const { project_id } = useParams();
-
-  console.log(taskData);
 
 
   const onDrop = (item, monitor, status) => {

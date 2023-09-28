@@ -142,9 +142,12 @@ select {
   padding: 20px;
   color: white;
   font-size: 30px;
-  flex: 1 100%;
   margin-top: 0;
   text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .modal {
@@ -175,14 +178,15 @@ select {
 .close-btn {
   height: 40px;
   width: 35px;
-  font-size: 20px;
-  color: #031D2C;
+  font-size: 30px;
+  color: Red;
   border: none;
   border-radius: 25px;
+  font-weight: bold;
 }
 
 .close-btn:hover {
-  background-color: #DCDCDC;
+  color: #d00000;
 }
 
 .button-back {
@@ -224,4 +228,13 @@ tbody > tr:hover {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.button-auth {
+  background-color: #70a138;
+  color: white;
+  font-size: 1.2rem;
+  height: 2.5rem;
+  border: none;
+  padding: 0 10px 0 10px;
 }

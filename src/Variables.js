@@ -5,8 +5,6 @@ export const StatusesColors = {
 }
 
 export const StatusColor = (status) => {
-  console.log(status);
-
   if (status.toLowerCase() === "queue") {
     return StatusesColors.Queue;
   } else if (status.toLowerCase() === "development") {

@@ -19,7 +19,7 @@ export default function Window({ show, onClose, item }) {
               flexDirection: "row",
               alignItems: "center"
             }}>
-              <h1 style={{ display: "block" }}>{item.title} #{item.id}</h1>
+              <h1 style={{ display: "block" }}>{item.title} #{item.numberTask}</h1>
               <p style={{
                 backgroundColor: StatusColor(item.status),
                 color: "white",
@@ -31,22 +31,45 @@ export default function Window({ show, onClose, item }) {
               }}>{item.status}</p>
             </div>
 
-
+            <p>Автор: no name</p>
           </div>
 
           <button className={"close-btn"} onClick={onClose}>X</button>
         </div>
         <div>
+          <h2>Приоритет задачи: {item.priority}</h2>
+
+
           <h2>Описание задачи:</h2>
           <p>{item.description}</p>
 
 
+          <h2>Вложеные файлы:</h2>
+          <p>{item.files.map((file) => (file + ", "))}</p>
+
+          <h2>Подзадачи:</h2>
+          <p>{item.subtasks.length === 0 ? ("Подзадач нету") : item.subtasks.map((subtask) => (subtask + ", "))}</p>
+
+          <div>
+            <h2>Комментарии</h2>
+            <textarea>
+
+            </textarea>
+          </div>
         </div>
         <div style={{
           position: "absolute",
           bottom: 0,
+          display: "flex",
+          flexDirection: "row"
         }}>
           <p>Дата создания задачи: {item.dateOfCreation}</p>
+          <p style={{
+            marginLeft: "30px"
+          }}>Дата окончания задачи: {item.endDate}</p>
+          <p style={{
+            marginLeft: "30px"
+          }}>Время в работе: {item.timeInWork}</p>
         </div>
       </div>
     </Modal>
