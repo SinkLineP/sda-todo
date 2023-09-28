@@ -1,0 +1,35 @@
+.table {
+    border: 1px solid black;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+/*thead {*/
+/*}*/
+
+/*tbody {*/
+/*}*/
+
+/*tr {*/
+/*}*/
+
+th {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+td {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.disable-text-selection {
+    -moz-user-select:none; /* firefox */
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE*/
+    user-select: none; /* Standard syntax */
+}
+
+.item {
+    background-color: rgba(0, 255, 255, 0.46);
+}
