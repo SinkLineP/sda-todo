@@ -20,6 +20,12 @@
     background-color: #669333;
 }
 
+.btn-disabled {
+    background-color: #a1a1a1;
+    color: #757575;
+    cursor: not-allowed;
+}
+
 /*========= Form Input =========*/
 
 .content-password {
@@ -54,6 +60,21 @@
     border-bottom-right-radius: 5px;
     font-weight: bold;
     cursor: pointer;
+}
+
+.change-form {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.change-form .link {
+    color: #054F7C;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.change-form .link:hover {
+    color: #044065;
 }
 
 /*=========== Form Text ============*/
