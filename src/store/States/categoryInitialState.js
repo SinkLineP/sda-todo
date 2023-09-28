@@ -1,15 +1,17 @@
+import {StatusesColors} from "../../Variables";
+
 export const initialState = [
   {
     status: "queue",
     icon: "⭕️",
-    color: "#eba946"
+    color: StatusesColors.Queue
   }, {
-    status: "dev",
+    status: "development",
     icon: "🔆️",
-    color: "#00C2E0"
+    color: StatusesColors.Development
   }, {
     status: "done",
     icon: "✅",
-    color: "#70a138"
+    color: StatusesColors.Done
   }
 ]

@@ -7,10 +7,12 @@ import {NavLink, useParams} from "react-router-dom";
 
 
 export default function Tasks() {
-  const taskData = useSelector(state => state.tasks);
+  const taskData = useSelector(state => state.tasks.tasks);
   const statuses = useSelector(state => state.categories);
   const [items, setItems] = useState(taskData);
   const { project_id } = useParams();
+
+  console.log(taskData);
 
 
   const onDrop = (item, monitor, status) => {

@@ -20,7 +20,6 @@ function TaskReducer(state = initialState, action) {
       };
     case ActionTypes.EDIT_TASK:
       const { taskId, updatedTask } = action.payload;
-      console.log(action.payload);
       const updatedTasks = state.tasks.map((task) =>
         task.id === taskId ? { ...task, ...updatedTask } : task
       );

@@ -1,13 +1,13 @@
-import React, {Fragment, useState, useRef} from "react";
+import React, {Fragment, useState, useRef, useEffect} from "react";
 import { useDrag, useDrop } from "react-dnd";
 import Window from "../Window/Window"
 import ITEM_TYPE from "../../data/types";
-// import {useDispatch} from "react-redux";
-// import {editTask} from "../../store/Reducers/taskReducer";
+import {editTask} from "../../store/Reducers/taskReducer";
+import {useDispatch} from "react-redux";
 
 const Item = ({ item, index, moveItem, status }) => {
   const ref = useRef(null);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
 
   const [, drop] = useDrop({
@@ -20,7 +20,7 @@ const Item = ({ item, index, moveItem, status }) => {
       const hoverIndex = index;
 
       if (dragIndex === hoverIndex) {
-        return
+        return;
       }
 
       const hoveredRect = ref.current.getBoundingClientRect();
@@ -37,8 +37,6 @@ const Item = ({ item, index, moveItem, status }) => {
       }
       moveItem(dragIndex, hoverIndex);
       item.index = hoverIndex;
-
-      // dispatch(editTask(item.id, item));
     },
   });
 
@@ -56,6 +54,13 @@ const Item = ({ item, index, moveItem, status }) => {
   const onClose = () => setShow(false);
 
   drag(drop(ref));
+
+
+  useEffect(() => {
+    if (!isDragging) {
+      dispatch(editTask(item.id, item))
+    }
+  }, [])
 
   return (
     <Fragment>

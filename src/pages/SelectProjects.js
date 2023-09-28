@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import "./styles/table.css";
 import {Link, useNavigate} from "react-router-dom";
+import {StatusesColors} from "../Variables";
 
 export default function SelectProjects() {
   const projectData = [
@@ -17,6 +18,26 @@ export default function SelectProjects() {
   ]
   const navigate = useNavigate();
 
+  const StatusColor = (status) => {
+    console.log(status);
+
+    if (status === "Queue") {
+      return {
+        backgroundColor: StatusesColors.Queue,
+        color: "white"
+      }
+    } else if (status === "Development") {
+      return {
+        backgroundColor: StatusesColors.Development,
+        color: "white"
+      }
+    } else if (status === "Done") {
+      return {
+        backgroundColor: StatusesColors.Done,
+        color: "white"
+      }
+    }
+  }
 
   return (
     <div className={"container"}>
@@ -51,7 +72,7 @@ export default function SelectProjects() {
                 <td>
                   <p>{item.title}</p>
                 </td>
-                <td>{item.status}</td>
+                <td style={StatusColor(item.status)}>{item.status}</td>
               </tr>
             )
           })}
