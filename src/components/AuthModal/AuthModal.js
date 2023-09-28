@@ -4,7 +4,7 @@ import {Formik} from "formik";
 import * as yup from 'yup';
 import "./AuthModal.css";
 import {useDispatch, useSelector} from "react-redux";
-import {changeForm, createUser} from "../../store/Reducers/authReducer";
+import {createUser, setCurrentUser} from "../../store/Reducers/authReducer";
 import {FormLink} from "./components/FormLink";
 import {FormSubmit} from "./components/FormSubmit";
 
@@ -37,6 +37,7 @@ export default function AuthModal({ show, onClose }) {
 
   const dispatch = useDispatch();
   const currentForm = useSelector(state => state.auth.currentForm);
+  const usersStore = useSelector(state => state.auth.users);
 
 
   useEffect(() => {
@@ -61,7 +62,9 @@ export default function AuthModal({ show, onClose }) {
         validateOnBlur
         onSubmit={(values) => {
           if (currentForm === "login") {
-            dispatch(createUser(values.username, values.password));
+            const user = usersStore.find(user => user.username === values.username && user.password === values.password);
+
+            dispatch(setCurrentUser(user.id, user.username, user.password));
           } else {
             dispatch(createUser(values.username, values.password));
           }
