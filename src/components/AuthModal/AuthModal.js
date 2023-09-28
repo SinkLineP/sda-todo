@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {createUser, setCurrentUser} from "../../store/Reducers/authReducer";
 import {FormLink} from "./components/FormLink";
 import {FormSubmit} from "./components/FormSubmit";
+import IsCreatedUser from "../../hooks/IsCreatedUser";
 
 export default function AuthModal({ show, onClose }) {
   const customStyles = {
@@ -17,9 +18,20 @@ export default function AuthModal({ show, onClose }) {
       bottom: 'auto',
       transform: 'translate(-50%, -50%)',
       width: "350px",
-      height: "27rem"
+      height: "30rem"
     }
   }
+
+
+
+  const [isShowPassword, setShowPassword] = useState(false);
+  const [typePassword, setTypePassword] = useState("password");
+
+  const dispatch = useDispatch();
+  const currentForm = useSelector(state => state.auth.currentForm);
+  const usersStore = useSelector(state => state.auth.users);
+
+  const [errorMessage, setErrorMessage] = useState("");
 
   const validationsSchema = yup.object().shape({
     username: yup.string()
@@ -32,28 +44,27 @@ export default function AuthModal({ show, onClose }) {
       .matches(/\d/, "Пароль должен содержать хотя бы одну цифру"),
   })
 
-  const [isShowPassword, setShowPassword] = useState(false);
-  const [typePassword, setTypePassword] = useState("password");
-
-  const dispatch = useDispatch();
-  const currentForm = useSelector(state => state.auth.currentForm);
-  const usersStore = useSelector(state => state.auth.users);
-
-
   useEffect(() => {
     if (isShowPassword) {
       setTypePassword("string")
     } else {
       setTypePassword("password")
     }
-  }, [isShowPassword, setTypePassword])
+  }, [isShowPassword, setTypePassword]);
 
   return (
-    <Modal isOpen={show} onRequestClose={() => {
-      setShowPassword(false)
-      onClose()
-    }} overlayClassName={"overlay"} style={customStyles}>
+    <Modal
+      isOpen={show}
+      onRequestClose={() => {
+        setShowPassword(false)
+        onClose()
+      }}
+      overlayClassName={"overlay"}
+      style={customStyles}
+    >
       <p className={"title-form"}>{currentForm === "login" ? ("Авторизация") : ("Регистрация")}</p>
+      <p className={"errors"}>{errorMessage !== "" ? errorMessage : ""}</p>
+
       <Formik
         initialValues={{
           username: '',
@@ -62,10 +73,11 @@ export default function AuthModal({ show, onClose }) {
         validateOnBlur
         onSubmit={(values) => {
           if (currentForm === "login") {
-            const user = usersStore.find(user => user.username === values.username && user.password === values.password);
+            const user = usersStore.find((user) => user.username === values.username && user.password === values.password);
 
-            dispatch(setCurrentUser(user.id, user.username, user.password));
-          } else {
+            dispatch(setCurrentUser(user.id, user.username, user.password)); //karamalesa13
+          } else if (currentForm === "signup") {
+            console.log("Handle submit - SignUp - create user dispatch");
             dispatch(createUser(values.username, values.password));
           }
         }}
@@ -118,43 +130,65 @@ export default function AuthModal({ show, onClose }) {
 
 
 
+              <FormSubmit
+                title={currentForm === "login"  ? ("Войти") : ("Зарегистрироваться")}
+                Submit={() => {
 
-              {currentForm === "login" ? (
-                <>
-                  <FormSubmit
-                    title={"Войти"}
-                    onClose={onClose}
-                    handleSubmit={handleSubmit}
-                    setShowPassword={setShowPassword}
-                    validate={!isValid || !dirty}
-                  />
+                  if (usersStore.some((user) => {return user.username === values.username && user.password === values.password})) { // true
+                    if (currentForm === "signup") {
+                      setErrorMessage("Такой пользователь существует!");
+                      console.log("Current Form - SignUp");
+                    } else {
+                      console.log("Current Form - Login");
 
-                  <FormLink
-                    title={"Нету аккаунта?"}
-                    linkTitle={"Зарегистрируйтесь"}
-                    props={"signup"}
-                    resetForm={resetForm}
-                  />
-                </>
-              ) : (
-                <>
-                  <FormSubmit
-                    title={"Зарегистрироваться"}
-                    onClose={onClose}
-                    handleSubmit={handleSubmit}
-                    setShowPassword={setShowPassword}
-                    validate={!isValid || !dirty}
-                  />
+                      handleSubmit()
+                    }
+                  } else { // false
+                    if (currentForm === "signup") {
+                      console.log("Current Form - SignUp");
 
-                  <FormLink
-                    title={"Есть аккаунт?"}
-                    linkTitle={"Войдите"}
-                    props={"login"}
-                    resetForm={resetForm}
-                  />
-                </>
-              )}
+                      // const user = usersStore.find((user) => user.username === values.username && user.password === values.password);
+                      // console.log(user);
 
+                      handleSubmit()
+                    } else {
+                      setErrorMessage("Такого пользователя не существует!");
+                      console.log("Current Form - Login");
+                    }
+                  }
+
+
+
+                  // // registration
+                  // if (checkUser === false && currentForm === "signup") {
+                  //   console.log("SignUp")
+                  //   handleSubmit()
+                  //   onClose()
+                  //   setShowPassword(false)
+                    // setCheckUser(false);
+                  // }
+                  //
+                  // // login
+                  // if (checkUser === true && currentForm === "login") {
+                  //   console.log("Login")
+                  //   handleSubmit()
+                  //   onClose()
+                  //   setShowPassword(false)
+                  //   setCheckUser(true);
+                  // }
+                }}
+                validate={!isValid || !dirty}
+                values={values}
+                currentForm={currentForm}
+              />
+
+              <FormLink
+                title={currentForm === "login"  ? ("Нету аккаунта?") : ("Есть аккаунт?")}
+                linkTitle={currentForm === "login"  ? ("Зарегистрируйтесь") : ("Войдите")}
+                props={currentForm === "login"  ? ("signup") : ("login")}
+                resetForm={resetForm}
+                setErrorMessage={setErrorMessage}
+              />
             </div>
           )
 
