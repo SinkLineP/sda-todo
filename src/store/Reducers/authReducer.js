@@ -65,7 +65,7 @@ export const changeForm = (currentForm) => ({
 
 export const setCurrentUser = (id, username, password) => ({
   type: ActionTypes.SET_CURRENT_USER,
-  payload: { id, username, password }
+  payload: [id, username, password]
 })
 
 export const logout = () => ({

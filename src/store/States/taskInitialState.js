@@ -33,7 +33,7 @@ export const initialState = {
     },
     {
       id: 3,
-      projectId: 23,
+      projectId: 2,
       numberTask: 1231,
       title: "Задача",
       description: "Описание задачи 2.1",
@@ -49,7 +49,7 @@ export const initialState = {
     },
     {
       id: 4,
-      projectId: 23,
+      projectId: 2,
       numberTask: 132,
       title: "Задача",
       description: "Описание задачи 2.2",

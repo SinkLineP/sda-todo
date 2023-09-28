@@ -8,6 +8,6 @@ export default combineReducers({
   tasks: taskReducer,
   categories: categoryReducer,
   auth: authReducer,
-  projects: projectReducer
+  project: projectReducer
 });
 

@@ -9,8 +9,8 @@ function ProjectReducer(state = initialState, action) {
     case ActionTypes.ADD_PROJECT:
       return {
         ...state,
-        tasks: [...state.projects, {
-          id: state.projects.length === 0 ? 0 : state.projects.length,
+        projects: [...state.projects, {
+          id: state.projects.length === 0 ? 1 : state.projects.length + 1,
           title: action.payload.projectName,
           status: action.payload.status,
           user_id: action.payload.user_id
@@ -22,7 +22,7 @@ function ProjectReducer(state = initialState, action) {
 }
 
 export const addProject = (projectName, status, user_id) => ({
-  type: ActionTypes.ADD_TASK,
+  type: ActionTypes.ADD_PROJECT,
   payload: {projectName, status, user_id},
 });
 
