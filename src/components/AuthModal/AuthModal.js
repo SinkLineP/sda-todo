@@ -56,14 +56,15 @@ export default function AuthModal({ show, onClose }) {
     <Modal
       isOpen={show}
       onRequestClose={() => {
-        setShowPassword(false)
-        onClose()
+        setShowPassword(false);
+        setErrorMessage("");
+        onClose();
       }}
       overlayClassName={"overlay"}
       style={customStyles}
     >
       <p className={"title-form"}>{currentForm === "login" ? ("Авторизация") : ("Регистрация")}</p>
-      <p className={"errors"}>{errorMessage !== "" ? errorMessage : ""}</p>
+      {errorMessage !== "" ? (<p className={"errors"}>{errorMessage}</p>) : (<p className={"errors"}>&nbsp;</p>)}
 
       <Formik
         initialValues={{
@@ -125,57 +126,38 @@ export default function AuthModal({ show, onClose }) {
                     {isShowPassword ? "Скрыть" : "Показать"}
                   </button>
                 </div>
-
               </p>
-
-
 
               <FormSubmit
                 title={currentForm === "login"  ? ("Войти") : ("Зарегистрироваться")}
                 Submit={() => {
-
-                  if (usersStore.some((user) => {return user.username === values.username && user.password === values.password})) { // true
+                  if (usersStore.some((user) => {
+                    return user.username === values.username
+                  })) {
                     if (currentForm === "signup") {
-                      setErrorMessage("Такой пользователь существует!");
+                      setErrorMessage("Пользователь с таким именем уже существует!");
                       console.log("Current Form - SignUp");
                     } else {
                       console.log("Current Form - Login");
 
-                      handleSubmit()
+                      handleSubmit();
+                      setShowPassword(false);
+                      setErrorMessage("");
+                      onClose();
                     }
-                  } else { // false
+                  } else {
                     if (currentForm === "signup") {
                       console.log("Current Form - SignUp");
 
-                      // const user = usersStore.find((user) => user.username === values.username && user.password === values.password);
-                      // console.log(user);
-
-                      handleSubmit()
+                      handleSubmit();
+                      setShowPassword(false);
+                      setErrorMessage("");
+                      onClose();
                     } else {
                       setErrorMessage("Такого пользователя не существует!");
                       console.log("Current Form - Login");
                     }
                   }
-
-
-
-                  // // registration
-                  // if (checkUser === false && currentForm === "signup") {
-                  //   console.log("SignUp")
-                  //   handleSubmit()
-                  //   onClose()
-                  //   setShowPassword(false)
-                    // setCheckUser(false);
-                  // }
-                  //
-                  // // login
-                  // if (checkUser === true && currentForm === "login") {
-                  //   console.log("Login")
-                  //   handleSubmit()
-                  //   onClose()
-                  //   setShowPassword(false)
-                  //   setCheckUser(true);
-                  // }
                 }}
                 validate={!isValid || !dirty}
                 values={values}

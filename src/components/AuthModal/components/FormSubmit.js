@@ -7,9 +7,6 @@ export const FormSubmit = ({ Submit, title, validate }) => {
       className={`btn ${validate ? ("btn-disabled") : ("btn-success")}`}
       disabled={validate}
       onClick={Submit}
-          // handleSubmit()
-          // onClose()
-          // setShowPassword(false)
       type={'submit'}
     >{title}</button>
   )
