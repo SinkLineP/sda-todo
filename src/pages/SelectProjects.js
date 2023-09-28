@@ -3,11 +3,16 @@ import "./styles/table.css";
 import {Link, useNavigate} from "react-router-dom";
 import {StatusColor, StatusesColors} from "../Variables";
 import {useSelector} from "react-redux";
+import Modal from "react-modal";
+import ProjectModal from "../components/ProjectModal/ProjectModal";
+import IsAuth from "../hooks/IsAuth";
 
 export default function SelectProjects() {
   const navigate = useNavigate();
   const projectsStore = useSelector(state => state.projects.projects);
   const usersStore = useSelector(state => state.auth.users);
+
+  const [show, setShow] = useState(false);
 
   const getAuthorProject = (project_user_id) => {
     if (project_user_id !== null) {
@@ -25,20 +30,29 @@ export default function SelectProjects() {
     }
   }
 
+  const onOpen = () => setShow(true);
+  const onClose = () => setShow(false);
+
   return (
-    <div className={"container"}>
-      <div className={"container-create-project"}>
-        <button className={"btn-create-project"}>Добавить проект</button>
-      </div>
-      <table className={"table"}
-        style={{
-          fontWeight: "bold"
-        }}
-      >
-        <thead style={{
-          backgroundColor: "#054F7C",
-          color: "white"
-        }}>
+    <>
+      <div className={"container"}>
+        {IsAuth() ? (
+          <div className={"container-create-project"}>
+            <button
+              className={"btn-create-project"}
+              onClick={onOpen}
+            >Добавить проект</button>
+          </div>
+        ) : ("")}
+        <table className={"table"}
+               style={{
+                 fontWeight: "bold"
+               }}
+        >
+          <thead style={{
+            backgroundColor: "#054F7C",
+            color: "white"
+          }}>
           <tr>
             <th style={{
               width: "10rem"
@@ -51,10 +65,10 @@ export default function SelectProjects() {
               width: "10rem"
             }}>Статус</th>
           </tr>
-        </thead>
-        <tbody style={{
-          backgroundColor: "#f5eaea"
-        }}>
+          </thead>
+          <tbody style={{
+            backgroundColor: "#f5eaea"
+          }}>
           {projectsStore.map((item) => {
             return (
               <tr onClick={() => {
@@ -74,8 +88,17 @@ export default function SelectProjects() {
               </tr>
             )
           })}
-        </tbody>
-      </table>
-    </div>
+          </tbody>
+        </table>
+      </div>
+
+      {/* modal add project */}
+      <div>
+        <ProjectModal
+          onClose={onClose}
+          show={show}
+        />
+      </div>
+    </>
   )
 }

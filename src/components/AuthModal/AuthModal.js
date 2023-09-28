@@ -6,8 +6,7 @@ import "./AuthModal.css";
 import {useDispatch, useSelector} from "react-redux";
 import {createUser, setCurrentUser} from "../../store/Reducers/authReducer";
 import {FormLink} from "./components/FormLink";
-import {FormSubmit} from "./components/FormSubmit";
-import IsCreatedUser from "../../hooks/IsCreatedUser";
+import {FormSubmit} from "../FormSubmit/FormSubmit";
 
 export default function AuthModal({ show, onClose }) {
   const customStyles = {
@@ -18,7 +17,7 @@ export default function AuthModal({ show, onClose }) {
       bottom: 'auto',
       transform: 'translate(-50%, -50%)',
       width: "350px",
-      height: "30rem"
+      height: "27rem"
     }
   }
 
@@ -31,7 +30,8 @@ export default function AuthModal({ show, onClose }) {
   const currentForm = useSelector(state => state.auth.currentForm);
   const usersStore = useSelector(state => state.auth.users);
 
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorUsername, setErrorUsername] = useState("");
+  const [errorPassword, setErrorPassword] = useState("");
 
   const validationsSchema = yup.object().shape({
     username: yup.string()
@@ -57,14 +57,14 @@ export default function AuthModal({ show, onClose }) {
       isOpen={show}
       onRequestClose={() => {
         setShowPassword(false);
-        setErrorMessage("");
+        setErrorUsername("");
+        setErrorPassword("");
         onClose();
       }}
       overlayClassName={"overlay"}
       style={customStyles}
     >
       <p className={"title-form"}>{currentForm === "login" ? ("Авторизация") : ("Регистрация")}</p>
-      {errorMessage !== "" ? (<p className={"errors"}>{errorMessage}</p>) : (<p className={"errors"}>&nbsp;</p>)}
 
       <Formik
         initialValues={{
@@ -76,9 +76,14 @@ export default function AuthModal({ show, onClose }) {
           if (currentForm === "login") {
             const user = usersStore.find((user) => user.username === values.username && user.password === values.password);
 
-            dispatch(setCurrentUser(user.id, user.username, user.password)); //karamalesa13
+            if (user !== undefined) {
+              dispatch(setCurrentUser(user.id, user.username, user.password));
+            } else {
+            }
+
+            setErrorUsername("");
+            setErrorPassword("");
           } else if (currentForm === "signup") {
-            console.log("Handle submit - SignUp - create user dispatch");
             dispatch(createUser(values.username, values.password));
           }
         }}
@@ -89,7 +94,7 @@ export default function AuthModal({ show, onClose }) {
               {/* username */}
               <p>
                 <label className={"label"} htmlFor={'username'}>Имя пользователя: </label><br></br>
-                {touched.username && errors.username ? (<p className="errors">{errors.username}</p>) : (<p className="errors">&nbsp;</p>)}
+                {touched.username && errors.username ? (<p className="errors">{errors.username}</p>) : (errorUsername !== "" ? (<p className="errors">{errorUsername}</p>) : (<p className="errors"> &nbsp;</p>))}
 
                 <div style={{
                   display: "flex"
@@ -108,7 +113,7 @@ export default function AuthModal({ show, onClose }) {
               {/* password */}
               <p>
                 <label className={"label"} htmlFor={'password'}>Пароль: </label><br></br>
-                {touched.password && errors.password ? (<p className="errors">{errors.password}</p>) : (<p className="errors">&nbsp;</p>)}
+                {touched.password && errors.password ? (<p className="errors">{errors.password}</p>) : (errorPassword !== "" ? (<p className="errors">{errorPassword}</p>) : (<p className="errors"> &nbsp;</p>))}
 
                 <div className={"content-password"}>
                   <input
@@ -131,31 +136,35 @@ export default function AuthModal({ show, onClose }) {
               <FormSubmit
                 title={currentForm === "login"  ? ("Войти") : ("Зарегистрироваться")}
                 Submit={() => {
+
+
                   if (usersStore.some((user) => {
                     return user.username === values.username
                   })) {
                     if (currentForm === "signup") {
-                      setErrorMessage("Пользователь с таким именем уже существует!");
-                      console.log("Current Form - SignUp");
+                      setErrorUsername("Пользователь с таким именем уже существует!");
+                      setTimeout(() => setErrorUsername(""), 2000);
                     } else {
-                      console.log("Current Form - Login");
+                      const user = usersStore.find((user) => user.username === values.username && user.password === values.password);
 
-                      handleSubmit();
-                      setShowPassword(false);
-                      setErrorMessage("");
-                      onClose();
+                      if (user !== undefined) {
+                        handleSubmit();
+                        setShowPassword(false);
+                        setErrorUsername("");
+                        onClose();
+                      }
+
+                      setErrorPassword("Неправильный пароль, поробуйте ещё раз");
+                      setTimeout(() => setErrorPassword(""), 2000);
                     }
                   } else {
                     if (currentForm === "signup") {
-                      console.log("Current Form - SignUp");
-
                       handleSubmit();
                       setShowPassword(false);
-                      setErrorMessage("");
+                      setErrorUsername("");
                       onClose();
                     } else {
-                      setErrorMessage("Такого пользователя не существует!");
-                      console.log("Current Form - Login");
+                      setErrorUsername("Такого пользователя не существует!");
                     }
                   }
                 }}
@@ -169,7 +178,10 @@ export default function AuthModal({ show, onClose }) {
                 linkTitle={currentForm === "login"  ? ("Зарегистрируйтесь") : ("Войдите")}
                 props={currentForm === "login"  ? ("signup") : ("login")}
                 resetForm={resetForm}
-                setErrorMessage={setErrorMessage}
+                clearErrorMessages={() => {
+                  setErrorUsername("");
+                  setErrorPassword("");
+                }}
               />
             </div>
           )

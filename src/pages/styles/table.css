@@ -32,6 +32,11 @@ td {
     border: none;
     border-radius: 0.5rem;
     font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-create-project:hover {
+    background-color: #044369;
 }
 
 .container-create-project {
