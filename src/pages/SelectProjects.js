@@ -13,7 +13,6 @@ export default function SelectProjects() {
   const [show, setShow] = useState(false);
 
   const getAuthorProject = (project_user_id) => {
-    console.log(project_user_id);
     if (project_user_id !== null) {
       const author = usersStore.find(user => {
         return user.id === project_user_id;

@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import Item from "../components/Item/Item";
 import DropWrapper from "../components/DropWrapper/DropWrapper";
 import Col from "../components/Col/Col";
 import {useSelector} from "react-redux";
 import {NavLink, useParams} from "react-router-dom";
+import IsAuth from "../hooks/IsAuth";
 
 
 export default function Tasks() {
@@ -11,6 +12,8 @@ export default function Tasks() {
   const statuses = useSelector(state => state.categories);
   const [items, setItems] = useState(taskData);
   const { project_id } = useParams();
+  const currentUser = useSelector(state => state.auth.currentUser);
+  const projectsStore = useSelector(state => state.project.projects);
 
 
   const onDrop = (item, monitor, status) => {
@@ -33,13 +36,39 @@ export default function Tasks() {
     });
   };
 
+  const checkProjectsAuthor = () => {
+    return projectsStore.some((project) => {
+      return project.id === Number(project_id) && project.user_id === currentUser.id
+    });
+  }
+
   return (
     <div className={"container"}>
-      <NavLink to={"/"}>
-        <p className={"button-back"}>
-          ◀ Back to Projects
-        </p>
-      </NavLink>
+      <div style={{
+        display: "block",
+        textAlign: "center",
+        paddingLeft: "1.8rem",
+        paddingRight: "1.8rem"
+      }}>
+        <div style={{
+          paddingBottom: "4rem"
+        }}>
+          <div style={{ float: "left" }}>
+            <NavLink to={"/"}>
+              <p className={"button-back"}>
+                ◀ Вернуться к проектам
+              </p>
+            </NavLink>
+          </div>
+          {IsAuth() && checkProjectsAuthor() ? (
+            <div style={{ float: "right" }}>
+              <p className={"button-back"}>
+                Добавить задачу
+              </p>
+            </div>
+          ) : ("")}
+        </div>
+      </div>
 
       <div className={"row"}>
         {statuses.map((s, index) => {
