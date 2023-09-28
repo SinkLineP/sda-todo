@@ -1,10 +1,12 @@
 import React from "react";
 import  { useDrop } from "react-dnd";
 import ITEM_TYPE from "../../data/types";
-import {statuses} from "../../data/data";
+import {useSelector} from "react-redux";
 
 
 const DropWrapper = ({ onDrop, children, status }) => {
+  const statuses = useSelector(state => state.categories);
+
   const [{ isOver }, drop] = useDrop({
     accept: ITEM_TYPE,
     canDrop: (item, monitor) => {

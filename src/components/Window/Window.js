@@ -13,7 +13,7 @@ export default function Window({ show, onClose, item }) {
       </div>
       <div>
         <h2>Desc</h2>
-        <p>{item.content}</p>
+        <p>{item.descriprion}</p>
         <h2>Status</h2>
         <p>{item.status}</p>
       </div>

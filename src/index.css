@@ -4,6 +4,7 @@
   --text-color: #172b4d;
   --disabled-color: #fad6d6;
   --background-color: #f5eaea;
+  --background-color-hover: #e7dbdb;
 }
 
 html {
@@ -182,4 +183,35 @@ select {
 
 .close-btn:hover {
   background-color: #DCDCDC;
+}
+
+.button-back {
+  display: inline-block;
+  margin-left: 1.8rem;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+  background-color: #054F7C;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.table {
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+td {
+  text-align: center;
+}
+
+tr:hover {
+  background-color: var(--background-color-hover);
 }

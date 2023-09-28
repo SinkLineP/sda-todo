@@ -1,10 +1,14 @@
-import React, { Fragment, useState, useRef } from "react";
+import React, {Fragment, useState, useRef} from "react";
 import { useDrag, useDrop } from "react-dnd";
 import Window from "../Window/Window"
 import ITEM_TYPE from "../../data/types";
+// import {useDispatch} from "react-redux";
+// import {editTask} from "../../store/Reducers/taskReducer";
 
 const Item = ({ item, index, moveItem, status }) => {
   const ref = useRef(null);
+  // const dispatch = useDispatch();
+
 
   const [, drop] = useDrop({
     accept: ITEM_TYPE,
@@ -33,6 +37,8 @@ const Item = ({ item, index, moveItem, status }) => {
       }
       moveItem(dragIndex, hoverIndex);
       item.index = hoverIndex;
+
+      // dispatch(editTask(item.id, item));
     },
   });
 
@@ -44,19 +50,16 @@ const Item = ({ item, index, moveItem, status }) => {
     })
   }));
 
-  // let drag = () => {};
-  // let isDragging = () => {};
 
   const [show, setShow] = useState(false);
-
   const onOpen = () => setShow(true);
-
   const onClose = () => setShow(false);
 
   drag(drop(ref));
 
   return (
     <Fragment>
+      {/*card task*/}
       <div
         ref={ref}
         style={{ opacity: isDragging ? 0 : 1 }}
@@ -64,9 +67,11 @@ const Item = ({ item, index, moveItem, status }) => {
         onClick={onOpen}
       >
         <div className={"color-bar"} style={{ backgroundColor: status.color }}/>
-        <p className={"item-title"}>{item.content}</p>
+        <p className={"item-title"}>{item.description}</p>
         <p className={"item-status"}>{item.icon}</p>
       </div>
+
+      {/*modal window*/}
       <Window
         item={item}
         onClose={onClose}

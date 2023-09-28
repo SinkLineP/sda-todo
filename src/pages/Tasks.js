@@ -2,11 +2,16 @@ import React, {useState} from "react";
 import Item from "../components/Item/Item";
 import DropWrapper from "../components/DropWrapper/DropWrapper";
 import Col from "../components/Col/Col";
-import {data, statuses} from "../data/data";
 import {useSelector} from "react-redux";
+import {NavLink, useParams} from "react-router-dom";
+
 
 export default function Tasks() {
-  const [items, setItems] = useState(data);
+  const taskData = useSelector(state => state.tasks);
+  const statuses = useSelector(state => state.categories);
+  const [items, setItems] = useState(taskData);
+  const { project_id } = useParams();
+
 
   const onDrop = (item, monitor, status) => {
     const mapping = statuses.find(si => si.status === status);
@@ -29,23 +34,31 @@ export default function Tasks() {
   };
 
   return (
-    <div className={"row"}>
-      {statuses.map(s => {
-        return (
-          // eslint-disable-next-line no-restricted-globals
-          <div key={status} className={"col-wrapper"}>
-            <h2 className={"col-header"}>{s.status.toUpperCase()}</h2>
-            <DropWrapper onDrop={onDrop} status={s.status}>
-              <Col>
-                {items
-                  .filter(i => i.status === s.status)
-                  .map((i, idx) => <Item key={i.id} item={i} index={idx} moveItem={moveItem} status={s} />)
-                }
-              </Col>
-            </DropWrapper>
-          </div>
-        );
-      })}
+    <div className={"container"}>
+      <NavLink to={"/"}>
+        <p className={"button-back"}>
+          ◀ Back to Projects
+        </p>
+      </NavLink>
+
+      <div className={"row"}>
+        {statuses.map((s, index) => {
+          return (
+            // eslint-disable-next-line no-restricted-globals
+            <div key={index} className={"col-wrapper"}>
+              <h2 className={"col-header"}>{s.status.toUpperCase()}</h2>
+              <DropWrapper onDrop={onDrop} status={s.status}>
+                <Col>
+                  {items
+                    .filter(i => i.status === s.status && i.projectId === Number(project_id))
+                    .map((i, idx) => <Item key={i.id} item={i} index={idx} moveItem={moveItem} status={s}/>)
+                  }
+                </Col>
+              </DropWrapper>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

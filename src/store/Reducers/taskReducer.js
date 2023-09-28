@@ -3,7 +3,6 @@ import { initialState } from "../States/taskInitialState";
 const ActionTypes = {
   ADD_TASK: 'ADD_TASK',
   REMOVE_TASK: 'REMOVE_TASK',
-  COMPLETE_TASK: 'COMPLETE_TASK',
   EDIT_TASK: 'EDIT_TASK'
 };
 
@@ -19,15 +18,9 @@ function TaskReducer(state = initialState, action) {
         ...state,
         tasks: state.tasks.filter((task) => task.id !== action.payload),
       };
-    case ActionTypes.COMPLETE_TASK:
-      return {
-        ...state,
-        tasks: state.tasks.map((task) =>
-          task.id === action.payload ? { ...task, status: 'done' } : task
-        ),
-      };
     case ActionTypes.EDIT_TASK:
       const { taskId, updatedTask } = action.payload;
+      console.log(action.payload);
       const updatedTasks = state.tasks.map((task) =>
         task.id === taskId ? { ...task, ...updatedTask } : task
       );
@@ -56,9 +49,5 @@ export const removeTask = (taskId) => ({
   payload: taskId,
 });
 
-export const completeTask = (taskId) => ({
-  type: ActionTypes.COMPLETE_TASK,
-  payload: taskId,
-});
 
-export default (TaskReducer, addTask, removeTask, editTask, completeTask);
+export default TaskReducer;
