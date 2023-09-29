@@ -66,8 +66,6 @@ export default function InfoTask({ show, onClose, item }) {
 
             <p>Автор: {getAuthorProject(item.author, usersStore)}</p>
           </div>
-
-          <button className={"close-btn"} onClick={onClose}>X</button>
         </div>
         <div>
           <div className={"task-description"}>
@@ -171,9 +169,8 @@ export default function InfoTask({ show, onClose, item }) {
 
           <div>
             <h3>Комментарии</h3>
-            <textarea>
-
-            </textarea>
+            <input className={"task-comment-input"} type={"string"} name={"comment"} />
+            <button className={"button-send"}>Отправить</button>
           </div>
         </div>
         <div style={{

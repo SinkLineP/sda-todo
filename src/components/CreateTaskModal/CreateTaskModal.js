@@ -7,6 +7,7 @@ import "./CreateTaskModal.css";
 import {CountSliceFilesTask} from "../../Variables";
 import {mergedSchema} from "./Schemas";
 import {combinedInitialValues} from "./InitilalValues";
+import ButtonSubmit from "./components/ButtonSubmit";
 
 
 export default function CreateTaskModal({ show, onClose, project_id }) {
@@ -93,40 +94,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
     }
   }
 
-  const ButtonSubmit = ({isValid, values, handleSubmit}) => {
-    return (
-      <button
-        className={`btn ${!isValid === false
-          ? (showFormSubtask === true
-            ? (customSubtasksValidate(values.titleSubtask, values.numberSubtask, values.descriptionSubtask, values.prioritySubtask, values.statusSubtask).length !== 0
-              ? 'btn-success'
-              : 'btn-disabled')
-            : (values.title && values.numberTask && values.description && values.priority && values.status
-              ? 'btn-success'
-              : 'btn-disabled'))
-          : 'btn-disabled'}`}
-        type={"submit"}
-        onClick={() => {
-          if (!isValid === false) {
-            if (showFormSubtask === true) {
-              if (customSubtasksValidate(values.titleSubtask, values.numberSubtask, values.descriptionSubtask, values.prioritySubtask, values.statusSubtask).length !== 0) {
-                handleSubmit()
-                onClose()
-                setShowFormSubtask(false)
-              }
-            } else {
-              if (values.title && values.numberTask && values.description && values.priority && values.status) {
-                handleSubmit()
-                onClose()
-              }
-            }
-          }
-        }}
-      >
-        Создать задачу
-      </button>
-    )
-  }
+
 
   return (
     <Modal
@@ -157,7 +125,10 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                 files: file,
                 status: status,
                 subtasks: customSubtasksValidate(titleSubtask, numberSubtask, descriptionSubtask, prioritySubtask, statusSubtask),
-                comments: [],
+                comments: [
+                  { id: 1, text: 'Комментарий 1' },
+                  { id: 2, text: 'Комментарий 2' },
+                ],
                 icon: iconWithStatus(status),
                 author: Number(currentUser.id),
               }));
@@ -443,7 +414,15 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                   </div>
 
 
-                  <ButtonSubmit isValid={isValid} values={values} handleSubmit={handleSubmit} />
+                  <ButtonSubmit
+                    onClose={onClose}
+                    customSubtasksValidate={customSubtasksValidate}
+                    setShowFormSubtask={setShowFormSubtask}
+                    showFormSubtask={showFormSubtask}
+                    isValid={isValid}
+                    values={values}
+                    handleSubmit={handleSubmit}
+                  />
                 </>
               );
             }}

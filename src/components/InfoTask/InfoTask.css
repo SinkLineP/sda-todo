@@ -63,3 +63,21 @@
     color: gray;
     font-style: italic;
 }
+
+.task-comment-input {
+    display: flex;
+    width: 99.5%;
+    height: 10rem;
+}
+
+.button-send {
+    float: right;
+    margin-top: 10px;
+    background-color: #054F7C;
+    border: none;
+    padding: 1rem;
+    border-radius: 1rem;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+}
