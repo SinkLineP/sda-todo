@@ -70,7 +70,7 @@ export default function InfoTask({ show, onClose, item }) {
   const handleDeleteNode = (folderId) => {
     const finalStructure = deleteNode(commentsStore, folderId);
     const temp = { ...finalStructure };
-    console.log(temp);
+    dispatch(addComment(temp));
   };
 
   return (

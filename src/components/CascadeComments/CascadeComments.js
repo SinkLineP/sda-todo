@@ -15,11 +15,10 @@ export default function CascadeComments({ comment, handleDeleteNode, handleEditN
   }, [editMode]);
 
   const handleNewComment = () => {
-    setExpand(!expand); // Обновляем состояние expand сначала
-    if (!expand) {
-      setShowInput(true); // Показываем поле ответа только если expand стал true
-    }
-  }
+    setExpand(!expand);
+    setShowInput(true);
+  };
+
   const onAddComment = () => {
     if (editMode) {
       handleEditNode(comment.id, inputRef?.current?.innerText);
@@ -34,6 +33,10 @@ export default function CascadeComments({ comment, handleDeleteNode, handleEditN
       setEditMode(false)
     }
   };
+
+  const handleDelete = () => {
+    handleDeleteNode(comment.id)
+  }
 
   return (
     <>
@@ -107,7 +110,11 @@ export default function CascadeComments({ comment, handleDeleteNode, handleEditN
                           setEditMode(true)
                         }}
                       />
-                      <Action className={"reply no-select-text"} type={"Удалить"} />
+                      <Action
+                        className={"reply no-select-text"}
+                        type={"Удалить"}
+                        handleClick={handleDelete}
+                      />
                     </>
                   )
                 }
@@ -142,6 +149,7 @@ export default function CascadeComments({ comment, handleDeleteNode, handleEditN
                   type={"Отменить"}
                   handleClick={() => {
                     setShowInput(false)
+                    if (!comment?.items?.length) setExpand(false);
                   }}
                 />
               </div>
