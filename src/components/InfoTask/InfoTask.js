@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "react-modal";
-import {getAuthorProject} from "../../Variables";
+import {formatFileSize, getAuthorProject} from "../../Variables";
 import {useSelector} from "react-redux";
 import ColorizeWrapText from "../ColorizeWrapText/ColorizeWrapText";
 import "./InfoTask.css";
@@ -93,8 +93,8 @@ export default function InfoTask({ show, onClose, item }) {
                          }}>
                       <img className={"icon-file"} src={iconFile} alt={"icon file"}/>
                       <img className={"icon-file download-icon"} src={iconDownload} alt={"icon download file"}/>
-                      <p
-                        className={"no-select-text file-title"}>{file.name.length > 10 ? `${showShortNameFile(file.name, 8)}` : file.name}</p>
+                      <p className={"no-select-text file-title"}>{file.name.length > 10 ? `${showShortNameFile(file.name, 8)}` : file.name}</p>
+                      <p className={"no-select-text file-size"}>({formatFileSize(file.size)})</p>
                     </div>
                   )
                 })}
@@ -105,9 +105,6 @@ export default function InfoTask({ show, onClose, item }) {
               <h3>Вложеных файлов не найдено!</h3>
             </>
           )}
-
-
-
 
           {item.subtasks.length !== 0 ? (
             <>

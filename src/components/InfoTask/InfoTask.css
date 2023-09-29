@@ -58,3 +58,8 @@
     color: #054F7C;
     font-weight: bolder;
 }
+
+.file-size {
+    color: gray;
+    font-style: italic;
+}
