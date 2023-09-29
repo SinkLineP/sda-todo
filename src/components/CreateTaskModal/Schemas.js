@@ -3,7 +3,7 @@ import * as yup from "yup";
 export const mergedSchema = yup.object().shape({
   title: yup.string()
     .min(5, "Заголовок должен быть больше 5 символов!")
-    .max(24, "Заголовок должен быть меньше 24 символов!")
+    .max(100, "Заголовок должен быть меньше 100 символов!")
     .required("Введите заголовок"),
   numberTask: yup
     .number()

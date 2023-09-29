@@ -1,18 +1,21 @@
-import React from "react";
+import React, {useState} from "react";
 import Modal from "react-modal";
 import {formatFileSize, getAuthorProject} from "../../Variables";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import ColorizeWrapText from "../ColorizeWrapText/ColorizeWrapText";
 import "./InfoTask.css";
 import iconFile from "./icons/file.png";
 import iconDownload from "./icons/download.png";
 import ScrollableWrap from "../ScrollableWrap/ScrollableWrap";
-
+import CascadeComments from "../CascadeComments/CascadeComments";
+import useNode from "../../hooks/useNode";
+import {addComment} from "../../store/Reducers/commentReducer";
 
 Modal.setAppElement("#root");
 
 export default function InfoTask({ show, onClose, item }) {
   const usersStore = useSelector(state => state.auth.users);
+  const dispatch = useDispatch();
 
   const handleDownloadClick = (file) => {
     if (file) {
@@ -51,6 +54,24 @@ export default function InfoTask({ show, onClose, item }) {
     }
   };
 
+  const commentsStore = useSelector(state => state.comment.comments);
+  const { insertNode, editNode, deleteNode } = useNode();
+
+  const handleInsertNode = (folderId, item) => {
+    const finalStructure = insertNode(commentsStore, folderId, item);
+    dispatch(addComment(finalStructure));
+  };
+
+  const handleEditNode = (folderId, value) => {
+    const finalStructure = editNode(commentsStore, folderId, value);
+    console.log(finalStructure);
+  };
+
+  const handleDeleteNode = (folderId) => {
+    const finalStructure = deleteNode(commentsStore, folderId);
+    const temp = { ...finalStructure };
+    console.log(temp);
+  };
 
   return (
     <Modal
@@ -65,6 +86,14 @@ export default function InfoTask({ show, onClose, item }) {
             <ColorizeWrapText text={item.status} label={`${item.title} #${item.numberTask}`} type={"title"} />
 
             <p>Автор: {getAuthorProject(item.author, usersStore)}</p>
+          </div>
+
+          <div style={{
+            display: "flex",
+            flexDirection: "column"
+          }}>
+            <button>delete</button>
+            <button>edit</button>
           </div>
         </div>
         <div>
@@ -165,13 +194,17 @@ export default function InfoTask({ show, onClose, item }) {
             </>
           )}
 
+          <h3 style={{
+            marginTop: "50px"
+          }}>Коментарии: </h3>
 
+          <CascadeComments
+            handleInsertNode={handleInsertNode}
+            handleEditNode={handleEditNode}
+            handleDeleteNode={handleDeleteNode}
+            comment={commentsStore}
+          />
 
-          <div>
-            <h3>Комментарии</h3>
-            <input className={"task-comment-input"} type={"string"} name={"comment"} />
-            <button className={"button-send"}>Отправить</button>
-          </div>
         </div>
         <div style={{
           display: "flex",

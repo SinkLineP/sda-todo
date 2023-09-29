@@ -125,10 +125,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                 files: file,
                 status: status,
                 subtasks: customSubtasksValidate(titleSubtask, numberSubtask, descriptionSubtask, prioritySubtask, statusSubtask),
-                comments: [
-                  { id: 1, text: 'Комментарий 1' },
-                  { id: 2, text: 'Комментарий 2' },
-                ],
+                comments: [],
                 icon: iconWithStatus(status),
                 author: Number(currentUser.id),
               }));

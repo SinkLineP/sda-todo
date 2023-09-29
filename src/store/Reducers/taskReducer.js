@@ -3,7 +3,7 @@ import { initialState } from "../States/taskInitialState";
 const ActionTypes = {
   ADD_TASK: 'ADD_TASK',
   REMOVE_TASK: 'REMOVE_TASK',
-  EDIT_TASK: 'EDIT_TASK'
+  EDIT_TASK: 'EDIT_TASK',
 };
 
 function TaskReducer(state = initialState, action) {
@@ -64,6 +64,5 @@ export const removeTask = (taskId) => ({
   type: ActionTypes.REMOVE_TASK,
   payload: taskId,
 });
-
 
 export default TaskReducer;

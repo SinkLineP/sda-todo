@@ -5,17 +5,20 @@ import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../../store/Reducers/authReducer";
 import IsAuth from "../../hooks/IsAuth";
 import ChangeButton from "./components/ChangeButton";
+import {useNavigate} from "react-router-dom";
 
 export default function Header() {
   const [show, setShow] = useState(false);
   const currentUser = useSelector(state => state.auth.currentUser);
   const currentForm = useSelector(state => state.auth.currentForm);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const onOpen = () => setShow(true);
   const onClose = () => setShow(false);
   const onLogout = () => {
-    dispatch(logout())
+    dispatch(logout());
+    navigate("/");
   }
 
 
