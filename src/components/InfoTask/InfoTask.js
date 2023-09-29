@@ -109,58 +109,68 @@ export default function InfoTask({ show, onClose, item }) {
 
 
 
-          <h3>Подзадачи:</h3>
-          <p>{item.subtasks.length === 0 ? ("Подзадач нету") : (
-            <table style={{
-              borderCollapse: "collapse",
-              width: "100%",
-              borderRadius: "0.3rem",
-              overflow: "hidden",
-              border: "solid",
-              borderColor: "black",
-              borderWidth: "1px"
-            }}>
-              <thead>
-              <tr style={{
-                backgroundColor: "#054F7C",
-                color: "white",
-              }}>
-                <th>Заголовок подзадачи</th>
-                <th>Номер подзадачи</th>
-                <th>Описание подзадачи</th>
-                <th>Приоритет подзадачи</th>
-                <th>Статус подзадачи</th>
-              </tr>
-              </thead>
-              <tbody style={{
-                backgroundColor: "#fff0dc",
-              }}>
-              {
-                item.subtasks.map(subtask => {
-                  return (
-                    <tr>
-                      <td>
-                        {subtask.titleSubtask}
-                      </td>
-                      <td>
-                        {subtask.numberSubtask}
-                      </td>
-                      <td>
-                        {subtask.descriptionSubtask}
-                      </td>
-                      <td>
-                        {subtask.prioritySubtask}
-                      </td>
-                      <td>
-                        {subtask.statusSubtask}
-                      </td>
-                    </tr>
-                  )
-                })
-              }
-              </tbody>
-            </table>
-          )}</p>
+          {item.subtasks.length !== 0 ? (
+            <>
+              <h3>Подзадачи:</h3>
+              <p>{item.subtasks.length === 0 ? ("Подзадач нету") : (
+                <table style={{
+                  borderCollapse: "collapse",
+                  width: "100%",
+                  borderRadius: "0.3rem",
+                  overflow: "hidden",
+                  border: "solid",
+                  borderColor: "black",
+                  borderWidth: "1px"
+                }}>
+                  <thead>
+                  <tr style={{
+                    backgroundColor: "#054F7C",
+                    color: "white",
+                  }}>
+                    <th>Заголовок подзадачи</th>
+                    <th>Номер подзадачи</th>
+                    <th>Описание подзадачи</th>
+                    <th>Приоритет подзадачи</th>
+                    <th>Статус подзадачи</th>
+                  </tr>
+                  </thead>
+                  <tbody style={{
+                    backgroundColor: "#fff0dc",
+                  }}>
+                  {
+                    item.subtasks.map(subtask => {
+                      return (
+                        <tr>
+                          <td>
+                            {subtask.titleSubtask}
+                          </td>
+                          <td>
+                            {subtask.numberSubtask}
+                          </td>
+                          <td>
+                            {subtask.descriptionSubtask}
+                          </td>
+                          <td>
+                            {subtask.prioritySubtask}
+                          </td>
+                          <td>
+                            {subtask.statusSubtask}
+                          </td>
+                        </tr>
+                      )
+                    })
+                  }
+                  </tbody>
+                </table>
+              )}</p>
+            </>
+          ) : (
+            <>
+              <h3>Подзадач не найдено!</h3>
+            </>
+          )}
+
+
 
           <div>
             <h3>Комментарии</h3>
