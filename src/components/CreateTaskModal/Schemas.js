@@ -22,11 +22,24 @@ export const validationSchemaTasks = yup.object().shape({
 });
 
 export const validationSchemaSubtasks = yup.object().shape({
-  titleSubtask: yup.string().required("Поле 'titleSubtask' обязательно для заполнения"),
-  numberSubtask: yup.number().required("Поле 'numberSubtask' обязательно для заполнения"),
-  descriptionSubtask: yup.string(),
-  prioritySubtask: yup.string(),
-  statusSubtask: yup.string(),
+  titleSubtask: yup.string()
+    .min(5, "")
+    .max(24, "")
+    .required(""),
+  numberSubtask: yup
+    .number()
+    .typeError("")
+    .required('')
+    .test('is-number', '', (value) => {
+      if (!value) return true;
+      return !isNaN(value);
+    }),
+  descriptionSubtask: yup.string()
+    .min(10, "")
+    .max(2000, "")
+    .required(""),
+  prioritySubtask: yup.string().required("*"),
+  statusSubtask: yup.string().required("*"),
 });
 
 export const mergedSchema = yup.object().shape({

@@ -13,7 +13,7 @@
 
 .subtask-input {
     border: 1px solid lightgrey;
-    height: 2.1rem;
+    height: 20px;
     padding-left: 10px;
 }
 
@@ -76,4 +76,32 @@
 
 .title-subtask {
     font-weight: bold;
+}
+
+.subtask-errors {
+    text-align: left;
+    color: #f36464
+}
+
+.warning {
+    background-color: #fdeda5;
+    width: auto;
+    float: left;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 1rem;
+    color: #967d00;
+    font-weight: bold;
+    line-height: 0.5rem;
+}
+
+.warning .hide {
+    text-align: right;
+    padding-bottom: 10px;
+    cursor: pointer;
+}
+
+.subtask-select {
+    height: 20px;
+    width: 100%
 }

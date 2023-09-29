@@ -17,6 +17,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
   const [errorFile, setErrorFile] = useState("");
   const [showFormSubtask, setShowFormSubtask] = useState(false);
   const dispatch = useDispatch();
+  const [showWarningSubtask, setShowWarningSubtask] = useState(false);
 
   const customStyles = {
     content: {
@@ -171,9 +172,31 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                         <p className={"title-subtask"}>Подзадачи: <ErrorMessage className={"errors"} name="status" component="span" /></p>
                       </div>
                       <div style={{ float: "right" }}>
-                        <p className={`btn-subtask ${showFormSubtask ? "remove-subtask" : "add-subtask"}`} onClick={() => setShowFormSubtask(!showFormSubtask)}>{ showFormSubtask ? "Удалить подзадачи" : "Добавить подзадачи" }</p>
+                        <p className={`btn-subtask ${showFormSubtask ? "remove-subtask" : "add-subtask"}`} onClick={() => {
+                          setShowFormSubtask(!showFormSubtask)
+
+                          if (showFormSubtask === true) {
+                            setShowWarningSubtask(false);
+                          } else {
+                            setShowWarningSubtask(true);
+                          }
+                        }}>{ showFormSubtask ? "Удалить подзадачи" : "Добавить подзадачи" }</p>
                       </div>
                     </div>
+
+                    {showWarningSubtask ? (
+                      <div className={"warning no-select-text"}>
+                        <div>
+                          <p className={"hide no-select-text"} onClick={() => setShowWarningSubtask(false)}>Скрыть подсказку</p>
+                        </div>
+
+                        <div>
+                          <p>Заголовок подзадачи - от 5 до 24 символов</p>
+                          <p>Номер подзадачи - только числа</p>
+                          <p>Описание подзадачи - от 10 до 2000 символов</p>
+                        </div>
+                      </div>
+                    ) : ("")}
 
                     {showFormSubtask === true ? (
                       <table style={{
@@ -203,35 +226,26 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                           backgroundColor: "#fff0dc",
                         }}>
                         <tr>
+                          {["titleSubtask", "numberSubtask", "descriptionSubtask"].map((fieldName) => (
+                            <td key={fieldName}>
+                              <div>
+                                <Field className={"subtask-input"} type="text" id={fieldName} name={fieldName} />
+                              </div>
+                            </td>
+                          ))}
                           <td>
-                            <div>
-                              <ErrorMessage className={"errors"} name="titleSubtask" component="span" />
-                              <Field className={"subtask-input"} type="text" id="titleSubtask" name="titleSubtask" />
-                            </div>
+                            <Field className={"subtask-select"} as="select" name="prioritySubtask">
+                              <option value="low">Низкий</option>
+                              <option value="medium">Средний</option>
+                              <option value="height">Высокий</option>
+                            </Field>
                           </td>
                           <td>
-                            <div>
-                              <ErrorMessage className={"errors"} name="numberSubtask" component="span" />
-                              <Field className={"subtask-input"} type="text" id="numberSubtask" name="numberSubtask" />
-                            </div>
-                          </td>
-                          <td>
-                            <div>
-                              <ErrorMessage className={"errors"} name="descriptionSubtask" component="span" />
-                              <Field className={"subtask-input"} type="text" id="descriptionSubtask" name="descriptionSubtask" />
-                            </div>
-                          </td>
-                          <td>
-                            <div>
-                              <ErrorMessage className={"errors"} name="prioritySubtask" component="span" />
-                              <Field className={"subtask-input"} type="text" id="prioritySubtask" name="prioritySubtask" />
-                            </div>
-                          </td>
-                          <td>
-                            <div>
-                              <ErrorMessage className={"errors"} name="statusSubtask" component="span" />
-                              <Field className={"subtask-input"} type="text" id="statusSubtask" name="statusSubtask" />
-                            </div>
+                            <Field className={"subtask-select"} as="select" name="statusSubtask">
+                              <option value="queue">Queue</option>
+                              <option value="development">Development</option>
+                              <option value="done">Done</option>
+                            </Field>
                           </td>
                           <td>
                             <button>V</button>
