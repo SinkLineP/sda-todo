@@ -1,15 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import Modal from "react-modal";
-import {Field, Formik, ErrorMessage, useFormik} from "formik";
-import * as yup from "yup";
+import {Field, Formik, ErrorMessage} from "formik";
 import {useDispatch, useSelector} from "react-redux";
 import {addTask} from "../../store/Reducers/taskReducer";
 import "./CreateTaskModal.css";
-import DragAndDropUploadFile from "../DragAndDropUploadFile/DragAndDropUploadFile";
 import {CountSliceFilesTask} from "../../Variables";
-import {NavLink} from "react-router-dom";
-import IsAuth from "../../hooks/IsAuth";
 import {mergedSchema, validationSchemaTasks} from "./Schemas";
+import {combinedInitialValues, initialValuesTasks} from "./InitilalValues";
 
 
 export default function CreateTaskModal({ show, onClose, project_id }) {
@@ -17,7 +14,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
   const [errorFile, setErrorFile] = useState("");
   const [showFormSubtask, setShowFormSubtask] = useState(false);
   const dispatch = useDispatch();
-  const [showWarningSubtask, setShowWarningSubtask] = useState(false);
+  // const [showWarningSubtask, setShowWarningSubtask] = useState(false);
 
   const customStyles = {
     content: {
@@ -80,6 +77,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
   };
 
 
+
   return (
     <Modal
       isOpen={show}
@@ -92,16 +90,9 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
       <div className={"container-create-task"}>
         <h1 className={"title-create-task"}>Создание задачи</h1>
           <Formik
-            initialValues={{
-              title: "",
-              file: null,
-              numberTask: '',
-              description: '',
-              priority: 'low',
-              status: 'queue',
-            }}
+            initialValues={showFormSubtask === true ? combinedInitialValues : initialValuesTasks}
             validateOnBlur
-            onSubmit={({ title, file, numberTask, description, priority, status  }) => {
+            onSubmit={({ title, file, numberTask, description, priority, status, titleSubtask, numberSubtask, descriptionSubtask, prioritySubtask, statusSubtask  }) => {
               dispatch(addTask({
                 projectId: Number(project_id),
                 numberTask: Number(numberTask),
@@ -113,7 +104,13 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                 priority: priority,
                 files: file,
                 status: status,
-                subtasks: [],
+                subtasks: [{
+                  titleSubtask:titleSubtask,
+                  numberSubtask:numberSubtask,
+                  descriptionSubtask:descriptionSubtask,
+                  prioritySubtask: prioritySubtask,
+                  statusSubtask: statusSubtask
+                }],
                 comments: [],
                 icon: iconWithStatus(status),
                 author: Number(currentUser.id),
@@ -172,31 +169,23 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                         <p className={"title-subtask"}>Подзадачи: <ErrorMessage className={"errors"} name="status" component="span" /></p>
                       </div>
                       <div style={{ float: "right" }}>
-                        <p className={`btn-subtask ${showFormSubtask ? "remove-subtask" : "add-subtask"}`} onClick={() => {
-                          setShowFormSubtask(!showFormSubtask)
-
-                          if (showFormSubtask === true) {
-                            setShowWarningSubtask(false);
-                          } else {
-                            setShowWarningSubtask(true);
-                          }
-                        }}>{ showFormSubtask ? "Удалить подзадачи" : "Добавить подзадачи" }</p>
+                        <p className={`btn-subtask ${showFormSubtask ? "remove-subtask" : "add-subtask"}`} onClick={() => setShowFormSubtask(!showFormSubtask)}>{ showFormSubtask ? "Удалить подзадачи" : "Добавить подзадачи" }</p>
                       </div>
                     </div>
 
-                    {showWarningSubtask ? (
-                      <div className={"warning no-select-text"}>
-                        <div>
-                          <p className={"hide no-select-text"} onClick={() => setShowWarningSubtask(false)}>Скрыть подсказку</p>
-                        </div>
+                    {/*{showWarningSubtask ? (*/}
+                    {/*  <div className={"warning no-select-text"}>*/}
+                    {/*    <div>*/}
+                    {/*      <p className={"hide no-select-text"} onClick={() => setShowWarningSubtask(false)}>Скрыть подсказку</p>*/}
+                    {/*    </div>*/}
 
-                        <div>
-                          <p>Заголовок подзадачи - от 5 до 24 символов</p>
-                          <p>Номер подзадачи - только числа</p>
-                          <p>Описание подзадачи - от 10 до 2000 символов</p>
-                        </div>
-                      </div>
-                    ) : ("")}
+                    {/*    <div>*/}
+                    {/*      <p>Заголовок подзадачи - от 5 до 24 символов</p>*/}
+                    {/*      <p>Номер подзадачи - только числа</p>*/}
+                    {/*      <p>Описание подзадачи - от 10 до 2000 символов</p>*/}
+                    {/*    </div>*/}
+                    {/*  </div>*/}
+                    {/*) : ("")}*/}
 
                     {showFormSubtask === true ? (
                       <table style={{
@@ -218,40 +207,34 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                           <th>Описание подзадачи</th>
                           <th>Приоритет подзадачи</th>
                           <th>Статус подзадачи</th>
-                          <th>V</th>
-                          <th>X</th>
                         </tr>
                         </thead>
                         <tbody style={{
                           backgroundColor: "#fff0dc",
                         }}>
                         <tr>
-                          {["titleSubtask", "numberSubtask", "descriptionSubtask"].map((fieldName) => (
-                            <td key={fieldName}>
-                              <div>
-                                <Field className={"subtask-input"} type="text" id={fieldName} name={fieldName} />
-                              </div>
-                            </td>
-                          ))}
+                          <td>
+                            <Field className={"subtask-input"} type="text" id={"titleSubtask"} name={"titleSubtask"} />
+                          </td>
+                          <td>
+                            <Field className={"subtask-input"} type="text" id={"numberSubtask"} name={"numberSubtask"} />
+                          </td>
+                          <td>
+                            <Field className={"subtask-input"} type="text" id={"descriptionSubtask"} name={"descriptionSubtask"} />
+                          </td>
                           <td>
                             <Field className={"subtask-select"} as="select" name="prioritySubtask">
-                              <option value="low">Низкий</option>
-                              <option value="medium">Средний</option>
-                              <option value="height">Высокий</option>
+                              <option value="lows">Низкий</option>
+                              <option value="mediums">Средний</option>
+                              <option value="heights">Высокий</option>
                             </Field>
                           </td>
                           <td>
                             <Field className={"subtask-select"} as="select" name="statusSubtask">
-                              <option value="queue">Queue</option>
-                              <option value="development">Development</option>
-                              <option value="done">Done</option>
+                              <option value="queues">Queue</option>
+                              <option value="developments">Development</option>
+                              <option value="dones">Done</option>
                             </Field>
-                          </td>
-                          <td>
-                            <button>V</button>
-                          </td>
-                          <td>
-                            <button>X</button>
                           </td>
                         </tr>
                         </tbody>

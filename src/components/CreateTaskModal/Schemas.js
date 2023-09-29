@@ -23,21 +23,18 @@ export const validationSchemaTasks = yup.object().shape({
 
 export const validationSchemaSubtasks = yup.object().shape({
   titleSubtask: yup.string()
-    .min(5, "")
-    .max(24, "")
-    .required(""),
+    .min(5, "Заголовок должен быть больше 5 символов!")
+    .max(24, "Заголовок должен быть меньше 24 символов!")
+    .required("Введите заголовок"),
   numberSubtask: yup
     .number()
-    .typeError("")
-    .required('')
-    .test('is-number', '', (value) => {
+    .typeError("Должно быть число")
+    .required('Введите номер задачи')
+    .test('is-number', 'Номер подзадачи должен быть числом', (value) => {
       if (!value) return true;
       return !isNaN(value);
     }),
-  descriptionSubtask: yup.string()
-    .min(10, "")
-    .max(2000, "")
-    .required(""),
+  descriptionSubtask: yup.string().required("*"),
   prioritySubtask: yup.string().required("*"),
   statusSubtask: yup.string().required("*"),
 });

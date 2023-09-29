@@ -7,6 +7,7 @@ import "./InfoTask.css";
 import iconFile from "./icons/file.png";
 import iconDownload from "./icons/download.png";
 import ScrollableWrap from "../ScrollableWrap/ScrollableWrap";
+import {Field} from "formik";
 
 
 Modal.setAppElement("#root");
@@ -109,7 +110,57 @@ export default function InfoTask({ show, onClose, item }) {
 
 
           <h3>Подзадачи:</h3>
-          <p>{item.subtasks.length === 0 ? ("Подзадач нету") : item.subtasks.map((subtask) => (subtask + ", "))}</p>
+          <p>{item.subtasks.length === 0 ? ("Подзадач нету") : (
+            <table style={{
+              borderCollapse: "collapse",
+              width: "100%",
+              borderRadius: "0.3rem",
+              overflow: "hidden",
+              border: "solid",
+              borderColor: "black",
+              borderWidth: "1px"
+            }}>
+              <thead>
+              <tr style={{
+                backgroundColor: "#054F7C",
+                color: "white",
+              }}>
+                <th>Заголовок подзадачи</th>
+                <th>Номер подзадачи</th>
+                <th>Описание подзадачи</th>
+                <th>Приоритет подзадачи</th>
+                <th>Статус подзадачи</th>
+              </tr>
+              </thead>
+              <tbody style={{
+                backgroundColor: "#fff0dc",
+              }}>
+              {
+                item.subtasks.map(subtask => {
+                  return (
+                    <tr>
+                      <td>
+                        {subtask.titleSubtask}
+                      </td>
+                      <td>
+                        {subtask.numberSubtask}
+                      </td>
+                      <td>
+                        {subtask.descriptionSubtask}
+                      </td>
+                      <td>
+                        {subtask.prioritySubtask}
+                      </td>
+                      <td>
+                        {subtask.statusSubtask}
+                      </td>
+                    </tr>
+                  )
+                })
+              }
+              </tbody>
+            </table>
+          )}</p>
 
           <div>
             <h3>Комментарии</h3>
