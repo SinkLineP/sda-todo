@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import "./styles/table.css";
 import {Link, useNavigate} from "react-router-dom";
-import {StatusColor, StatusesColors} from "../Variables";
+import {getAuthorProject, StatusColor, StatusesColors} from "../Variables";
 import {useSelector} from "react-redux";
 import ProjectModal from "../components/ProjectModal/ProjectModal";
 import IsAuth from "../hooks/IsAuth";
@@ -11,22 +11,6 @@ export default function SelectProjects() {
   const projectsStore = useSelector(state => state.project.projects);
   const usersStore = useSelector(state => state.auth.users);
   const [show, setShow] = useState(false);
-
-  const getAuthorProject = (project_user_id) => {
-    if (project_user_id !== null) {
-      const author = usersStore.find(user => {
-        return user.id === project_user_id;
-      })
-
-      if (author !== undefined) {
-        return author.username;
-      }
-
-      return "Пользователь не найден";
-    } else {
-      return "Пользователь не найден";
-    }
-  }
 
   const onOpen = () => setShow(true);
   const onClose = () => setShow(false);
@@ -76,7 +60,7 @@ export default function SelectProjects() {
                 <td>
                   <p>{item.title}</p>
                 </td>
-                <td>{getAuthorProject(item.user_id)}</td>
+                <td>{getAuthorProject(item.user_id, usersStore)}</td>
                 {/*<td style={{*/}
                 {/*  backgroundColor: StatusColor(item.status),*/}
                 {/*  color: "white"*/}

@@ -9,9 +9,26 @@ const ActionTypes = {
 function TaskReducer(state = initialState, action) {
   switch (action.type) {
     case ActionTypes.ADD_TASK:
+      console.log(action.payload);
       return {
         ...state,
-        tasks: [...state.tasks, action.payload],
+        tasks: [...state.tasks, {
+          id: state.tasks.length === 0 ? 0 : Number(state.tasks.length),
+          projectId: action.payload.projectId,
+          numberTask: action.payload.numberTask,
+          title: action.payload.title,
+          description: action.payload.description,
+          dateOfCreation: action.payload.dateOfCreation,
+          timeInWork: action.payload.timeInWork,
+          endDate: action.payload.endDate,
+          priority: action.payload.priority,
+          files: action.payload.files,
+          status: action.payload.status,
+          subtasks: action.payload.subtasks,
+          comments: action.payload.comments,
+          icon: action.payload.icon,
+          author: action.payload.author
+        }],
       };
     case ActionTypes.REMOVE_TASK:
       return {
@@ -38,9 +55,9 @@ export const editTask = (taskId, updatedTask) => ({
   payload: { taskId, updatedTask },
 });
 
-export const addTask = (task) => ({
+export const addTask = (formData) => ({
   type: ActionTypes.ADD_TASK,
-  payload: task,
+  payload: formData,
 });
 
 export const removeTask = (taskId) => ({

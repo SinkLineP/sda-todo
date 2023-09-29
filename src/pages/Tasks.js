@@ -1,20 +1,26 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Item from "../components/Item/Item";
 import DropWrapper from "../components/DropWrapper/DropWrapper";
 import Col from "../components/Col/Col";
 import {useSelector} from "react-redux";
 import {NavLink, useParams} from "react-router-dom";
 import IsAuth from "../hooks/IsAuth";
+import TaskModal from "../components/TaskModal/TaskModal";
 
 
 export default function Tasks() {
   const taskData = useSelector(state => state.tasks.tasks);
   const statuses = useSelector(state => state.categories);
-  const [items, setItems] = useState(taskData);
+  const [items, setItems] = useState([]);
   const { project_id } = useParams();
   const currentUser = useSelector(state => state.auth.currentUser);
   const projectsStore = useSelector(state => state.project.projects);
+  const [show, setShow] = useState(false);
 
+
+  useEffect(() => {
+    setItems(taskData);
+  }, [setItems, taskData])
 
   const onDrop = (item, monitor, status) => {
     const mapping = statuses.find(si => si.status === status);
@@ -42,6 +48,21 @@ export default function Tasks() {
     });
   }
 
+  const onOpen = () => setShow(true);
+  const onClose = () => setShow(false);
+
+  const showTask = (items, s) => {
+    const arrayItems = items
+      .filter(i => i.status === s.status && i.projectId === Number(project_id))
+      .map((i, idx) => <Item key={i.id} item={i} index={idx} moveItem={moveItem} status={s}/>)
+
+    console.log(arrayItems);
+
+    return arrayItems;
+  }
+
+
+
   return (
     <div className={"container"}>
       <div style={{
@@ -62,7 +83,10 @@ export default function Tasks() {
           </div>
           {IsAuth() && checkProjectsAuthor() ? (
             <div style={{ float: "right" }}>
-              <p className={"button-back"}>
+              <p
+                className={"button-back"}
+                onClick={onOpen}
+              >
                 Добавить задачу
               </p>
             </div>
@@ -78,16 +102,19 @@ export default function Tasks() {
               <h2 className={"col-header"}>{s.status.toUpperCase()}</h2>
               <DropWrapper onDrop={onDrop} status={s.status}>
                 <Col>
-                  {items
-                    .filter(i => i.status === s.status && i.projectId === Number(project_id))
-                    .map((i, idx) => <Item key={i.id} item={i} index={idx} moveItem={moveItem} status={s}/>)
-                  }
+                  {showTask(items, s)}
                 </Col>
               </DropWrapper>
             </div>
           );
         })}
       </div>
+
+      <TaskModal
+        onClose={onClose}
+        show={show}
+        project_id={project_id}
+      />
     </div>
   );
 }

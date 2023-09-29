@@ -1,11 +1,15 @@
 import React from "react";
 import Modal from "react-modal";
-import {StatusColor} from "../../Variables";
+import {getAuthorProject, StatusColor} from "../../Variables";
+import {useSelector} from "react-redux";
 
 
 Modal.setAppElement("#root");
 
 export default function Window({ show, onClose, item }) {
+  const usersStore = useSelector(state => state.auth.users);
+
+
   return (
     <Modal isOpen={show} onRequestClose={onClose} overlayClassName={"overlay"}>
       <div style={{
@@ -31,7 +35,7 @@ export default function Window({ show, onClose, item }) {
               }}>{item.status}</p>
             </div>
 
-            <p>Автор: no name</p>
+            <p>Автор: {getAuthorProject(item.author, usersStore)}</p>
           </div>
 
           <button className={"close-btn"} onClick={onClose}>X</button>
@@ -45,7 +49,7 @@ export default function Window({ show, onClose, item }) {
 
 
           <h2>Вложеные файлы:</h2>
-          <p>{item.files.map((file) => (file + ", "))}</p>
+          <p>{item.files.map((file) => (file.name + ", "))}</p>
 
           <h2>Подзадачи:</h2>
           <p>{item.subtasks.length === 0 ? ("Подзадач нету") : item.subtasks.map((subtask) => (subtask + ", "))}</p>
@@ -64,12 +68,18 @@ export default function Window({ show, onClose, item }) {
           flexDirection: "row"
         }}>
           <p>Дата создания задачи: {item.dateOfCreation}</p>
-          <p style={{
+
+          {item.endDate !== null ? (
+            <p style={{
             marginLeft: "30px"
           }}>Дата окончания задачи: {item.endDate}</p>
-          <p style={{
-            marginLeft: "30px"
-          }}>Время в работе: {item.timeInWork}</p>
+          ) : ("")}
+
+          {item.timeInWork !== null ? (
+            <p style={{
+              marginLeft: "30px"
+            }}>Время в работе: {item.timeInWork}</p>
+          ) : ("")}
         </div>
       </div>
     </Modal>
