@@ -1,0 +1,14 @@
+.wrap-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.wrap-text {
+    color: white;
+    height: 1.5rem;
+    padding: 0 10px 0 10px;
+    border-radius: 1rem;
+    font-size: 1.2rem;
+    margin-left: 1.5rem;
+}

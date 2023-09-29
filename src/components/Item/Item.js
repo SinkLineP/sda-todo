@@ -1,6 +1,6 @@
 import React, {Fragment, useState, useRef, useEffect} from "react";
 import { useDrag, useDrop } from "react-dnd";
-import Window from "../Window/Window"
+import InfoTask from "../InfoTask/InfoTask"
 import ITEM_TYPE from "../../data/types";
 import {editTask} from "../../store/Reducers/taskReducer";
 import {useDispatch} from "react-redux";
@@ -77,7 +77,7 @@ const Item = ({ item, index, moveItem, status }) => {
       </div>
 
       {/*modal window*/}
-      <Window
+      <InfoTask
         item={item}
         onClose={onClose}
         show={show}

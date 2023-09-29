@@ -1,18 +1,11 @@
 export const StatusesColors = {
   Queue: "#eba946",
   Development: "#00C2E0",
-  Done: "#70a138"
+  Done: "#70a138",
+  Height: "#f36464"
 }
 
-export const StatusColor = (status) => {
-  if (status.toLowerCase() === "queue") {
-    return StatusesColors.Queue;
-  } else if (status.toLowerCase() === "development") {
-    return StatusesColors.Development
-  } else if (status.toLowerCase() === "done") {
-    return  StatusesColors.Done
-  }
-}
+
 
 export const getAuthorProject = (project_user_id, usersStore) => {
   if (project_user_id !== null) {

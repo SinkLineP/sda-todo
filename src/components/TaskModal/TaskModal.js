@@ -31,7 +31,7 @@ export default function TaskModal({ show, onClose, project_id }) {
       }),
     description: yup.string()
       .min(10, "Описание задачи должно быть больше 10 символов")
-      .max(224, "Описание задачи должно быть меньше 224 символов")
+      .max(2000, "Описание задачи должно быть меньше 2000 символов")
       .required("Введите описание задачи"),
     priority: yup.string().required('Выберите приоритет задачи'),
     status: yup.string().required('Выберите статус задачи'),
