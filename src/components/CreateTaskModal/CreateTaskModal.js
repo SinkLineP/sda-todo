@@ -108,25 +108,16 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
         type={"submit"}
         onClick={() => {
           if (!isValid === false) {
-            console.log("isValid = false OK");
-
             if (showFormSubtask === true) {
-              console.log("Вкладка подзадачи открыта");
               if (customSubtasksValidate(values.titleSubtask, values.numberSubtask, values.descriptionSubtask, values.prioritySubtask, values.statusSubtask).length !== 0) {
-                console.log("Форма заполнена");
-
                 handleSubmit()
-              } else {
-                console.log("Форма не заполнена");
+                onClose()
+                setShowFormSubtask(false)
               }
             } else {
-              console.log("Вкладка подзадачи закрыта");
               if (values.title && values.numberTask && values.description && values.priority && values.status) {
-                console.log("поля задачи заполнены");
-
                 handleSubmit()
-              } else {
-                console.log("поля задачи не заполнены")
+                onClose()
               }
             }
           }
