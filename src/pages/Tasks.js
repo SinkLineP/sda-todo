@@ -56,8 +56,6 @@ export default function Tasks() {
       .filter(i => i.status === s.status && i.projectId === Number(project_id))
       .map((i, idx) => <Item key={i.id} item={i} index={idx} moveItem={moveItem} status={s}/>)
 
-    console.log(arrayItems);
-
     return arrayItems;
   }
 

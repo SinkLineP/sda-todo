@@ -3,7 +3,7 @@ import {StatusesColors} from "../../Variables";
 import "./ColorizeWrapText.css";
 
 
-export default function ColorizeWrapText({ text, label }) {
+export default function ColorizeWrapText({ text, label, type }) {
     const StatusColor = (status) => {
         if (status.toLowerCase() === "height") {
             return StatusesColors.Height
@@ -20,7 +20,12 @@ export default function ColorizeWrapText({ text, label }) {
 
     return (
         <div className={"wrap-container"}>
-            <h2>{label}</h2>
+            {type === "title" ? (
+              <h1>{label}</h1>
+            ) : (
+              <h3>{label}</h3>
+            )}
+
             <p style={{backgroundColor: StatusColor(text)}} className={"wrap-text"}>{text}</p>
         </div>
     )

@@ -39,12 +39,30 @@ export default function InfoTask({ show, onClose, item }) {
     return fileName.substring(0, maxShowSymbols);
   }
 
+  const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      transform: 'translate(-50%, -50%)',
+      width: "80%",
+      // height: "41rem"
+    }
+  };
+
+
   return (
-    <Modal isOpen={show} onRequestClose={onClose} overlayClassName={"overlay"}>
+    <Modal
+      isOpen={show}
+      onRequestClose={onClose}
+      overlayClassName={"overlay"}
+      style={customStyles}
+    >
       <div className={"container-info-task"}>
         <div className={"close-btn-ctn"}>
           <div className={"container-title"}>
-            <ColorizeWrapText text={item.status} label={`${item.title} #${item.numberTask}`} />
+            <ColorizeWrapText text={item.status} label={`${item.title} #${item.numberTask}`} type={"title"} />
 
             <p>Автор: {getAuthorProject(item.author, usersStore)}</p>
           </div>
@@ -53,39 +71,49 @@ export default function InfoTask({ show, onClose, item }) {
         </div>
         <div>
           <div className={"task-description"}>
-            <h2>Описание задачи:</h2>
+            <h3>Описание задачи:</h3>
             <p>{item.description}</p>
           </div>
 
 
-          <ColorizeWrapText text={item.priority} label={"Приоритет задачи: "} />
+          <ColorizeWrapText text={item.priority} label={"Приоритет задачи: "} type={"text"} />
 
-          <h2>Вложеные файлы:</h2>
-          <ScrollableWrap widthContainer={300}>
-            {item.files.map((file, index) => {
-              const filesArrayLength = item.files.length;
-              const currentIndex = index + 1;
+          {item.files !== null ? (
+            <>
+              <h3>Вложеные файлы: ({item.files.length})</h3>
+              <ScrollableWrap>
+                {item.files.map((file, index) => {
+                  const filesArrayLength = item.files.length;
+                  const currentIndex = index + 1;
 
-              return (
-                <div className={`container-file ${filesArrayLength !== currentIndex ? "space-between-elements" : ""}`}
-                     onClick={() => {
-                       handleDownloadClick(file)
-                     }}>
-                  <img className={"icon-file"} src={iconFile} alt={"icon file"}/>
-                  <img className={"icon-file download-icon"} src={iconDownload} alt={"icon download file"}/>
-                  <p
-                    className={"no-select-text file-title"}>{file.name.length > 10 ? `${showShortNameFile(file.name, 8)}` : file.name}</p>
-                </div>
-              )
-            })}
-          </ScrollableWrap>
+                  return (
+                    <div className={`container-file ${filesArrayLength !== currentIndex ? "space-between-elements" : ""}`}
+                         onClick={() => {
+                           handleDownloadClick(file)
+                         }}>
+                      <img className={"icon-file"} src={iconFile} alt={"icon file"}/>
+                      <img className={"icon-file download-icon"} src={iconDownload} alt={"icon download file"}/>
+                      <p
+                        className={"no-select-text file-title"}>{file.name.length > 10 ? `${showShortNameFile(file.name, 8)}` : file.name}</p>
+                    </div>
+                  )
+                })}
+              </ScrollableWrap>
+            </>
+          ) : (
+            <>
+              <h3>Вложеных файлов не найдено!</h3>
+            </>
+          )}
 
 
-          <h2>Подзадачи:</h2>
+
+
+          <h3>Подзадачи:</h3>
           <p>{item.subtasks.length === 0 ? ("Подзадач нету") : item.subtasks.map((subtask) => (subtask + ", "))}</p>
 
           <div>
-            <h2>Комментарии</h2>
+            <h3>Комментарии</h3>
             <textarea>
 
             </textarea>

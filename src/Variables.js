@@ -22,3 +22,5 @@ export const getAuthorProject = (project_user_id, usersStore) => {
     return "Пользователь не найден";
   }
 }
+
+export const CountSliceFilesTask = 40;

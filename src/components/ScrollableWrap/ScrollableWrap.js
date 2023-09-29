@@ -1,12 +1,11 @@
 import React from "react";
 import "./ScrollableWrap.css";
 
-export default function ScrollableWrap({ children, widthContainer }) {
+export default function ScrollableWrap({ children }) {
   return (
     <div style={{
       display: "flex",
       flexDirection: "row",
-      width: `${widthContainer}px`,
       overflow: "auto",
       padding: "10px"
     }}>
