@@ -96,6 +96,15 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
   const ButtonSubmit = ({isValid, values, handleSubmit}) => {
     return (
       <button
+        className={`btn ${!isValid === false
+          ? (showFormSubtask === true
+            ? (customSubtasksValidate(values.titleSubtask, values.numberSubtask, values.descriptionSubtask, values.prioritySubtask, values.statusSubtask).length !== 0
+              ? 'btn-success'
+              : 'btn-disabled')
+            : (values.title && values.numberTask && values.description && values.priority && values.status
+              ? 'btn-success'
+              : 'btn-disabled'))
+          : 'btn-disabled'}`}
         type={"submit"}
         onClick={() => {
           if (!isValid === false) {
@@ -126,31 +135,6 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
         Создать задачу
       </button>
     )
-
-
-
-
-    // <button
-    //   onClick={() => {
-    //     console.log(isValid && customSubtasksValidate(values.titleSubtask, values.numberSubtask, values.descriptionSubtask, values.prioritySubtask, values.statusSubtask).length !== 0 && showFormSubtask === true)
-    //     if (isValid && customSubtasksValidate(values.titleSubtask, values.numberSubtask, values.descriptionSubtask, values.prioritySubtask, values.statusSubtask).length !== 0 && showFormSubtask === true) {
-    //       console.log("Subtasks [full]")
-    //
-    //       setShowFormSubtask(false);
-    //       handleSubmit();
-    //     } else {
-    //       console.log("Subtasks [empty]")
-    //       setShowFormSubtask(false);
-    //       handleSubmit();
-    //     }
-    //
-    //   }}
-    //   className={`btn ${!isValid && !customSubtasksValidate(values.titleSubtask, values.numberSubtask, values.descriptionSubtask, values.prioritySubtask, values.statusSubtask).length !== 0 && showFormSubtask === true ? "btn-disabled" : "btn-success"}`}
-    //   disabled={isValid && customSubtasksValidate(values.titleSubtask, values.numberSubtask, values.descriptionSubtask, values.prioritySubtask, values.statusSubtask).length !== 0 && showFormSubtask === true}
-    //   type="submit"
-    // >
-    //   Создать задачу
-    // </button>
   }
 
   return (
