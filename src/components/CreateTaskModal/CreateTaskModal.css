@@ -6,7 +6,13 @@
 
 .task-input {
     border: 1px solid lightgrey;
-    width: 99.5%;
+    width: 98.5%;
+    height: 2.1rem;
+    padding-left: 10px;
+}
+
+.subtask-input {
+    border: 1px solid lightgrey;
     height: 2.1rem;
     padding-left: 10px;
 }
@@ -46,5 +52,28 @@
 }
 
 .title-drop-file {
+    font-weight: bold;
+}
+
+.btn-subtask {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 6px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.add-subtask {
+    background-color: #27aa80;
+    color: white;
+}
+
+.remove-subtask {
+    background-color: #f36464;
+    color: white;
+}
+
+.title-subtask {
     font-weight: bold;
 }

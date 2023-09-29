@@ -7,9 +7,17 @@ import {addTask} from "../../store/Reducers/taskReducer";
 import "./CreateTaskModal.css";
 import DragAndDropUploadFile from "../DragAndDropUploadFile/DragAndDropUploadFile";
 import {CountSliceFilesTask} from "../../Variables";
+import {NavLink} from "react-router-dom";
+import IsAuth from "../../hooks/IsAuth";
+import {mergedSchema, validationSchemaTasks} from "./Schemas";
 
 
 export default function CreateTaskModal({ show, onClose, project_id }) {
+  const currentUser = useSelector(state => state.auth.currentUser);
+  const [errorFile, setErrorFile] = useState("");
+  const [showFormSubtask, setShowFormSubtask] = useState(false);
+  const dispatch = useDispatch();
+
   const customStyles = {
     content: {
       top: '50%',
@@ -21,28 +29,8 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
     }
   };
 
-  const validationSchema = yup.object().shape({
-    title: yup.string()
-      .min(5, "Заголовок должен быть больше 5 символов!")
-      .max(24, "Заголовок должен быть меньше 24 символов!")
-      .required("Введите заголовок"),
-    numberTask: yup
-      .number()
-      .typeError("Номер задачи должен быть числом")
-      .required('Введите номер задачи')
-      .test('is-number', 'Номер задачи должен быть числом', (value) => {
-        if (!value) return true;
-        return !isNaN(value);
-      }),
-    description: yup.string()
-      .min(10, "Описание задачи должно быть больше 10 символов")
-      .max(2000, "Описание задачи должно быть меньше 2000 символов")
-      .required("Введите описание задачи"),
-    priority: yup.string().required('Выберите приоритет задачи'),
-    status: yup.string().required('Выберите статус задачи'),
-  });
 
-  const dispatch = useDispatch();
+
   const iconWithStatus = (status) => {
     if (status.toLowerCase() === "queue") {
       return "⭕️";
@@ -63,22 +51,15 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
     return `${day}\\${month}\\${year}`;
   }
 
-  const currentUser = useSelector(state => state.auth.currentUser);
-  const [drag, setDrag] = useState(false);
-
   const dragStartHandler = (e) => {
     e.preventDefault();
-    setDrag(true);
     console.log("drag start handler");
   }
 
   const dragLeaveHandler = (e) => {
     e.preventDefault();
-    setDrag(false);
     console.log("drag leave handler");
   }
-
-  const [errorFile, setErrorFile] = useState("");
 
   const SliceSelectedFiles = (files, setFieldValue, clear) => {
     if (files.length <= CountSliceFilesTask) {
@@ -95,11 +76,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
     let files = [...e.dataTransfer.files]
 
     SliceSelectedFiles(files, setFieldValue, e.dataTransfer.files);
-
-    setDrag(false);
   };
-
-
 
 
   return (
@@ -142,7 +119,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
               }));
               onClose();
             }}
-            validationSchema={validationSchema}
+            validationSchema={showFormSubtask === true ? mergedSchema : validationSchemaTasks}
           >
             {({ values, errors, touched, handleChange, handleBlur, isValid, handleSubmit, dirty, setFieldValue }) => {
               return (
@@ -183,6 +160,92 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                       <option value="development">Development</option>
                       <option value="done">Done</option>
                     </Field>
+                  </div>
+
+                  {/* subtask */}
+                  <div className={"container-label-field"}>
+                    <div style={{
+                      paddingBottom: "4rem"
+                    }}>
+                      <div style={{ float: "left" }}>
+                        <p className={"title-subtask"}>Подзадачи: <ErrorMessage className={"errors"} name="status" component="span" /></p>
+                      </div>
+                      <div style={{ float: "right" }}>
+                        <p className={`btn-subtask ${showFormSubtask ? "remove-subtask" : "add-subtask"}`} onClick={() => setShowFormSubtask(!showFormSubtask)}>{ showFormSubtask ? "Удалить подзадачи" : "Добавить подзадачи" }</p>
+                      </div>
+                    </div>
+
+                    {showFormSubtask === true ? (
+                      <table style={{
+                        borderCollapse: "collapse",
+                        width: "100%",
+                        borderRadius: "0.3rem",
+                        overflow: "hidden",
+                        border: "solid",
+                        borderColor: "black",
+                        borderWidth: "1px"
+                      }}>
+                        <thead>
+                        <tr style={{
+                          backgroundColor: "#054F7C",
+                          color: "white",
+                        }}>
+                          <th>Заголовок подзадачи</th>
+                          <th>Номер подзадачи</th>
+                          <th>Описание подзадачи</th>
+                          <th>Приоритет подзадачи</th>
+                          <th>Статус подзадачи</th>
+                          <th>V</th>
+                          <th>X</th>
+                        </tr>
+                        </thead>
+                        <tbody style={{
+                          backgroundColor: "#fff0dc",
+                        }}>
+                        <tr>
+                          <td>
+                            <div>
+                              <ErrorMessage className={"errors"} name="titleSubtask" component="span" />
+                              <Field className={"subtask-input"} type="text" id="titleSubtask" name="titleSubtask" />
+                            </div>
+                          </td>
+                          <td>
+                            <div>
+                              <ErrorMessage className={"errors"} name="numberSubtask" component="span" />
+                              <Field className={"subtask-input"} type="text" id="numberSubtask" name="numberSubtask" />
+                            </div>
+                          </td>
+                          <td>
+                            <div>
+                              <ErrorMessage className={"errors"} name="descriptionSubtask" component="span" />
+                              <Field className={"subtask-input"} type="text" id="descriptionSubtask" name="descriptionSubtask" />
+                            </div>
+                          </td>
+                          <td>
+                            <div>
+                              <ErrorMessage className={"errors"} name="prioritySubtask" component="span" />
+                              <Field className={"subtask-input"} type="text" id="prioritySubtask" name="prioritySubtask" />
+                            </div>
+                          </td>
+                          <td>
+                            <div>
+                              <ErrorMessage className={"errors"} name="statusSubtask" component="span" />
+                              <Field className={"subtask-input"} type="text" id="statusSubtask" name="statusSubtask" />
+                            </div>
+                          </td>
+                          <td>
+                            <button>V</button>
+                          </td>
+                          <td>
+                            <button>X</button>
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    ) : (
+                      ""
+                    )}
+
                   </div>
 
                   {/* file */}
