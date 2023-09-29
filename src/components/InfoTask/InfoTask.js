@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import Modal from "react-modal";
 import {getAuthorProject} from "../../Variables";
 import {useSelector} from "react-redux";
@@ -6,6 +6,7 @@ import ColorizeWrapText from "../ColorizeWrapText/ColorizeWrapText";
 import "./InfoTask.css";
 import iconFile from "./icons/file.png";
 import iconDownload from "./icons/download.png";
+import ScrollableWrap from "../ScrollableWrap/ScrollableWrap";
 
 
 Modal.setAppElement("#root");
@@ -26,6 +27,17 @@ export default function InfoTask({ show, onClose, item }) {
       alert('Выберите файл для скачивания.');
     }
   };
+
+  const showShortNameFile = (fileName, maxShowSymbols) => {
+    const lastIndex = fileName.lastIndexOf(".");
+
+    if (lastIndex !== -1) {
+      const fileExtension = fileName.substring(lastIndex, fileName.length);
+      return `${fileName.substring(0, maxShowSymbols)}...${fileExtension}`;
+    }
+
+    return fileName.substring(0, maxShowSymbols);
+  }
 
   return (
     <Modal isOpen={show} onRequestClose={onClose} overlayClassName={"overlay"}>
@@ -49,17 +61,24 @@ export default function InfoTask({ show, onClose, item }) {
           <ColorizeWrapText text={item.priority} label={"Приоритет задачи: "} />
 
           <h2>Вложеные файлы:</h2>
-          <div className={"file-list"}>
-            {item.files.map((file) => (
-              <div className={"container-file"} onClick={() => {
-                handleDownloadClick(file)
-              }}>
-                <img className={"icon-file"} src={iconFile} alt={"icon file"} />
-                <img className={"icon-file download-icon"} src={iconDownload} alt={"icon download file"} />
-                <p className={"no-select-text file-title"}>{file.name.length > 10 ? `${file.name.substring(0, 7)}...` : file.name}</p>
-              </div>
-            ))}
-          </div>
+          <ScrollableWrap widthContainer={300}>
+            {item.files.map((file, index) => {
+              const filesArrayLength = item.files.length;
+              const currentIndex = index + 1;
+
+              return (
+                <div className={`container-file ${filesArrayLength !== currentIndex ? "space-between-elements" : ""}`}
+                     onClick={() => {
+                       handleDownloadClick(file)
+                     }}>
+                  <img className={"icon-file"} src={iconFile} alt={"icon file"}/>
+                  <img className={"icon-file download-icon"} src={iconDownload} alt={"icon download file"}/>
+                  <p
+                    className={"no-select-text file-title"}>{file.name.length > 10 ? `${showShortNameFile(file.name, 8)}` : file.name}</p>
+                </div>
+              )
+            })}
+          </ScrollableWrap>
 
 
           <h2>Подзадачи:</h2>

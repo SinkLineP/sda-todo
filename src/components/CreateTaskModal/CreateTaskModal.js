@@ -5,7 +5,7 @@ import * as yup from "yup";
 import {useDispatch, useSelector} from "react-redux";
 import {addTask} from "../../store/Reducers/taskReducer";
 
-export default function TaskModal({ show, onClose, project_id }) {
+export default function CreateTaskModal({ show, onClose, project_id }) {
   const customStyles = {
     content: {
       top: '50%',
@@ -124,11 +124,16 @@ export default function TaskModal({ show, onClose, project_id }) {
                     type="file"
                     id="file"
                     name="file"
-                    multiple  // Add the multiple attribute
+                    multiple
                     onChange={(event) => {
-                      // event.currentTarget.files is now an array of selected files
                       const selectedFiles = Array.from(event.currentTarget.files);
-                      setFieldValue("file", selectedFiles);
+
+                      if (selectedFiles.length <= 20) {
+                        setFieldValue("file", selectedFiles);
+                      } else {
+                        alert("Вы можете выбрать не более 20 файлов.");
+                        event.currentTarget.value = null;
+                      }
                     }}
                   />
                   <ErrorMessage name="file" component="div" />

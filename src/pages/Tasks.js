@@ -5,7 +5,7 @@ import Col from "../components/Col/Col";
 import {useSelector} from "react-redux";
 import {NavLink, useParams} from "react-router-dom";
 import IsAuth from "../hooks/IsAuth";
-import TaskModal from "../components/TaskModal/TaskModal";
+import CreateTaskModal from "../components/CreateTaskModal/CreateTaskModal";
 
 
 export default function Tasks() {
@@ -110,7 +110,7 @@ export default function Tasks() {
         })}
       </div>
 
-      <TaskModal
+      <CreateTaskModal
         onClose={onClose}
         show={show}
         project_id={project_id}
