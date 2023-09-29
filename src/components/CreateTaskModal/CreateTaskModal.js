@@ -80,9 +80,9 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
 
   const [errorFile, setErrorFile] = useState("");
 
-  const SliceSelectedFiles = (files, setValue, clear) => {
+  const SliceSelectedFiles = (files, setFieldValue, clear) => {
     if (files.length <= CountSliceFilesTask) {
-      setValue("file", files);
+      setFieldValue("file", files);
     } else {
       setErrorFile(`Вы можете выбрать не более ${CountSliceFilesTask} файлов.`);
       setTimeout(() => setErrorFile(""), 1500);
@@ -199,8 +199,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
 
                       <div>
                         <label htmlFor="file" className="custom-file-input">Выбрать файл</label>
-
-                        <Field
+                        <input
                           type="file"
                           id="file"
                           name="file"
