@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import "./CascadeComments.css";
 import Action from "../Action/Action";
 
@@ -8,7 +8,11 @@ export default function CascadeComments({ comment, handleDeleteNode, handleEditN
   const [editMode, setEditMode] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [expand, setExpand] = useState(comment.id === 1);
+  const inputRef = useRef(null);
 
+  useEffect(() => {
+    inputRef?.current?.focus();
+  }, [editMode]);
 
   const handleNewComment = () => {
     setExpand(!expand); // Обновляем состояние expand сначала
@@ -17,10 +21,18 @@ export default function CascadeComments({ comment, handleDeleteNode, handleEditN
     }
   }
   const onAddComment = () => {
-    setExpand(true);
-    handleInsertNode(comment.id, input);
-    setInput("")
-    setShowInput(false);
+    if (editMode) {
+      handleEditNode(comment.id, inputRef?.current?.innerText);
+    } else {
+      setExpand(true);
+      handleInsertNode(comment.id, input);
+      setInput("")
+      setShowInput(false);
+    }
+
+    if (editMode) {
+      setEditMode(false)
+    }
   };
 
   return (
@@ -45,7 +57,14 @@ export default function CascadeComments({ comment, handleDeleteNode, handleEditN
             </>
           ) : (
             <>
-              <span style={{ wordWrap: "break-word" }}>{comment.name}</span>
+              <span
+                contentEditable={editMode}
+                suppressContentEditableWarning={editMode}
+                style={{ wordWrap: "break-word" }}
+                ref={inputRef}
+              >
+                {comment.name}
+              </span>
 
               <div style={{
                 display: 'flex',
@@ -54,11 +73,19 @@ export default function CascadeComments({ comment, handleDeleteNode, handleEditN
                 {
                   editMode ? (
                     <>
-                      <Action className={"reply no-select-text"} type={"Сохранить"} />
+                      <Action
+                        className={"reply no-select-text"}
+                        type={"Сохранить"}
+                        handleClick={onAddComment}
+                      />
                       <Action
                         className={"reply no-select-text"}
                         type={"Отменить"}
                         handleClick={() => {
+                          if (inputRef.current) {
+                            inputRef.current.innerText = comment.name;
+                          }
+
                           setEditMode(false)
                         }}
                       />

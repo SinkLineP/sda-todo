@@ -64,7 +64,7 @@ export default function InfoTask({ show, onClose, item }) {
 
   const handleEditNode = (folderId, value) => {
     const finalStructure = editNode(commentsStore, folderId, value);
-    console.log(finalStructure);
+    dispatch(addComment(finalStructure));
   };
 
   const handleDeleteNode = (folderId) => {
