@@ -7,7 +7,6 @@ import "./InfoTask.css";
 import iconFile from "./icons/file.png";
 import iconDownload from "./icons/download.png";
 import ScrollableWrap from "../ScrollableWrap/ScrollableWrap";
-import {Field} from "formik";
 
 
 Modal.setAppElement("#root");
@@ -48,6 +47,7 @@ export default function InfoTask({ show, onClose, item }) {
       bottom: 'auto',
       transform: 'translate(-50%, -50%)',
       width: "80%",
+      height: "90%"
     }
   };
 

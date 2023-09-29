@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-export const validationSchemaTasks = yup.object().shape({
+export const mergedSchema = yup.object().shape({
   title: yup.string()
     .min(5, "Заголовок должен быть больше 5 символов!")
     .max(24, "Заголовок должен быть меньше 24 символов!")
@@ -19,27 +19,19 @@ export const validationSchemaTasks = yup.object().shape({
     .required("Введите описание задачи"),
   priority: yup.string().required('Выберите приоритет задачи'),
   status: yup.string().required('Выберите статус задачи'),
-});
-
-export const validationSchemaSubtasks = yup.object().shape({
-  titleSubtask: yup.string()
-    .min(5, "Заголовок должен быть больше 5 символов!")
-    .max(24, "Заголовок должен быть меньше 24 символов!")
-    .required("Введите заголовок"),
-  numberSubtask: yup
-    .number()
-    .typeError("Должно быть число")
-    .required('Введите номер задачи')
-    .test('is-number', 'Номер подзадачи должен быть числом', (value) => {
-      if (!value) return true;
-      return !isNaN(value);
-    }),
-  descriptionSubtask: yup.string().required("*"),
-  prioritySubtask: yup.string().required("*"),
-  statusSubtask: yup.string().required("*"),
-});
-
-export const mergedSchema = yup.object().shape({
-  ...validationSchemaTasks.fields,
-  ...validationSchemaSubtasks.fields,
+  // titleSubtask: yup.string()
+  //   .min(5, "Заголовок должен быть больше 5 символов!")
+  //   .max(24, "Заголовок должен быть меньше 24 символов!")
+  //   .required("Введите заголовок"),
+  // numberSubtask: yup
+  //   .number()
+  //   .typeError("Должно быть число")
+  //   .required('Введите номер задачи')
+  //   .test('is-number', 'Номер подзадачи должен быть числом', (value) => {
+  //     if (!value) return true;
+  //     return !isNaN(value);
+  //   }),
+  // descriptionSubtask: yup.string().required("*"),
+  // prioritySubtask: yup.string().required("*"),
+  // statusSubtask: yup.string().required("*"),
 });

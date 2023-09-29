@@ -5,8 +5,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {addTask} from "../../store/Reducers/taskReducer";
 import "./CreateTaskModal.css";
 import {CountSliceFilesTask} from "../../Variables";
-import {mergedSchema, validationSchemaTasks} from "./Schemas";
-import {combinedInitialValues, initialValuesTasks} from "./InitilalValues";
+import {mergedSchema} from "./Schemas";
+import {combinedInitialValues} from "./InitilalValues";
 
 
 export default function CreateTaskModal({ show, onClose, project_id }) {
@@ -14,7 +14,6 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
   const [errorFile, setErrorFile] = useState("");
   const [showFormSubtask, setShowFormSubtask] = useState(false);
   const dispatch = useDispatch();
-  // const [showWarningSubtask, setShowWarningSubtask] = useState(false);
 
   const customStyles = {
     content: {
@@ -76,12 +75,89 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
     SliceSelectedFiles(files, setFieldValue, e.dataTransfer.files);
   };
 
+  const customSubtasksValidate = (titleSubtask, numberSubtask, descriptionSubtask, prioritySubtask, statusSubtask) => {
+    if (titleSubtask && numberSubtask && descriptionSubtask && prioritySubtask && statusSubtask) {
+      const obj = {
+        titleSubtask:titleSubtask,
+        numberSubtask:numberSubtask,
+        descriptionSubtask:descriptionSubtask,
+        prioritySubtask: prioritySubtask,
+        statusSubtask: statusSubtask
+      };
 
+      const array = [];
+      array.push(obj);
+      return array;
+    } else {
+      return [];
+    }
+  }
+
+  const ButtonSubmit = ({isValid, values, handleSubmit}) => {
+    return (
+      <button
+        type={"submit"}
+        onClick={() => {
+          if (!isValid === false) {
+            console.log("isValid = false OK");
+
+            if (showFormSubtask === true) {
+              console.log("Вкладка подзадачи открыта");
+              if (customSubtasksValidate(values.titleSubtask, values.numberSubtask, values.descriptionSubtask, values.prioritySubtask, values.statusSubtask).length !== 0) {
+                console.log("Форма заполнена");
+
+                handleSubmit()
+              } else {
+                console.log("Форма не заполнена");
+              }
+            } else {
+              console.log("Вкладка подзадачи закрыта");
+              if (values.title && values.numberTask && values.description && values.priority && values.status) {
+                console.log("поля задачи заполнены");
+
+                handleSubmit()
+              } else {
+                console.log("поля задачи не заполнены")
+              }
+            }
+          }
+        }}
+      >
+        Создать задачу
+      </button>
+    )
+
+
+
+
+    // <button
+    //   onClick={() => {
+    //     console.log(isValid && customSubtasksValidate(values.titleSubtask, values.numberSubtask, values.descriptionSubtask, values.prioritySubtask, values.statusSubtask).length !== 0 && showFormSubtask === true)
+    //     if (isValid && customSubtasksValidate(values.titleSubtask, values.numberSubtask, values.descriptionSubtask, values.prioritySubtask, values.statusSubtask).length !== 0 && showFormSubtask === true) {
+    //       console.log("Subtasks [full]")
+    //
+    //       setShowFormSubtask(false);
+    //       handleSubmit();
+    //     } else {
+    //       console.log("Subtasks [empty]")
+    //       setShowFormSubtask(false);
+    //       handleSubmit();
+    //     }
+    //
+    //   }}
+    //   className={`btn ${!isValid && !customSubtasksValidate(values.titleSubtask, values.numberSubtask, values.descriptionSubtask, values.prioritySubtask, values.statusSubtask).length !== 0 && showFormSubtask === true ? "btn-disabled" : "btn-success"}`}
+    //   disabled={isValid && customSubtasksValidate(values.titleSubtask, values.numberSubtask, values.descriptionSubtask, values.prioritySubtask, values.statusSubtask).length !== 0 && showFormSubtask === true}
+    //   type="submit"
+    // >
+    //   Создать задачу
+    // </button>
+  }
 
   return (
     <Modal
       isOpen={show}
       onRequestClose={() => {
+        setShowFormSubtask(false);
         onClose();
       }}
       overlayClassName={"overlay"}
@@ -90,7 +166,8 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
       <div className={"container-create-task"}>
         <h1 className={"title-create-task"}>Создание задачи</h1>
           <Formik
-            initialValues={showFormSubtask === true ? combinedInitialValues : initialValuesTasks}
+            initialValues={combinedInitialValues}
+            validateOnMount
             validateOnBlur
             onSubmit={({ title, file, numberTask, description, priority, status, titleSubtask, numberSubtask, descriptionSubtask, prioritySubtask, statusSubtask  }) => {
               dispatch(addTask({
@@ -104,46 +181,90 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                 priority: priority,
                 files: file,
                 status: status,
-                subtasks: [{
-                  titleSubtask:titleSubtask,
-                  numberSubtask:numberSubtask,
-                  descriptionSubtask:descriptionSubtask,
-                  prioritySubtask: prioritySubtask,
-                  statusSubtask: statusSubtask
-                }],
+                subtasks: customSubtasksValidate(titleSubtask, numberSubtask, descriptionSubtask, prioritySubtask, statusSubtask),
                 comments: [],
                 icon: iconWithStatus(status),
                 author: Number(currentUser.id),
               }));
-              onClose();
             }}
-            validationSchema={showFormSubtask === true ? mergedSchema : validationSchemaTasks}
+            validationSchema={mergedSchema}
           >
-            {({ values, errors, touched, handleChange, handleBlur, isValid, handleSubmit, dirty, setFieldValue }) => {
+            {({ values,validateForm, resetForm, errors, touched, handleChange, handleBlur, isValid, handleSubmit, dirty, setFieldValue }) => {
               return (
-                <form onSubmit={handleSubmit}>
+                <>
                   {/* title */}
                   <div className={"container-label-field"}>
                     <label htmlFor="title">Введите заголовок задачи: <ErrorMessage className={"errors"} name="title" component="span" /></label>
-                    <Field className={"task-input"} type="text" id="title" name="title" />
+                    <Field
+                      className={"task-input"}
+                      type="text"
+                      id="title"
+                      name="title"
+                      onChange={(e) => {
+                        handleChange(e);
+                        validateForm();  // Включите валидацию после изменения значения
+                      }}
+                      onBlur={(e) => {
+                        handleBlur(e);
+                        validateForm();  // Включите валидацию после потери фокуса
+                      }}
+                    />
                   </div>
 
                   {/* numberTask */}
                   <div className={"container-label-field"}>
                     <label htmlFor="numberTask">Введите номер задачи: <ErrorMessage className={"errors"} name="numberTask" component="span" /></label>
-                    <Field className={"task-input"} type="text" id="numberTask" name="numberTask" />
+                    <Field
+                      className={"task-input"}
+                      type="text"
+                      id="numberTask"
+                      name="numberTask"
+                      onChange={(e) => {
+                        handleChange(e);
+                        validateForm();  // Включите валидацию после изменения значения
+                      }}
+                      onBlur={(e) => {
+                        handleBlur(e);
+                        validateForm();  // Включите валидацию после потери фокуса
+                      }}
+                    />
                   </div>
 
                   {/* description */}
                   <div className={"container-label-field"}>
                     <label htmlFor="description">Введите описание задачи: <ErrorMessage className={"errors"} name="description" component="span" /></label>
-                    <Field className={"task-input"} type="text" id="description" name="description" />
+                    <Field
+                      className={"task-input"}
+                      type="text"
+                      id="description"
+                      name="description"
+                      onChange={(e) => {
+                        handleChange(e);
+                        validateForm();  // Включите валидацию после изменения значения
+                      }}
+                      onBlur={(e) => {
+                        handleBlur(e);
+                        validateForm();  // Включите валидацию после потери фокуса
+                      }}
+                    />
                   </div>
 
                   {/* priority */}
                   <div className={"container-label-field"}>
                     <label htmlFor="priority">Выберите приоритет задачи: <ErrorMessage className={"errors"} name="priority" component="span" /></label>
-                    <Field className={"task-select"} as="select" name="priority">
+                    <Field
+                      className={"task-select"}
+                      as="select"
+                      name="priority"
+                      onChange={(e) => {
+                        handleChange(e);
+                        validateForm();  // Включите валидацию после изменения значения
+                      }}
+                      onBlur={(e) => {
+                        handleBlur(e);
+                        validateForm();  // Включите валидацию после потери фокуса
+                      }}
+                    >
                       <option value="low">Низкий</option>
                       <option value="medium">Средний</option>
                       <option value="height">Высокий</option>
@@ -153,7 +274,19 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                   {/* status */}
                   <div className={"container-label-field"}>
                     <label htmlFor="status">Выберите статус задачи: <ErrorMessage className={"errors"} name="status" component="span" /></label>
-                    <Field className={"task-select"} as="select" name="status">
+                    <Field
+                      className={"task-select"}
+                      as="select"
+                      name="status"
+                      onChange={(e) => {
+                        handleChange(e);
+                        validateForm();  // Включите валидацию после изменения значения
+                      }}
+                      onBlur={(e) => {
+                        handleBlur(e);
+                        validateForm();  // Включите валидацию после потери фокуса
+                      }}
+                    >
                       <option value="queue">Queue</option>
                       <option value="development">Development</option>
                       <option value="done">Done</option>
@@ -169,23 +302,19 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                         <p className={"title-subtask"}>Подзадачи: <ErrorMessage className={"errors"} name="status" component="span" /></p>
                       </div>
                       <div style={{ float: "right" }}>
-                        <p className={`btn-subtask ${showFormSubtask ? "remove-subtask" : "add-subtask"}`} onClick={() => setShowFormSubtask(!showFormSubtask)}>{ showFormSubtask ? "Удалить подзадачи" : "Добавить подзадачи" }</p>
+                        {
+                          !showFormSubtask ? (
+                            <p className={`btn-subtask add-subtask`} onClick={() => setShowFormSubtask(!showFormSubtask)}>Добавить подзадачи</p>
+                          ) : (
+                            <p className={`btn-subtask remove-subtask`} onClick={() => {
+                              setShowFormSubtask(!showFormSubtask)
+                              resetForm()
+                            }}>Удалить подзадачи</p>
+                          )
+                        }
+
                       </div>
                     </div>
-
-                    {/*{showWarningSubtask ? (*/}
-                    {/*  <div className={"warning no-select-text"}>*/}
-                    {/*    <div>*/}
-                    {/*      <p className={"hide no-select-text"} onClick={() => setShowWarningSubtask(false)}>Скрыть подсказку</p>*/}
-                    {/*    </div>*/}
-
-                    {/*    <div>*/}
-                    {/*      <p>Заголовок подзадачи - от 5 до 24 символов</p>*/}
-                    {/*      <p>Номер подзадачи - только числа</p>*/}
-                    {/*      <p>Описание подзадачи - от 10 до 2000 символов</p>*/}
-                    {/*    </div>*/}
-                    {/*  </div>*/}
-                    {/*) : ("")}*/}
 
                     {showFormSubtask === true ? (
                       <table style={{
@@ -214,23 +343,86 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                         }}>
                         <tr>
                           <td>
-                            <Field className={"subtask-input"} type="text" id={"titleSubtask"} name={"titleSubtask"} />
+                            <Field
+                              className={"subtask-input"}
+                              type="text"
+                              id={"titleSubtask"}
+                              name={"titleSubtask"}
+                              onChange={(e) => {
+                                handleChange(e);
+                                validateForm();  // Включите валидацию после изменения значения
+                              }}
+                              onBlur={(e) => {
+                                handleBlur(e);
+                                validateForm();  // Включите валидацию после потери фокуса
+                              }}
+                            />
                           </td>
                           <td>
-                            <Field className={"subtask-input"} type="text" id={"numberSubtask"} name={"numberSubtask"} />
+                            <Field
+                              className={"subtask-input"}
+                              type="text"
+                              id={"numberSubtask"}
+                              name={"numberSubtask"}
+                              onChange={(e) => {
+                                handleChange(e);
+                                validateForm();  // Включите валидацию после изменения значения
+                              }}
+                              onBlur={(e) => {
+                                handleBlur(e);
+                                validateForm();  // Включите валидацию после потери фокуса
+                              }}
+                            />
                           </td>
                           <td>
-                            <Field className={"subtask-input"} type="text" id={"descriptionSubtask"} name={"descriptionSubtask"} />
+                            <Field
+                              className={"subtask-input"}
+                              type="text"
+                              id={"descriptionSubtask"}
+                              name={"descriptionSubtask"}
+                              onChange={(e) => {
+                                handleChange(e);
+                                validateForm();  // Включите валидацию после изменения значения
+                              }}
+                              onBlur={(e) => {
+                                handleBlur(e);
+                                validateForm();  // Включите валидацию после потери фокуса
+                              }}
+                            />
                           </td>
                           <td>
-                            <Field className={"subtask-select"} as="select" name="prioritySubtask">
+                            <Field
+                              className={"subtask-select"}
+                              as="select"
+                              name="prioritySubtask"
+                              onChange={(e) => {
+                                handleChange(e);
+                                validateForm();  // Включите валидацию после изменения значения
+                              }}
+                              onBlur={(e) => {
+                                handleBlur(e);
+                                validateForm();  // Включите валидацию после потери фокуса
+                              }}
+                            >
                               <option value="lows">Низкий</option>
                               <option value="mediums">Средний</option>
                               <option value="heights">Высокий</option>
                             </Field>
                           </td>
                           <td>
-                            <Field className={"subtask-select"} as="select" name="statusSubtask">
+                            <Field
+                              className={"subtask-select"}
+                              as="select"
+                              name="statusSubtask"
+                              onChange={(e) => {
+                                handleChange(e);
+                                validateForm();  // Включите валидацию после изменения значения
+                              }}
+                              onBlur={(e) => {
+                                handleBlur(e);
+                                validateForm();  // Включите валидацию после потери фокуса
+                              }}
+                            >
                               <option value="queues">Queue</option>
                               <option value="developments">Development</option>
                               <option value="dones">Done</option>
@@ -275,12 +467,9 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                     </div>
                   </div>
 
-                  <button
-                    className={`btn ${!isValid || !dirty ? ("btn-disabled") : ("btn-success")}`}
-                    disabled={!isValid || !dirty}
-                    type="submit"
-                  >Создать задачу</button>
-                </form>
+
+                  <ButtonSubmit isValid={isValid} values={values} handleSubmit={handleSubmit} />
+                </>
               );
             }}
           </Formik>
