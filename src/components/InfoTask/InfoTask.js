@@ -50,7 +50,8 @@ export default function InfoTask({ show, onClose, item }) {
       bottom: 'auto',
       transform: 'translate(-50%, -50%)',
       width: "80%",
-      height: "90%"
+      maxHeight: "90vh",
+      overflowY: "auto",
     }
   };
 
