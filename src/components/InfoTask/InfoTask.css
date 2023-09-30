@@ -63,15 +63,98 @@
     font-style: italic;
 }
 
-
-
-
-
-
-
 .container-all-comments {
     height: auto;
     border: 1px solid black;
     padding: 10px;
     margin-top: 4rem;
+}
+
+.container-title-remove-task {
+    float: left;
+    border-right: 3px solid #a90000;
+    padding-right: 15%;
+    padding-top: 0.05rem;
+}
+
+.container-icon-remove-task {
+    float: right;
+}
+
+.container-icon-apply-remove-task {
+    float: right;
+}
+
+.btn-remove {
+    width: 9rem;
+    height: 2.5rem;
+    border: none;
+    border-radius: 0.2rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-family: "Calibri", serif;
+    font-size: 100%;
+    text-align: left;
+    padding-left: 10%;
+    padding-right: 10%;
+    align-items: center;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.remove-task {
+    color: white;
+    background-color: #d00000;
+}
+
+.remove-task-clicked {
+    color: white;
+    background-color: #70a138;
+}
+
+.icon-remove-task {
+    width: 1.1rem;
+    height: auto;
+    padding-top: 0.1rem;
+}
+
+.icon-apply-remove-task {
+    width: 1.1rem;
+    height: auto;
+    padding-top: 0.1rem;
+    /*margin-right: 1rem;*/
+}
+
+/* slide-out-left-title */
+
+.slide-out-left-title {
+    animation-name: slide-out-left-title-anim;
+    animation-duration: 0.7s;
+    animation-fill-mode: forwards;
+}
+
+/* slide-out-left-icon */
+
+.slide-out-left-icon {
+    animation-name: slide-out-left-icon-anim;
+    animation-duration: 0.7s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes slide-out-left-title-anim {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-120%);
+    }
+}
+
+@keyframes slide-out-left-icon-anim {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-250%);
+    }
 }

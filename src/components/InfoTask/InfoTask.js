@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import Modal from "react-modal";
 import {convertTypeObjectToFile, formatFileSize, getAuthorProject} from "../../Variables";
 import {useDispatch, useSelector} from "react-redux";
@@ -9,6 +9,9 @@ import iconDownload from "./icons/download.png";
 import ScrollableWrap from "../ScrollableWrap/ScrollableWrap";
 import {removeTask} from "../../store/Reducers/taskReducer";
 import IsAuth from "../../hooks/IsAuth";
+import {ReactComponent as IconDeleteCrossSVG} from "./icons/delete-cross.svg";
+import {ReactComponent as IconApplyDeleteSVG} from "./icons/apply-delete.svg";
+
 
 Modal.setAppElement("#root");
 
@@ -55,6 +58,9 @@ export default function InfoTask({ show, onClose, item }) {
     }
   };
 
+  const [isHovered, setIsHovered] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
+
   return (
     <Modal
       isOpen={show}
@@ -75,18 +81,36 @@ export default function InfoTask({ show, onClose, item }) {
             flexDirection: "column"
           }}>
             {IsAuth() && currentUser.id === item.author ? (
-              <button style={{
-                backgroundColor: "red",
-                border: "none",
-                padding: "1rem",
-                borderRadius: "1rem",
-                color: "white",
-                fontWeight: "bold",
-                textTransform: "uppercase",
-                cursor: "pointer"
-              }} onClick={() => {
-                dispatch(removeTask(item.id));
-              }}>удалить задачу</button>
+              <button
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => {
+                  setIsHovered(false)
+                  setIsClicked(false)
+                }}
+                className={isClicked ? `btn-remove remove-task-clicked` : `btn-remove remove-task no-select-text ${isHovered ? "hovered" : ""}`}
+                onClick={() => {
+                  setIsClicked(true);
+                  setTimeout(() => {
+                    dispatch(removeTask(item.id));
+                    setIsClicked(false);
+                  }, 500);
+                }}
+              >
+                <div className={`container-title-remove-task ${isHovered ? "slide-out-left-title" : ""}`}>
+                  <span>Удалить</span>
+                </div>
+                {
+                  isClicked ? (
+                    <div className={`container-icon-remove-task ${isHovered ? "slide-out-left-icon" : ""}`}>
+                      <IconApplyDeleteSVG className={"icon-apply-remove-task"} />
+                    </div>
+                  ) : (
+                    <div className={`container-icon-remove-task ${isHovered ? "slide-out-left-icon" : ""}`}>
+                      <IconDeleteCrossSVG className={"icon-remove-task"} />
+                    </div>
+                  )
+                }
+              </button>
             ) : ("")}
             {/*<button>edit</button>*/}
           </div>
