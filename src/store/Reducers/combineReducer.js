@@ -1,15 +1,18 @@
-import { combineReducers } from 'redux';
+import { persistReducer } from 'redux-persist';
+import {combineReducers} from "redux";
 import taskReducer from "./taskReducer";
 import categoryReducer from "./categoryReducer";
 import authReducer from "./authReducer";
 import projectReducer from "./projectReducer";
-import commentReducer from "./commentReducer";
+import persistConfig from "../persistConfig";
 
-export default combineReducers({
+const rootReducer = combineReducers({
   tasks: taskReducer,
   categories: categoryReducer,
   auth: authReducer,
   project: projectReducer,
-  comment: commentReducer
 });
 
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export default persistedReducer;

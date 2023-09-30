@@ -5,9 +5,10 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import store from "./store/store.js";
+import {persistor, store} from "./store/store.js";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from 'react-dnd-html5-backend'
+import {PersistGate} from "redux-persist/integration/react";
 
 
 
@@ -17,9 +18,11 @@ root.render(
   <BrowserRouter>
     <DndProvider backend={HTML5Backend}>
       <Provider store={store}>
-        <React.StrictMode>
-          <App />
-        </React.StrictMode>
+        <PersistGate loading={null} persistor={persistor}>
+          <React.StrictMode>
+            <App />
+          </React.StrictMode>
+        </PersistGate>
       </Provider>
     </DndProvider>
   </BrowserRouter>

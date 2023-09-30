@@ -15,6 +15,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
   const [errorFile, setErrorFile] = useState("");
   const [showFormSubtask, setShowFormSubtask] = useState(false);
   const dispatch = useDispatch();
+  const [uploadedFiles, setUploadedFiles] = useState([]);
 
   const customStyles = {
     content: {
@@ -73,6 +74,8 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
     e.preventDefault();
     let files = [...e.dataTransfer.files]
 
+    setUploadedFiles(files);
+
     SliceSelectedFiles(files, setFieldValue, e.dataTransfer.files);
   };
 
@@ -102,6 +105,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
       onRequestClose={() => {
         setShowFormSubtask(false);
         onClose();
+        setUploadedFiles([]);
       }}
       overlayClassName={"overlay"}
       style={customStyles}
@@ -129,6 +133,8 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                 icon: iconWithStatus(status),
                 author: Number(currentUser.id),
               }));
+
+              setUploadedFiles([]);
             }}
             validationSchema={mergedSchema}
           >
@@ -394,6 +400,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
 
                       <div>
                         <label htmlFor="file" className="custom-file-input">Выбрать файл</label>
+
                         <input
                           type="file"
                           id="file"
@@ -403,10 +410,21 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                           onChange={(event) => {
                             const selectedFiles = Array.from(event.currentTarget.files);
 
+                            setUploadedFiles(selectedFiles);
+
                             SliceSelectedFiles(selectedFiles, setFieldValue, event.currentTarget.value);
                           }}
                         />
                       </div>
+
+                      <p style={{
+                        padding: "0.5rem"
+                      }}>{uploadedFiles.length !== 0 ? uploadedFiles.map((files) => {
+                        if (uploadedFiles.length === 1) {
+                          return `${files.name}`
+                        }
+                        return `${files.name} / `
+                      }) : ("Тут будет названия загруженных файлов")}</p>
                     </div>
                   </div>
 
@@ -419,6 +437,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                     isValid={isValid}
                     values={values}
                     handleSubmit={handleSubmit}
+                    clearUploadedFiles={setUploadedFiles}
                   />
                 </>
               );

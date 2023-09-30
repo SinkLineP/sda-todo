@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import Modal from "react-modal";
 import {formatFileSize, getAuthorProject} from "../../Variables";
 import {useDispatch, useSelector} from "react-redux";
@@ -7,15 +7,15 @@ import "./InfoTask.css";
 import iconFile from "./icons/file.png";
 import iconDownload from "./icons/download.png";
 import ScrollableWrap from "../ScrollableWrap/ScrollableWrap";
-import CascadeComments from "../CascadeComments/CascadeComments";
-import useNode from "../../hooks/useNode";
-import {addComment} from "../../store/Reducers/commentReducer";
+import {removeTask} from "../../store/Reducers/taskReducer";
+import IsAuth from "../../hooks/IsAuth";
 
 Modal.setAppElement("#root");
 
 export default function InfoTask({ show, onClose, item }) {
   const usersStore = useSelector(state => state.auth.users);
   const dispatch = useDispatch();
+  const currentUser = useSelector(state => state.auth.currentUser);
 
   const handleDownloadClick = (file) => {
     if (file) {
@@ -54,25 +54,6 @@ export default function InfoTask({ show, onClose, item }) {
     }
   };
 
-  const commentsStore = useSelector(state => state.comment.comments);
-  const { insertNode, editNode, deleteNode } = useNode();
-
-  const handleInsertNode = (folderId, item) => {
-    const finalStructure = insertNode(commentsStore, folderId, item);
-    dispatch(addComment(finalStructure));
-  };
-
-  const handleEditNode = (folderId, value) => {
-    const finalStructure = editNode(commentsStore, folderId, value);
-    dispatch(addComment(finalStructure));
-  };
-
-  const handleDeleteNode = (folderId) => {
-    const finalStructure = deleteNode(commentsStore, folderId);
-    const temp = { ...finalStructure };
-    dispatch(addComment(temp));
-  };
-
   return (
     <Modal
       isOpen={show}
@@ -92,8 +73,21 @@ export default function InfoTask({ show, onClose, item }) {
             display: "flex",
             flexDirection: "column"
           }}>
-            <button>delete</button>
-            <button>edit</button>
+            {IsAuth() && currentUser.id === item.author ? (
+              <button style={{
+                backgroundColor: "red",
+                border: "none",
+                padding: "1rem",
+                borderRadius: "1rem",
+                color: "white",
+                fontWeight: "bold",
+                textTransform: "uppercase",
+                cursor: "pointer"
+              }} onClick={() => {
+                dispatch(removeTask(item.id));
+              }}>удалить задачу</button>
+            ) : ("")}
+            {/*<button>edit</button>*/}
           </div>
         </div>
         <div>
@@ -193,18 +187,6 @@ export default function InfoTask({ show, onClose, item }) {
               <h3>Подзадач не найдено!</h3>
             </>
           )}
-
-          <h3 style={{
-            marginTop: "50px"
-          }}>Коментарии: </h3>
-
-          <CascadeComments
-            handleInsertNode={handleInsertNode}
-            handleEditNode={handleEditNode}
-            handleDeleteNode={handleDeleteNode}
-            comment={commentsStore}
-          />
-
         </div>
         <div style={{
           display: "flex",

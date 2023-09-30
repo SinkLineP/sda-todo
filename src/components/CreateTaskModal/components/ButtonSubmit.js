@@ -1,7 +1,7 @@
 import React from "react";
 
 
-const ButtonSubmit = ({isValid, values, handleSubmit, showFormSubtask, customSubtasksValidate, onClose, setShowFormSubtask}) => {
+const ButtonSubmit = ({isValid, values, handleSubmit, showFormSubtask, customSubtasksValidate, onClose, setShowFormSubtask, clearUploadedFiles}) => {
   return (
     <button
       className={`btn ${!isValid === false
@@ -21,11 +21,13 @@ const ButtonSubmit = ({isValid, values, handleSubmit, showFormSubtask, customSub
               handleSubmit()
               onClose()
               setShowFormSubtask(false)
+              clearUploadedFiles([])
             }
           } else {
             if (values.title && values.numberTask && values.description && values.priority && values.status) {
               handleSubmit()
               onClose()
+              clearUploadedFiles([])
             }
           }
         }

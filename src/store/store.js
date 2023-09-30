@@ -1,13 +1,12 @@
 import { legacy_createStore as createStore } from 'redux';
-import rootReducer from "./Reducers/combineReducer";
+import persistedReducer from "./Reducers/combineReducer";
+import {persistStore} from "redux-persist";
 
-const store = createStore(
-  rootReducer,
+export const store = createStore(
+  persistedReducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-// store.subscribe(() => {
-//   console.log('subscribe', store.getState());
-// })
-
-export default store;
+export const persistor = persistStore(store, null, () => {
+  console.log('Состояние восстановлено');
+});
