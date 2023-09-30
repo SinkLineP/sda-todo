@@ -4,7 +4,7 @@ import {Field, Formik, ErrorMessage} from "formik";
 import {useDispatch, useSelector} from "react-redux";
 import {addTask} from "../../store/Reducers/taskReducer";
 import "./CreateTaskModal.css";
-import {CountSliceFilesTask} from "../../Variables";
+import {convertTypeFileToObject, CountSliceFilesTask} from "../../Variables";
 import {mergedSchema} from "./Schemas";
 import {combinedInitialValues} from "./InitilalValues";
 import ButtonSubmit from "./components/ButtonSubmit";
@@ -62,7 +62,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
 
   const SliceSelectedFiles = (files, setFieldValue, clear) => {
     if (files.length <= CountSliceFilesTask) {
-      setFieldValue("file", files);
+      setFieldValue("file", convertTypeFileToObject(files));
     } else {
       setErrorFile(`Вы можете выбрать не более ${CountSliceFilesTask} файлов.`);
       setTimeout(() => setErrorFile(""), 1500);

@@ -9,7 +9,6 @@ const ActionTypes = {
 function TaskReducer(state = initialState, action) {
   switch (action.type) {
     case ActionTypes.ADD_TASK:
-      console.log(action.payload);
       return {
         ...state,
         tasks: [...state.tasks, {

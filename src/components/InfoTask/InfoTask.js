@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "react-modal";
-import {formatFileSize, getAuthorProject} from "../../Variables";
+import {convertTypeObjectToFile, formatFileSize, getAuthorProject} from "../../Variables";
 import {useDispatch, useSelector} from "react-redux";
 import ColorizeWrapText from "../ColorizeWrapText/ColorizeWrapText";
 import "./InfoTask.css";
@@ -103,18 +103,22 @@ export default function InfoTask({ show, onClose, item }) {
             <>
               <h3>Вложеные файлы: ({item.files.length})</h3>
               <ScrollableWrap>
-                {item.files.map((file, index) => {
+                {convertTypeObjectToFile(item.files).map((file, index) => {
                   const filesArrayLength = item.files.length;
                   const currentIndex = index + 1;
 
                   return (
-                    <div className={`container-file ${filesArrayLength !== currentIndex ? "space-between-elements" : ""}`}
+                    <div key={index} className={`container-file ${filesArrayLength !== currentIndex ? "space-between-elements" : ""}`}
                          onClick={() => {
                            handleDownloadClick(file)
                          }}>
                       <img className={"icon-file"} src={iconFile} alt={"icon file"}/>
                       <img className={"icon-file download-icon"} src={iconDownload} alt={"icon download file"}/>
-                      <p className={"no-select-text file-title"}>{file.name.length > 10 ? `${showShortNameFile(file.name, 8)}` : file.name}</p>
+                      {
+                        file.name !== undefined && (
+                          <p className={"no-select-text file-title"}>{file.name.length > 10 ? `${showShortNameFile(file.name, 8)}` : file.name}</p>
+                        )
+                      }
                       <p className={"no-select-text file-size"}>({formatFileSize(file.size)})</p>
                     </div>
                   )

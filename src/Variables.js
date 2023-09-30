@@ -34,3 +34,23 @@ export function formatFileSize(bytes) {
 
   return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
 }
+
+export function convertTypeFileToObject(arrayFiles) {
+  return arrayFiles.map(file => ({
+    name: file.name,
+    lastModified: file.lastModified,
+    lastModifiedDate: new Date(file.lastModifiedDate),
+    webkitRelativePath: file.webkitRelativePath,
+    size: file.size,
+    type: file.type
+  }));
+}
+
+export function convertTypeObjectToFile(arrayFiles) {
+  return arrayFiles.map(obj => {
+    const { name, type, size } = obj;
+    const uint8Array = new Uint8Array(size);
+    const blobData = new Blob([uint8Array], { type });
+    return new File([blobData], name, {type});
+  });
+}
