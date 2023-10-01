@@ -3,6 +3,7 @@ import './App.css';
 import Layout from "./components/Layout/Layout";
 import SelectProjects from "./pages/SelectProjects";
 import Tasks from "./pages/Tasks";
+import PageNotFound from "./pages/PageNotFound";
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
             element={<Navigate to="/project-list" replace />}
           />
         </Route>
+
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>
   );

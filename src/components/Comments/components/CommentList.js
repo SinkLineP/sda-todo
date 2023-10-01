@@ -1,13 +1,18 @@
-import React, {useRef, useState} from "react";
+import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {removeComment} from "../../../store/Reducers/commentReducer";
+import IsAuth from "../../../hooks/IsAuth";
+import moment from 'moment';
+
 
 
 const CommentList = ({ task_id }) => {
   const commentsStore = useSelector(state => state.comments);
   const [status, setStatus] = useState("default");
-  const commentRef = useRef();
   const dispatch = useDispatch();
+  const currentUser = useSelector(state => state.auth.currentUser);
+  const isAuth = IsAuth();
+  const currentDate = new Date();
 
   const ButtonCustom = ({ title, handleCLick }) => {
     return (
@@ -16,6 +21,11 @@ const CommentList = ({ task_id }) => {
       </button>
     )
   }
+
+  const millisecondsToDays = (milliseconds) => {
+    return milliseconds / (1000 * 60 * 60 * 24);
+  }
+
 
   const ShowButtons = ({ status, commentID }) => {
     if (status === "default") {
@@ -62,17 +72,23 @@ const CommentList = ({ task_id }) => {
     return commentsStore.map((comment) => {
       if (comment.task_id === task_id) {
         return (
-          <div ref={commentRef} className={"container-comment"} key={comment.id}>
+          <div className={"container-comment"} key={comment.id}>
             <div className={"content"}>
               <p>User ID: {comment.user_id}.</p>
               <p>Comment: {comment.content}.</p>
               <p>Comment ID: {comment.id}.</p>
               <p>Connect to Task ID: {comment.task_id}.</p>
+              <p>Date: {moment(comment.date).fromNow()}</p>
             </div>
 
-            <div className={"container-buttons"}>
-              <ShowButtons status={status} commentID={comment.id} />
-            </div>
+            {
+              isAuth && comment.user_id === currentUser.id && (
+                <div className={"container-buttons"}>
+                  <ShowButtons status={status} commentID={comment.id} />
+                </div>
+              )
+            }
+
           </div>
         );
       }

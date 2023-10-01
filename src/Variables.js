@@ -1,3 +1,6 @@
+import moment from 'moment';
+
+
 export const StatusesColors = {
   Queue: "#eba946",
   Development: "#00C2E0",
@@ -54,3 +57,14 @@ export function convertTypeObjectToFile(arrayFiles) {
     return new File([blobData], name, {type});
   });
 }
+
+export const getCurrentDate = () => {
+  const currentDate = new Date();
+
+  const day = currentDate.getDate();
+  const month = currentDate.getMonth() + 1;
+  const year = currentDate.getFullYear();
+
+  return `${day}\\${month}\\${year}`;
+}
+

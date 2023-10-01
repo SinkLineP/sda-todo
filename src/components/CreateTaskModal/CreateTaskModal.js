@@ -4,7 +4,7 @@ import {Field, Formik, ErrorMessage} from "formik";
 import {useDispatch, useSelector} from "react-redux";
 import {addTask} from "../../store/Reducers/taskReducer";
 import "./CreateTaskModal.css";
-import {convertTypeFileToObject, CountSliceFilesTask} from "../../Variables";
+import {convertTypeFileToObject, CountSliceFilesTask, getCurrentDate} from "../../Variables";
 import {mergedSchema} from "./Schemas";
 import {combinedInitialValues} from "./InitilalValues";
 import ButtonSubmit from "./components/ButtonSubmit";
@@ -39,16 +39,6 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
     } else if (status.toLowerCase() === "done") {
       return "✅";
     }
-  }
-
-  const getCurrentDate = () => {
-    const currentDate = new Date();
-
-    const day = currentDate.getDate();
-    const month = currentDate.getMonth() + 1;
-    const year = currentDate.getFullYear();
-
-    return `${day}\\${month}\\${year}`;
   }
 
   const dragStartHandler = (e) => {
