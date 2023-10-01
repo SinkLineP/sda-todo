@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 
 const ShowButtons = ({ commentID , comment, task_id, setIsEditing, isEditing, commentIDClicked, inputEditValues, setInputEditValues, setStatusComment, statusComment }) => {
   const currentUser = useSelector(state => state.auth.currentUser);
+  const commentsStore = useSelector(state => state.comments);
   const dispatch = useDispatch();
   const [status, setStatus] = useState("default");
 
@@ -12,7 +13,10 @@ const ShowButtons = ({ commentID , comment, task_id, setIsEditing, isEditing, co
     if (statusComment === "default") setStatus("default");
   }, [statusComment, setStatus])
 
-  // if (commentIDClicked === commentID) {
+  useEffect(() => {
+
+  }, [commentsStore])
+
     if (status === "default") {
       return (
         <>
@@ -70,12 +74,6 @@ const ShowButtons = ({ commentID , comment, task_id, setIsEditing, isEditing, co
         console.log("status: " + status);
       }
     }
-  // }
 }
-
-// setInputEditValues({
-//   ...inputEditValues,
-//   [comment.id]: val.target.value
-// });
 
 export default ShowButtons;

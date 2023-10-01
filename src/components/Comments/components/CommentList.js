@@ -7,8 +7,7 @@ import ButtonCustom from "./ButtonCustom";
 import {addComment} from "../../../store/Reducers/commentReducer";
 import {v4 as uuid} from "uuid";
 
-const CommentList = ({ task_id }) => {
-  const commentsStore = useSelector(state => state.comments);
+const CommentList = ({ task_id, commentsStore }) => {
   const currentUser = useSelector(state => state.auth.currentUser);
   const isAuth = IsAuth();
   const [inputEditValues, setInputEditValues] = useState({});
@@ -50,6 +49,10 @@ const CommentList = ({ task_id }) => {
         return (
           <div className={"container-tree-comments"} key={comment.id} onClick={() => {
             setCommentIDClicked(comment.id);
+
+            if (statusComment === "default") {
+
+            }
           }}>
 
             <div className={"container-comment content"}>
@@ -91,32 +94,41 @@ const CommentList = ({ task_id }) => {
                   />
                 </div>
               )}
-            </div>
 
-            {isAuth && statusComment === "reply" && commentIDClicked === comment.id ? (
-              <div className={"container-reply-comment content"}>
-                <input
-                  className={"input-create-comment"}
-                  value={inputReplyValues[comment.id] || ""}
-                  onChange={(e) => {
+              {isAuth && statusComment === "reply" && commentIDClicked === comment.id ? (
+                <div className={"container-reply-comment content"}>
+                  <input
+                    className={"input-create-comment"}
+                    value={inputReplyValues[comment.id] || ""}
+                    onChange={(e) => {
+                      setInputReplyValues({
+                        ...inputReplyValues,
+                        [comment.id]: e.target.value
+                      });
+                    }}
+                    placeholder={"Введите ответ..."}
+                  />
+
+                  <ButtonCustom className={"button-on-comment button-remove"} title={"Отменить"} handleCLick={() => {
+                    setStatusComment("default")
                     setInputReplyValues({
                       ...inputReplyValues,
-                      [comment.id]: e.target.value
+                      [comment.id]: ""
                     });
-                  }}
-                  placeholder={"Введите ответ..."}
-                />
+                  }} />
+                  <ButtonCustom className={"button-on-comment button-reply"} title={"Ответить"} handleCLick={() => dispatch(addComment(ReplyComment(commentsStore, inputReplyValues[comment.id])))} />
+                </div>
+              ) : null}
 
-                <ButtonCustom className={"button-on-comment button-remove"} title={"Отменить"} handleCLick={() => {
-                  setStatusComment("default")
-                  setInputReplyValues({
-                    ...inputReplyValues,
-                    [comment.id]: ""
-                  });
-                }} />
-                <ButtonCustom className={"button-on-comment button-reply"} title={"Ответить"} handleCLick={() => dispatch(addComment(ReplyComment(commentsStore, inputReplyValues[comment.id])))} />
+              <div>
+                {isAuth && comment.comments.length !== 0 && (
+                  <div className={"container-reply"}>
+                    <p className={"reply-label"}>Ответы: </p>
+                    <CommentList commentsStore={comment.comments} task_id={task_id} />
+                  </div>
+                )}
               </div>
-            ) : null}
+            </div>
           </div>
         );
       }
