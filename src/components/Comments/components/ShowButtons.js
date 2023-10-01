@@ -1,12 +1,16 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import ButtonCustom from "./ButtonCustom";
 import {editComment, removeComment} from "../../../store/Reducers/commentReducer";
 import {useDispatch, useSelector} from "react-redux";
 
-const ShowButtons = ({ commentID , comment, task_id, setIsEditing, isEditing, commentIDClicked, inputEditValues, setInputEditValues }) => {
+const ShowButtons = ({ commentID , comment, task_id, setIsEditing, isEditing, commentIDClicked, inputEditValues, setInputEditValues, setStatusComment, statusComment }) => {
   const currentUser = useSelector(state => state.auth.currentUser);
   const dispatch = useDispatch();
   const [status, setStatus] = useState("default");
+
+  useEffect(() => {
+    if (statusComment === "default") setStatus("default");
+  }, [statusComment, setStatus])
 
   // if (commentIDClicked === commentID) {
     if (status === "default") {
@@ -14,6 +18,7 @@ const ShowButtons = ({ commentID , comment, task_id, setIsEditing, isEditing, co
         <>
           <ButtonCustom className={"button-on-comment button-reply"} handleCLick={() => {
             setStatus("reply")
+            setStatusComment("reply")
           }} title={"Ответить"} />
           {comment.user_id === currentUser.id && (
             <>

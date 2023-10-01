@@ -9,7 +9,15 @@ const ActionTypes = {
 function CommentReducer(state = initialState, action) {
   switch (action.type) {
     case ActionTypes.ADD_COMMENT:
-      return [...state, action.payload];
+      const existingCommentIndex = state.findIndex(comment => comment.id === action.payload.id);
+
+      if (existingCommentIndex !== -1) {
+        // Comment with the same ID exists, replace the entire state
+        return [...state.slice(0, existingCommentIndex), action.payload, ...state.slice(existingCommentIndex + 1)];
+      } else {
+        // Comment with the given ID doesn't exist, add the new comment to the state
+        return [...state, action.payload];
+      }
 
     case ActionTypes.EDIT_COMMENT:
       const { commentID, updatedComment } = action.payload;
