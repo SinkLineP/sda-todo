@@ -13,7 +13,14 @@ function CommentReducer(state = initialState, action) {
 
     case ActionTypes.EDIT_COMMENT:
       const { commentID, updatedComment } = action.payload;
-      return state.map((comment) => comment.id === commentID ? {...comment, ...updatedComment} : comment);
+
+
+      return state.map((comment) => {
+        return comment.id === commentID ? {
+          ...comment,
+          content: updatedComment
+        } : comment;
+      });
 
     case ActionTypes.REMOVE_COMMENT:
       return state.filter((comment) => {
@@ -25,9 +32,9 @@ function CommentReducer(state = initialState, action) {
   }
 }
 
-export const editComment = (commentId, updatedComment) => ({
+export const editComment = (editData) => ({
   type: ActionTypes.EDIT_COMMENT,
-  payload: { commentId, updatedComment },
+  payload: editData,
 });
 
 export const addComment = (formData) => ({

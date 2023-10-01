@@ -24,7 +24,7 @@ const CommentList = ({ task_id }) => {
               {isEditing && commentIDClicked === comment.id ? (
                 <input
                   className={"input-create-comment"}
-                  value={inputEditValues[comment.id] || ""}
+                  value={inputEditValues[comment.id] || comment.content}
                   onChange={(val) => {
                     setInputEditValues({
                       ...inputEditValues,
@@ -46,18 +46,14 @@ const CommentList = ({ task_id }) => {
             {isAuth && (
               <div className={"container-buttons"}>
                 <ShowButtons
+                  commentID={comment.id}
                   commentIDClicked={commentIDClicked}
                   comment={comment}
                   task_id={task_id}
                   setIsEditing={setIsEditing}
                   isEditing={isEditing}
-                  inputEditValue={inputEditValues[comment.id] || ""}
-                  setInputEditValue={(value) => {
-                    setInputEditValues({
-                      ...inputEditValues,
-                      [comment.id]: value
-                    });
-                  }}
+                  inputEditValues={inputEditValues}
+                  setInputEditValues={setInputEditValues}
                 />
               </div>
             )}

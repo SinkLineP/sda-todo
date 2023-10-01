@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import ButtonCustom from "./ButtonCustom";
-import {removeComment} from "../../../store/Reducers/commentReducer";
+import {editComment, removeComment} from "../../../store/Reducers/commentReducer";
 import {useDispatch, useSelector} from "react-redux";
 
-const ShowButtons = ({ commentID , comment, task_id, setIsEditing, isEditing, setInputEditValue, inputEditValue }) => {
+const ShowButtons = ({ commentID , comment, task_id, setIsEditing, isEditing, commentIDClicked, inputEditValues, setInputEditValues }) => {
   const currentUser = useSelector(state => state.auth.currentUser);
   const dispatch = useDispatch();
   const [status, setStatus] = useState("default");
@@ -29,32 +29,48 @@ const ShowButtons = ({ commentID , comment, task_id, setIsEditing, isEditing, se
           )}
         </>
       )
-    } else if (status === "reply" || status === "edit") {
-      if (status === "edit") {
-        setIsEditing(true)
-      }
+    } else if (status === "edit") {
+      setIsEditing(true)
 
-      if (comment.user_id === currentUser.id && comment.task_id === task_id) {
+      if (comment.user_id === currentUser.id && comment.task_id === task_id || comment.task_id === task_id || isEditing && commentIDClicked === comment.id) {
         return (
           <>
             <ButtonCustom className={"button-on-comment button-save"} handleCLick={() => {
               setStatus("default")
+
+              setIsEditing(false);
+
+              setInputEditValues({
+                ...inputEditValues,
+                [comment.id]: inputEditValues[comment.id]
+              });
+
+              dispatch(editComment({
+                commentID: comment.id,
+                updatedComment: inputEditValues[comment.id]
+              }));
             }} title={"Сохранить"} />
             <ButtonCustom className={"button-on-comment button-cancel"} handleCLick={() => {
               setStatus("default")
               setIsEditing(false)
+
+              setInputEditValues({
+                ...inputEditValues,
+                [comment.id]: comment.content
+              });
             }} title={"Отменить"} />
           </>
         )
-      } else {
-        return (
-          <ButtonCustom className={"button-on-comment button-reply"} handleCLick={() => {
-            setStatus("reply")
-          }} title={"Ответить"} />
-        )
+      } else if (status === "reply") {
+        console.log("status: " + status);
       }
     }
   // }
 }
+
+// setInputEditValues({
+//   ...inputEditValues,
+//   [comment.id]: val.target.value
+// });
 
 export default ShowButtons;
