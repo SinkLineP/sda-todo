@@ -8,7 +8,7 @@ import IsAuth from "../hooks/IsAuth";
 
 export default function SelectProjects() {
   const navigate = useNavigate();
-  const projectsStore = useSelector(state => state.project.projects);
+  const projectsStore = useSelector(state => state.projects);
   const usersStore = useSelector(state => state.auth.users);
   const [show, setShow] = useState(false);
 

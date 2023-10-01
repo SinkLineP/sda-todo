@@ -14,7 +14,7 @@ export default function Tasks() {
   const [items, setItems] = useState([]);
   const { project_id } = useParams();
   const currentUser = useSelector(state => state.auth.currentUser);
-  const projectsStore = useSelector(state => state.project.projects);
+  const projectsStore = useSelector(state => state.projects);
   const [show, setShow] = useState(false);
 
   console.log(taskData);

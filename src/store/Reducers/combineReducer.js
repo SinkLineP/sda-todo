@@ -11,7 +11,7 @@ const rootReducer = combineReducers({
   tasks: taskReducer,
   categories: categoryReducer,
   auth: authReducer,
-  project: projectReducer,
+  projects: projectReducer,
   comments: commentReducer
 });
 
