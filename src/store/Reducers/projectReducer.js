@@ -7,10 +7,8 @@ const ActionTypes = {
 function ProjectReducer(state = initialState, action) {
   switch (action.type) {
     case ActionTypes.ADD_PROJECT:
-      return [
-        ...state,
-        action.payload
-      ];
+      return [...state, action.payload];
+
     default:
       return state;
   }

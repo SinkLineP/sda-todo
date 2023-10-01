@@ -9,25 +9,15 @@ const ActionTypes = {
 function CategoryReducer(state = initialState, action) {
   switch (action.type) {
     case ActionTypes.ADD_CATEGORY:
-      return {
-        ...state,
-        categories: [...state.categories, action.payload],
-      };
-    case ActionTypes.REMOVE_CATEGORY:
-      return {
-        ...state,
-        categories: state.categories.filter((category) => category.id !== action.payload),
-      };
+      return [...state, action.payload];
+
     case ActionTypes.EDIT_CATEGORY:
       const { categoryId, updatedCategory } = action.payload;
-      const updatedCategories = state.categories.map((category) =>
-        category.id === categoryId ? { ...category, ...updatedCategory } : category
-      );
+      return state.map((category) => category.id === categoryId ? {...category, ...updatedCategory} : category);
 
-      return {
-        ...state,
-        categories: updatedCategories,
-      };
+    case ActionTypes.REMOVE_CATEGORY:
+      return state.filter((category) => category.id !== action.payload);
+
     default:
       return state;
   }

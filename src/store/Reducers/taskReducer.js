@@ -9,17 +9,15 @@ const ActionTypes = {
 function TaskReducer(state = initialState, action) {
   switch (action.type) {
     case ActionTypes.ADD_TASK:
-      return [
-        ...state,
-        action.payload
-      ];
-    case ActionTypes.REMOVE_TASK:
-      return state.filter((task) => task.id !== action.payload);
+      return [...state, action.payload];
+
     case ActionTypes.EDIT_TASK:
       const { taskId, updatedTask } = action.payload;
-      return state.map((task) =>
-        task.id === taskId ? {...task, ...updatedTask} : task
-      );
+      return state.map((task) => task.id === taskId ? {...task, ...updatedTask} : task);
+
+    case ActionTypes.REMOVE_TASK:
+      return state.filter((task) => task.id !== action.payload);
+
     default:
       return state;
   }
@@ -27,7 +25,7 @@ function TaskReducer(state = initialState, action) {
 
 export const editTask = (taskId, updatedTask) => ({
   type: ActionTypes.EDIT_TASK,
-  payload: { taskId, updatedTask }, // Обернуть в объект
+  payload: { taskId, updatedTask },
 });
 
 export const addTask = (formData) => ({

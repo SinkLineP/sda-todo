@@ -1,4 +1,4 @@
-import { initialState } from "../States/commentInitialState";
+import {initialState} from "../States/commentInitialState";
 
 const ActionTypes = {
   ADD_COMMENT: 'ADD_COMMENT',
@@ -9,25 +9,15 @@ const ActionTypes = {
 function CommentReducer(state = initialState, action) {
   switch (action.type) {
     case ActionTypes.ADD_COMMENT:
-      return {
-        ...state,
-        comments: [...state.comments, action.payload],
-      };
-    case ActionTypes.REMOVE_COMMENT:
-      return {
-        ...state,
-        comments: state.comments.filter((comment) => comment.id !== comment.payload),
-      };
-    case ActionTypes.EDIT_COMMENT:
-      const { commentId, updatedComment } = action.payload;
-      const updatedTasks = state.comments.map((comment) =>
-        comment.id === commentId ? { ...comment, ...updatedComment } : comment
-      );
+      return [...state, action.payload];
 
-      return {
-        ...state,
-        comments: updatedComment,
-      };
+    case ActionTypes.REMOVE_COMMENT:
+      return state.comments.filter((comment) => comment.id !== comment.payload);
+
+    case ActionTypes.EDIT_COMMENT:
+      const { commentID, updatedComment } = action.payload;
+      return state.map((comment) => comment.id === commentID ? {...comment, ...updatedComment} : comment);
+
     default:
       return state;
   }

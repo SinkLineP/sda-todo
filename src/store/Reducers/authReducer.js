@@ -16,11 +16,13 @@ function AuthReducer(state = initialState, action) {
         users: [...state.users, action.payload],
         currentUser: action.payload
       };
+
     case ActionTypes.CHANGE_FORM:
       return {
         ...state,
         currentForm: action.payload.currentForm
       }
+
     case ActionTypes.SET_CURRENT_USER:
       return {
         ...state,
@@ -30,6 +32,7 @@ function AuthReducer(state = initialState, action) {
           password: action.payload.password
         }
       }
+
     case ActionTypes.LOGOUT:
       return {
         ...state,
@@ -39,6 +42,7 @@ function AuthReducer(state = initialState, action) {
           password: ""
         }
       }
+
     default:
       return state;
   }
