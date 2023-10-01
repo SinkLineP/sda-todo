@@ -13,11 +13,75 @@
 }
 
 .content {
-
+    width: 100%;
 }
 
 .container-buttons {
     display: flex;
     flex-direction: row;
     gap: 1rem;
+    margin-top: 1rem;
+}
+
+.input-edit {
+    width: 100%; /* Занимайте 100% доступной ширины внутри родительского компонента */
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.container-create-comment {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    border: 1px solid lightgrey;
+    border-radius: 0.5rem;
+    padding: 10px;
+    background-color: #f6f6f6;
+}
+
+.input-create-comment {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border: 1px solid lightgrey;
+}
+
+.button-create-comment {
+    background-color: #054F7C;
+    color: white;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.button-create-content {
+    background-color: #27aa80;
+}
+
+.button-on-comment {
+    font-weight: bold;
+    padding: 0.5rem;
+    color: white;
+    border: none;
+    border-radius: 0.2rem;
+}
+
+.button-reply {
+    background-color: #0a69a4;
+}
+
+.button-edit {
+    background-color: #e38c0c;
+}
+
+.button-remove {
+    background-color: #f36464;
+}
+
+.button-save {
+    background-color: #27aa80;
+}
+
+.button-cancel {
+    background-color: #f36464;
 }

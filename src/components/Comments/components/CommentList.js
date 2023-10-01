@@ -12,11 +12,14 @@ const CommentList = ({ task_id }) => {
   const dispatch = useDispatch();
   const currentUser = useSelector(state => state.auth.currentUser);
   const isAuth = IsAuth();
-  const currentDate = new Date();
+  const [inputEditValue, setInputEditValue] = useState("");
 
-  const ButtonCustom = ({ title, handleCLick }) => {
+  const ButtonCustom = ({ title, handleCLick, className }) => {
     return (
-      <button onClick={handleCLick}>
+      <button
+        className={className}
+        onClick={handleCLick}
+      >
         {title}
       </button>
     )
@@ -31,13 +34,13 @@ const CommentList = ({ task_id }) => {
     if (status === "default") {
       return (
         <>
-          <ButtonCustom handleCLick={() => {
+          <ButtonCustom className={"button-on-comment button-reply"} handleCLick={() => {
             setStatus("reply")
           }} title={"Ответить"} />
-          <ButtonCustom handleCLick={() => {
+          <ButtonCustom className={"button-on-comment button-edit"} handleCLick={() => {
             setStatus("edit")
           }} title={"Редактировать"} />
-          <ButtonCustom handleCLick={() => {
+          <ButtonCustom className={"button-on-comment button-remove"} handleCLick={() => {
             setStatus("default")
             dispatch(removeComment(commentID))
           }} title={"Удалить"} />
@@ -46,10 +49,10 @@ const CommentList = ({ task_id }) => {
     } else if (status === "reply") {
       return (
         <>
-          <ButtonCustom handleCLick={() => {
+          <ButtonCustom className={"button-on-comment button-save"} handleCLick={() => {
             setStatus("default")
           }} title={"Сохранить"} />
-          <ButtonCustom handleCLick={() => {
+          <ButtonCustom className={"button-on-comment button-cancel"} handleCLick={() => {
             setStatus("default")
           }} title={"Отменить"} />
         </>
@@ -57,10 +60,10 @@ const CommentList = ({ task_id }) => {
     } else if (status === "edit") {
       return (
         <>
-          <ButtonCustom handleCLick={() => {
+          <ButtonCustom className={"button-on-comment button-save"} handleCLick={() => {
             setStatus("default")
           }} title={"Сохранить"} />
-          <ButtonCustom handleCLick={() => {
+          <ButtonCustom className={"button-on-comment button-cancel"} handleCLick={() => {
             setStatus("default")
           }} title={"Отменить"} />
         </>
@@ -73,13 +76,27 @@ const CommentList = ({ task_id }) => {
       if (comment.task_id === task_id) {
         return (
           <div className={"container-comment"} key={comment.id}>
-            <div className={"content"}>
-              <p>User ID: {comment.user_id}.</p>
-              <p>Comment: {comment.content}.</p>
-              <p>Comment ID: {comment.id}.</p>
-              <p>Connect to Task ID: {comment.task_id}.</p>
-              <p>Date: {moment(comment.date).fromNow()}</p>
-            </div>
+            {
+              status === "edit" ? (
+                <div className={"content"}>
+                  <input
+                    className={"input-create-comment"}
+                    value={inputEditValue}
+                    onChange={(val) => setInputEditValue(val.target.value)}
+                    placeholder={"Введите новый текст комментария..."}
+                  />
+                </div>
+              ) : (
+                <div className={"content"}>
+                  <p>User ID: {comment.user_id}.</p>
+                  <p>Comment: {comment.content}.</p>
+                  <p>Comment ID: {comment.id}.</p>
+                  <p>Connect to Task ID: {comment.task_id}.</p>
+                  <p>Date: {moment(comment.date).fromNow()}</p>
+                </div>
+              )
+            }
+
 
             {
               isAuth && comment.user_id === currentUser.id && (

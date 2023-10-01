@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {addComment} from "../../../store/Reducers/commentReducer";
 import { v4 as uuid } from 'uuid';
-import {getCurrentDate} from "../../../Variables";
 
 
 const CommentField = ({ task_id, data }) => {
@@ -11,8 +10,9 @@ const CommentField = ({ task_id, data }) => {
   const dispatch = useDispatch();
 
   return (
-    <div>
+    <div className={"container-create-comment"}>
       <input
+        className={"input-create-comment"}
         type={"text"}
         placeholder={"Введите комментарий..."}
         value={value}
@@ -20,6 +20,7 @@ const CommentField = ({ task_id, data }) => {
       />
 
       <button
+        className={"button-create-comment"}
         onClick={() => {
           dispatch(addComment({
             id: uuid(),
@@ -30,7 +31,9 @@ const CommentField = ({ task_id, data }) => {
             comments: []
           }))
         }}
-      >Отправить</button>
+      >
+        <span>Отправить</span>
+      </button>
     </div>
   );
 }

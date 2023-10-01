@@ -6,7 +6,8 @@
 
 .task-input {
     border: 1px solid lightgrey;
-    width: 98.5%;
+    width: 100%;
+    box-sizing: border-box;
     height: 2.1rem;
     padding-left: 10px;
 }
@@ -15,6 +16,8 @@
     border: 1px solid lightgrey;
     height: 20px;
     padding-left: 10px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .container-create-task {
