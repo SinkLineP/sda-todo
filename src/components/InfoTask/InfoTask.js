@@ -219,7 +219,10 @@ export default function InfoTask({ show, onClose, item }) {
           )}
         </div>
 
-        <div>
+        <div style={{
+          paddingTop: "20px"
+        }}>
+          <h3>Коментарии: </h3>
           <Comments task_id={item.id} />
         </div>
 
