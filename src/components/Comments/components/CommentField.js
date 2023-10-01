@@ -7,7 +7,7 @@ import { v4 as uuid } from 'uuid';
 const CommentField = ({ task_id, data }) => {
   const [value, setValue] = useState("");
   const currentUser = useSelector(state => state.auth.currentUser);
-  const commentsStore = useSelector(state => state.comments.comments);
+  const commentsStore = useSelector(state => state.comments);
   const dispatch = useDispatch();
 
   return (

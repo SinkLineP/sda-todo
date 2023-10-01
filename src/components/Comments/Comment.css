@@ -1,0 +1,23 @@
+.container-comment {
+    border: 1px solid lightgrey;
+    padding: 10px 10px 20px 10px;
+    border-radius: 0.5rem;
+}
+
+.container-all-comments {
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 1rem;
+}
+
+.content {
+
+}
+
+.container-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}

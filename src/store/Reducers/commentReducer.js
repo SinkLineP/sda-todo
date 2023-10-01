@@ -11,12 +11,14 @@ function CommentReducer(state = initialState, action) {
     case ActionTypes.ADD_COMMENT:
       return [...state, action.payload];
 
-    case ActionTypes.REMOVE_COMMENT:
-      return state.comments.filter((comment) => comment.id !== comment.payload);
-
     case ActionTypes.EDIT_COMMENT:
       const { commentID, updatedComment } = action.payload;
       return state.map((comment) => comment.id === commentID ? {...comment, ...updatedComment} : comment);
+
+    case ActionTypes.REMOVE_COMMENT:
+      return state.filter((comment) => {
+        return comment.id !== action.payload;
+      });
 
     default:
       return state;

@@ -17,8 +17,6 @@ export default function Tasks() {
   const projectsStore = useSelector(state => state.projects);
   const [show, setShow] = useState(false);
 
-  console.log(taskData);
-
   useEffect(() => {
     setItems(taskData);
   }, [setItems, taskData])
@@ -53,12 +51,10 @@ export default function Tasks() {
   const onClose = () => setShow(false);
 
   const showTask = (items, s) => {
-    console.log(items);
     return items
       .filter(i => i.status === s.status && i.projectId === project_id)
       .map((i, idx) => <Item key={i.id} item={i} index={idx} moveItem={moveItem} status={s}/>);
   }
-
 
 
   return (
