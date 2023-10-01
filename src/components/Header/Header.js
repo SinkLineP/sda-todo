@@ -3,7 +3,6 @@ import AuthModal from "../AuthModal/AuthModal";
 import "./Header.css";
 import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../../store/Reducers/authReducer";
-import IsAuth from "../../hooks/IsAuth";
 import ChangeButton from "./components/ChangeButton";
 import {useNavigate} from "react-router-dom";
 

@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import "./styles/table.css";
-import {Link, useNavigate} from "react-router-dom";
-import {getAuthorProject, StatusColor, StatusesColors} from "../Variables";
+import {useNavigate} from "react-router-dom";
+import {getAuthorProject } from "../Variables";
 import {useSelector} from "react-redux";
 import ProjectModal from "../components/ProjectModal/ProjectModal";
 import IsAuth from "../hooks/IsAuth";
@@ -43,9 +43,6 @@ export default function SelectProjects() {
             <th className={"no-select-text"} style={{
               width: "20rem"
             }}>Владец проекта</th>
-            {/*<th  className={"no-select-text"} style={{*/}
-            {/*  width: "10rem"*/}
-            {/*}}>Статус</th>*/}
           </tr>
           </thead>
           <tbody style={{
@@ -67,7 +64,6 @@ export default function SelectProjects() {
             )
           }) : (
             <tr id={"projects-not-found"}>
-              {/*colspan 4*/}
               <td colSpan={3}>
                 Проектов не найдено
               </td>
@@ -77,7 +73,6 @@ export default function SelectProjects() {
         </table>
       </div>
 
-      {/* modal add project */}
       <div>
         <ProjectModal
           onClose={onClose}

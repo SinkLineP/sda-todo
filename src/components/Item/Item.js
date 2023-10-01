@@ -60,7 +60,7 @@ const Item = ({ item, index, moveItem, status }) => {
     if (!isDragging) {
       dispatch(editTask(item.id, item))
     }
-  }, [])
+  }, [dispatch, isDragging, item])
 
   return (
     <Fragment>
