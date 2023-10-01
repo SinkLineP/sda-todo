@@ -1,4 +1,4 @@
-import { initialState } from "../States/taskInitialState";
+import {initialState} from "../States/taskInitialState";
 
 const ActionTypes = {
   ADD_TASK: 'ADD_TASK',
@@ -9,41 +9,17 @@ const ActionTypes = {
 function TaskReducer(state = initialState, action) {
   switch (action.type) {
     case ActionTypes.ADD_TASK:
-      return {
+      return [
         ...state,
-        tasks: [...state.tasks, {
-          id: state.tasks.length === 0 ? 0 : Number(state.tasks.length),
-          projectId: action.payload.projectId,
-          numberTask: action.payload.numberTask,
-          title: action.payload.title,
-          description: action.payload.description,
-          dateOfCreation: action.payload.dateOfCreation,
-          timeInWork: action.payload.timeInWork,
-          endDate: action.payload.endDate,
-          priority: action.payload.priority,
-          files: action.payload.files,
-          status: action.payload.status,
-          subtasks: action.payload.subtasks,
-          comments: action.payload.comments,
-          icon: action.payload.icon,
-          author: action.payload.author
-        }],
-      };
+        action.payload
+      ];
     case ActionTypes.REMOVE_TASK:
-      return {
-        ...state,
-        tasks: state.tasks.filter((task) => task.id !== action.payload),
-      };
+      return state.filter((task) => task.id !== action.payload);
     case ActionTypes.EDIT_TASK:
       const { taskId, updatedTask } = action.payload;
-      const updatedTasks = state.tasks.map((task) =>
-        task.id === taskId ? { ...task, ...updatedTask } : task
+      return state.map((task) =>
+        task.id === taskId ? {...task, ...updatedTask} : task
       );
-
-      return {
-        ...state,
-        tasks: updatedTasks,
-      };
     default:
       return state;
   }
@@ -51,7 +27,7 @@ function TaskReducer(state = initialState, action) {
 
 export const editTask = (taskId, updatedTask) => ({
   type: ActionTypes.EDIT_TASK,
-  payload: { taskId, updatedTask },
+  payload: { taskId, updatedTask }, // Обернуть в объект
 });
 
 export const addTask = (formData) => ({

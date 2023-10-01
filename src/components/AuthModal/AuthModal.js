@@ -7,6 +7,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {createUser, setCurrentUser} from "../../store/Reducers/authReducer";
 import {FormLink} from "./components/FormLink";
 import {FormSubmit} from "../FormSubmit/FormSubmit";
+import { v4 as uuid } from 'uuid';
+
 
 export default function AuthModal({ show, onClose }) {
   const customStyles = {
@@ -83,7 +85,11 @@ export default function AuthModal({ show, onClose }) {
             setErrorUsername("");
             setErrorPassword("");
           } else if (currentForm === "signup") {
-            dispatch(createUser(values.username, values.password));
+            dispatch(createUser({
+              id: uuid(),
+              username: values.username,
+              password: values.password
+            }))
           }
         }}
         validationSchema={validationsSchema}>

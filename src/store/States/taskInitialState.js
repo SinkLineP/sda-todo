@@ -1,3 +1,3 @@
-export const initialState = {
-  tasks: []
-}
+export const initialState = [
+
+]

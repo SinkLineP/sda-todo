@@ -1,3 +1,1 @@
-export const initialState = {
-  projects: []
-}
+export const initialState = [];

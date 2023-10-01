@@ -51,20 +51,18 @@ export default function SelectProjects() {
           <tbody style={{
             backgroundColor: "#f5eaea"
           }}>
-          {projectsStore.length !== 0 ? projectsStore.map((item) => {
+          {projectsStore.length !== 0 ? projectsStore.map((item, index) => {
+            index += 1;
+
             return (
-              <tr onClick={() => {
+              <tr key={item.id} onClick={() => {
                 navigate(`${item.id}`);
               }}>
-                <td>{item.id}</td>
+                <td>{index}</td>
                 <td>
                   <p>{item.title}</p>
                 </td>
                 <td>{getAuthorProject(item.user_id, usersStore)}</td>
-                {/*<td style={{*/}
-                {/*  backgroundColor: StatusColor(item.status),*/}
-                {/*  color: "white"*/}
-                {/*}}>{item.status}</td>*/}
               </tr>
             )
           }) : (

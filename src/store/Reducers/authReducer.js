@@ -13,16 +13,8 @@ function AuthReducer(state = initialState, action) {
     case ActionTypes.CREATE_USER:
       return {
         ...state,
-        users: [...state.users, {
-          id: state.users.length === 0 ? 0 : state.users.length,
-          username: action.payload.username,
-          password: action.payload.password
-        }],
-        currentUser: {
-          id: state.users.length === 0 ? 0 : state.users.length,
-          username: action.payload.username,
-          password: action.payload.password
-        }
+        users: [...state.users, action.payload],
+        currentUser: action.payload
       };
     case ActionTypes.CHANGE_FORM:
       return {
@@ -53,9 +45,9 @@ function AuthReducer(state = initialState, action) {
 }
 
 
-export const createUser = (username, password) => ({
+export const createUser = (userData) => ({
   type: ActionTypes.CREATE_USER,
-  payload: { username, password },
+  payload: userData,
 });
 
 export const changeForm = (currentForm) => ({

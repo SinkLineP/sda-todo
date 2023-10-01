@@ -8,6 +8,7 @@ import {convertTypeFileToObject, CountSliceFilesTask} from "../../Variables";
 import {mergedSchema} from "./Schemas";
 import {combinedInitialValues} from "./InitilalValues";
 import ButtonSubmit from "./components/ButtonSubmit";
+import {v4 as uuid} from "uuid";
 
 
 export default function CreateTaskModal({ show, onClose, project_id }) {
@@ -118,7 +119,8 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
             validateOnBlur
             onSubmit={({ title, file, numberTask, description, priority, status, titleSubtask, numberSubtask, descriptionSubtask, prioritySubtask, statusSubtask  }) => {
               dispatch(addTask({
-                projectId: Number(project_id),
+                id: uuid(),
+                projectId: project_id,
                 numberTask: Number(numberTask),
                 title: title,
                 description: description,
@@ -131,7 +133,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                 subtasks: customSubtasksValidate(titleSubtask, numberSubtask, descriptionSubtask, prioritySubtask, statusSubtask),
                 comments: [],
                 icon: iconWithStatus(status),
-                author: Number(currentUser.id),
+                author: currentUser.id,
               }));
 
               setUploadedFiles([]);

@@ -7,26 +7,18 @@ const ActionTypes = {
 function ProjectReducer(state = initialState, action) {
   switch (action.type) {
     case ActionTypes.ADD_PROJECT:
-      return {
+      return [
         ...state,
-        projects: [...state.projects, {
-          id: state.projects.length === 0 ? 1 : state.projects.length + 1,
-          title: action.payload.projectName,
-          status: action.payload.status,
-          user_id: action.payload.user_id
-        }],
-      };
+        action.payload
+      ];
     default:
       return state;
   }
 }
 
-export const addProject = (projectName, status, user_id) => ({
+export const addProject = (projectData) => ({
   type: ActionTypes.ADD_PROJECT,
-  payload: {projectName, status, user_id},
+  payload: projectData,
 });
-
-
-
 
 export default ProjectReducer;

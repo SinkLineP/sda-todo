@@ -6,6 +6,7 @@ import * as yup from "yup";
 import "./ProjectModal.css";
 import {useDispatch, useSelector} from "react-redux";
 import {addProject} from "../../store/Reducers/projectReducer";
+import {v4 as uuid} from "uuid";
 
 
 export default function ProjectModal({ onClose, show }) {
@@ -53,7 +54,12 @@ export default function ProjectModal({ onClose, show }) {
           }}
           validateOnBlur
           onSubmit={(values) => {
-            dispatch(addProject(values.projectName, "queue", currentUser.id));
+            dispatch(addProject({
+              id: uuid(),
+              title: values.projectName,
+              status: "queue",
+              user_id: currentUser.id
+            }));
           }}
           validationSchema={validationsSchema}>
           {({ values, errors, touched, handleChange, handleBlur, isValid, handleSubmit, dirty, resetForm }) => {

@@ -11,6 +11,7 @@ import {removeTask} from "../../store/Reducers/taskReducer";
 import IsAuth from "../../hooks/IsAuth";
 import {ReactComponent as IconDeleteCrossSVG} from "./icons/delete-cross.svg";
 import {ReactComponent as IconApplyDeleteSVG} from "./icons/apply-delete.svg";
+import Comments from "../Comments/Comments";
 
 
 Modal.setAppElement("#root");
@@ -217,6 +218,11 @@ export default function InfoTask({ show, onClose, item }) {
             </>
           )}
         </div>
+
+        <div>
+          <Comments task_id={item.id} />
+        </div>
+
         <div style={{
           display: "flex",
           flexDirection: "row",

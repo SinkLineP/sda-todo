@@ -9,7 +9,7 @@ import CreateTaskModal from "../components/CreateTaskModal/CreateTaskModal";
 
 
 export default function Tasks() {
-  const taskData = useSelector(state => state.tasks.tasks);
+  const taskData = useSelector(state => state.tasks);
   const statuses = useSelector(state => state.categories);
   const [items, setItems] = useState([]);
   const { project_id } = useParams();
@@ -17,6 +17,7 @@ export default function Tasks() {
   const projectsStore = useSelector(state => state.project.projects);
   const [show, setShow] = useState(false);
 
+  console.log(taskData);
 
   useEffect(() => {
     setItems(taskData);
@@ -44,7 +45,7 @@ export default function Tasks() {
 
   const checkProjectsAuthor = () => {
     return projectsStore.some((project) => {
-      return project.id === Number(project_id) && project.user_id === currentUser.id
+      return project.id === project_id && project.user_id === currentUser.id
     });
   }
 
@@ -52,11 +53,10 @@ export default function Tasks() {
   const onClose = () => setShow(false);
 
   const showTask = (items, s) => {
-    const arrayItems = items
-      .filter(i => i.status === s.status && i.projectId === Number(project_id))
-      .map((i, idx) => <Item key={i.id} item={i} index={idx} moveItem={moveItem} status={s}/>)
-
-    return arrayItems;
+    console.log(items);
+    return items
+      .filter(i => i.status === s.status && i.projectId === project_id)
+      .map((i, idx) => <Item key={i.id} item={i} index={idx} moveItem={moveItem} status={s}/>);
   }
 
 
