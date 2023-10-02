@@ -5,7 +5,6 @@ import {useDispatch, useSelector} from "react-redux";
 
 const ShowButtons = ({ commentID , comment, task_id, setIsEditing, isEditing, commentIDClicked, inputEditValues, setInputEditValues, setStatusComment, statusComment }) => {
   const currentUser = useSelector(state => state.auth.currentUser);
-  const commentsStore = useSelector(state => state.comments);
   const dispatch = useDispatch();
   const [status, setStatus] = useState("default");
 

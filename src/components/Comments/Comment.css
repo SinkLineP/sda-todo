@@ -47,6 +47,12 @@
     border: 1px solid lightgrey;
 }
 
+.input-create-comment::-webkit-search-cancel-button {
+    height: 10px;
+    width: 10px;
+    background: red;
+}
+
 .button-create-comment {
     background-color: #054F7C;
     color: white;
@@ -93,22 +99,25 @@
     color: #7a7a7a;
 }
 
-.container-reply-comment {
+.container-reply-input {
     border: 1px solid lightgrey;
-    padding: 10px 10px 10px 10px;
+    background-color: #f6f6f6;
     border-radius: 0.5rem;
+    padding: 0 10px 10px 10px;
+}
+
+.container-reply-comment {
     box-sizing: border-box;
-    margin-top: 10px;
+    margin-top: 6px;
     display: flex;
     flex-direction: row;
     gap: 10px;
     width: 100%;
-    background-color: #f6f6f6
 }
 
 .container-reply {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     gap: 10px;
 }
 
@@ -131,5 +140,32 @@
 .comment-form {
     display: flex;
     flex-direction: row;
-    gap: 10px
+    gap: 10px;
+    position: relative;
 }
+
+.container-show-comment {
+
+}
+
+.container-show-comment-header {
+    display: flex;
+    flex-direction: row;
+}
+
+.container-show-username {
+    margin-right: 1%;
+}
+
+.container-show-date {
+    margin-left: 1%;
+}
+
+.errors-reply {
+    color: #f36464;
+    font-weight: bold;
+    margin-top: 5px;
+    font-size: 0.9rem;
+}
+
+.container-tree-comments {}

@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
 import IsAuth from "../../../hooks/IsAuth";
 import AuthModal from "../../AuthModal/AuthModal";
 import CommentForm from "./CommentForm";

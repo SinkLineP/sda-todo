@@ -23,6 +23,12 @@ export const getAuthorProject = (project_user_id, usersStore) => {
   }
 }
 
+export const getUser = (user_id, users) => {
+  return users.find(user => {
+    return user.id === user_id;
+  })
+}
+
 export const CountSliceFilesTask = 40;
 
 

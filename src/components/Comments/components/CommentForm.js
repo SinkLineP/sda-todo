@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {useDispatch, useSelector} from "react-redux";
@@ -43,11 +43,12 @@ const CommentForm = ({ task_id }) => {
     }
   };
 
+
   return (
     <form className={"container-comment-form"} onSubmit={formik.handleSubmit}>
-        {formik.touched.value && formik.errors.value ? (
-          <div className="errors">{formik.errors.value}</div>
-        ) : null}
+      {formik.touched.value && formik.errors.value ? (
+        <div className="errors">{formik.errors.value}</div>
+      ) : null}
 
       <div className={"comment-form"}>
         <input
@@ -69,10 +70,6 @@ const CommentForm = ({ task_id }) => {
           <span>Отправить</span>
         </button>
       </div>
-
-
-
-
     </form>
   );
 };

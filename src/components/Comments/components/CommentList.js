@@ -1,50 +1,67 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import IsAuth from "../../../hooks/IsAuth";
 import moment from 'moment';
 import ShowButtons from "./ShowButtons";
 import ButtonCustom from "./ButtonCustom";
-import {addComment, addReply, replyComment} from "../../../store/Reducers/commentReducer";
+import {addReply} from "../../../store/Reducers/commentReducer";
 import {v4 as uuid} from "uuid";
+import {getUser} from "../../../Variables";
 
 const CommentList = ({ task_id, commentsStore }) => {
-  const currentUser = useSelector(state => state.auth.currentUser);
-  const isAuth = IsAuth();
   const [inputEditValues, setInputEditValues] = useState({});
   const [inputReplyValues, setInputReplyValues] = useState({});
   const [commentIDClicked, setCommentIDClicked] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [statusComment, setStatusComment] = useState("default");
+  const [errorReply, setErrorReply] = useState("");
+  const currentUser = useSelector(state => state.auth.currentUser);
+  const usersStore = useSelector(state => state.auth.users);
   const dispatch = useDispatch();
+  const isAuth = IsAuth();
 
-  const ReplyComment = (state, content, currentComment) => {
-    const addChildToComment = (comment, parentId) => {
-      if (comment.id === parentId) {
-        if (!comment.comments) {
-          comment.comments = [];
-        }
-        comment.comments.push({
-          id: uuid(),
-          task_id: task_id,
-          user_id: currentUser.id,
-          date: new Date(),
-          content: content,
-          parent_id: currentComment.id,
-          comments: []
-        });
-      } else if (comment.comments) {
-        for (const child of comment.comments) {
-          addChildToComment(child, parentId);
-        }
-      }
-    };
 
-    for (const comment of state) {
-      addChildToComment(comment, currentComment.id);
-    }
+  const functionAddReply = (comment) => {
+    setErrorReply("")
 
-    return state;
+    dispatch(addReply({
+      id: uuid(),
+      task_id: task_id,
+      user_id: currentUser.id,
+      date: new Date(),
+      content: inputReplyValues[comment.id],
+      parent_id: comment.id,
+      comments: []
+    }));
+
+    setStatusComment("default");
+    setInputReplyValues({
+      ...inputReplyValues,
+      [comment.id]: ""
+    });
   }
+
+  const checkValueReply = (func, comment) => {
+    if (inputReplyValues[comment.id] !== undefined) {
+      if (inputReplyValues[comment.id].length > 0) {
+        return func()
+      } else {
+        setErrorReply("Введите ответ...")
+      }
+    } else {
+      setErrorReply("Введите ответ...")
+    }
+  }
+
+  const handleKeyPress = (e, comment) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      console.log();
+      checkValueReply(() => {
+        functionAddReply(comment);
+      }, comment);
+    }
+  };
 
   if (commentsStore.length !== 0) {
     return commentsStore.map((comment) => {
@@ -68,14 +85,22 @@ const CommentList = ({ task_id, commentsStore }) => {
                   placeholder={"Введите новый текст комментария..."}
                 />
               ) : (
-                <>
-                  <p>User ID: {comment.user_id}.</p>
-                  <p>Comment: {comment.content}.</p>
-                  <p>Comment ID: {comment.id}.</p>
-                  <p>Comment parent ID: {comment.parent_id}.</p>
-                  <p>Connect to Task ID: {comment.task_id}.</p>
-                  <p>Date: {moment(comment.date).fromNow()}</p>
-                </>
+                <div className={"container-show-comment"}>
+                  <div className={"container-show-comment-header"}>
+                    <div className={"container-show-username"}>Пользователь: {getUser(comment.user_id, usersStore).username}</div>
+                    <div>•</div>
+                    <div className={"container-show-date"}>{moment(comment.date).fromNow()}</div>
+                  </div>
+                  <div>
+                    <p>{comment.content}</p>
+                  </div>
+                  {/*<p>User ID: {comment.user_id}.</p>*/}
+                  {/*<p>Comment: {comment.content}.</p>*/}
+                  {/*<p>Comment ID: {comment.id}.</p>*/}
+                  {/*<p>Comment parent ID: {comment.parent_id}.</p>*/}
+                  {/*<p>Connect to Task ID: {comment.task_id}.</p>*/}
+                  {/*<p>Date: {moment(comment.date).fromNow()}</p>*/}
+                </div>
               )}
 
               {isAuth && (
@@ -96,51 +121,48 @@ const CommentList = ({ task_id, commentsStore }) => {
               )}
 
               {isAuth && statusComment === "reply" && commentIDClicked === comment.id ? (
-                <div className={"container-reply-comment content"}>
-                  <input
-                    className={"input-create-comment"}
-                    value={inputReplyValues[comment.id] || ""}
-                    onChange={(e) => {
+                <div className={"container-reply-input"}>
+                  {errorReply !== "" ? <div className={"errors-reply"}>{errorReply}</div> : <div className={"errors"}></div>}
+                  <div className={"container-reply-comment content"}>
+                    <input
+                      className={"input-create-comment"}
+                      value={inputReplyValues[comment.id] || ""}
+                      onChange={(e) => {
+                        if (e.target.value.length > 0) setErrorReply("");
+                        if (e.target.value.length === 0) setErrorReply("Введите ответ...");
+
+                        setInputReplyValues({
+                          ...inputReplyValues,
+                          [comment.id]: e.target.value
+                        });
+                      }}
+                      placeholder={"Введите ответ..."}
+                      onKeyPress={(e) => handleKeyPress(e, comment)}
+                    />
+
+                    <ButtonCustom className={"button-on-comment button-remove"} title={"Отменить"} handleCLick={() => {
+                      if (errorReply !== "") setErrorReply("");
+
+                      setStatusComment("default")
                       setInputReplyValues({
                         ...inputReplyValues,
-                        [comment.id]: e.target.value
+                        [comment.id]: ""
                       });
-                    }}
-                    placeholder={"Введите ответ..."}
-                  />
-
-                  <ButtonCustom className={"button-on-comment button-remove"} title={"Отменить"} handleCLick={() => {
-                    setStatusComment("default")
-                    setInputReplyValues({
-                      ...inputReplyValues,
-                      [comment.id]: ""
-                    });
-                  }} />
-                  <ButtonCustom className={"button-on-comment button-reply"} title={"Ответить"} handleCLick={() => {
-                    dispatch(addReply({
-                      id: uuid(),
-                      task_id: task_id,
-                      user_id: currentUser.id,
-                      date: new Date(),
-                      content: inputReplyValues[comment.id],
-                      parent_id: comment.id,
-                      comments: []
-                    }));
-
-                    setStatusComment("default");
-                    setInputReplyValues({
-                      ...inputReplyValues,
-                      [comment.id]: ""
-                    });
-                  }} />
+                    }} />
+                    <ButtonCustom className={"button-on-comment button-reply"} title={"Ответить"} handleCLick={() => {
+                      checkValueReply(() => {
+                        functionAddReply(comment);
+                      }, comment)
+                    }} />
+                  </div>
                 </div>
               ) : null}
 
               <div>
                 {isAuth && comment.comments.length !== 0 && (
                   <div className={"container-reply"}>
-                    <p className={"reply-label"}>Ответы: </p>
                     <CommentList commentsStore={comment.comments} task_id={task_id} />
+                    <p className={"reply-label"}>Ответы: </p>
                   </div>
                 )}
               </div>
