@@ -126,6 +126,8 @@ const CommentList = ({ task_id, commentsStore }) => {
                       parent_id: comment.id,
                       comments: []
                     }));
+
+                    setStatusComment("default");
                   }} />
                 </div>
               ) : null}
