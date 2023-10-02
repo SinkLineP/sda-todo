@@ -10,21 +10,37 @@ const ActionTypes = {
 
 
 const addChildToComment = (comment, parentId, newComment) => {
-  // Если текущий комментарий имеет идентификатор родительского комментария,
-  // мы должны добавить новый комментарий в его список подкомментариев
   if (comment.id === parentId) {
     if (!comment.comments) {
       comment.comments = [];
     }
     comment.comments.push(newComment);
   } else if (comment.comments) {
-    // Если у текущего комментария есть подкомментарии,
-    // рекурсивно вызываем эту функцию для каждого из них
     for (const child of comment.comments) {
       addChildToComment(child, parentId, newComment);
     }
   }
-  return comment; // Возвращаем обновленный объект комментария
+  return comment;
+};
+
+
+const removeItemByIdRecursive = (array, idToRemove) => {
+  const updatedArray = [];
+  for (let i = 0; i < array.length; i++) {
+    const currentItem = array[i];
+
+    if (currentItem.id === idToRemove) {
+      // If the item matches the id to remove, skip it
+      continue;
+    } else if (currentItem.comments && currentItem.comments.length > 0) {
+      // Recursively update comments
+      const updatedComments = removeItemByIdRecursive(currentItem.comments, idToRemove);
+      currentItem.comments = updatedComments;
+    }
+
+    updatedArray.push(currentItem); // Add the current item to the updated array
+  }
+  return updatedArray;
 };
 
 function CommentReducer(state = initialState, action) {
@@ -33,7 +49,6 @@ function CommentReducer(state = initialState, action) {
       return [...state, action.payload];
 
     case ActionTypes.REPLY_COMMENT:
-      // Создаем новый комментарий на основе action.payload
       const newComment = {
         id: action.payload.id,
         task_id: action.payload.task_id,
@@ -41,28 +56,15 @@ function CommentReducer(state = initialState, action) {
         date: action.payload.date,
         content: action.payload.content,
         parent_id: action.payload.parent_id,
-        comments: [], // Начально у нового комментария нет подкомментариев
+        comments: [],
       };
 
-      // Обновляем состояние с новым комментарием, используя функцию addChildToComment
-      return state.map((comment) =>
-        addChildToComment({...comment}, action.payload.parent_id, newComment)
-      );
+      return state.map((comment) => {
+        return addChildToComment({...comment}, action.payload.parent_id, newComment)
+      });
 
     case ActionTypes.REMOVE_REPLY_COMMENT:
-      const { commentId, parent_id } = action.payload;
-
-      return state.map((comment) => {
-        if (comment.id === parent_id) {
-          return {
-            ...comment,
-            comments: comment.comments.filter(
-              (replyComment) => replyComment.id !== commentId
-            ),
-          };
-        }
-        return comment;
-      });
+      return removeItemByIdRecursive(state, action.payload);
 
     case ActionTypes.EDIT_COMMENT:
       const { commentID, updatedComment } = action.payload;
@@ -105,9 +107,9 @@ export const removeComment = (commentId) => ({
   payload: commentId,
 });
 
-export const removeReply = (commentId, parent_id) => ({
+export const removeReply = (commentId) => ({
   type: ActionTypes.REMOVE_REPLY_COMMENT,
-  payload: { commentId, parent_id },
+  payload: commentId,
 });
 
 

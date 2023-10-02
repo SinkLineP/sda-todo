@@ -11,7 +11,11 @@ const ShowButtons = ({ commentID , comment, task_id, setIsEditing, isEditing, co
 
   useEffect(() => {
     if (statusComment === "default") setStatus("default");
-  }, [statusComment, setStatus])
+  }, [statusComment, setStatus]);
+
+  const handleRemoveReply = (commentId) => {
+    dispatch(removeReply(commentId)); // Вызываете экшен removeReply
+  };
 
     if (status === "default") {
       return (
@@ -27,11 +31,12 @@ const ShowButtons = ({ commentID , comment, task_id, setIsEditing, isEditing, co
                 // setI
               }} title={"Редактировать"} />
               <ButtonCustom className={"button-on-comment button-remove"} handleCLick={() => {
-                setStatus("default")
+                setStatus("default");
+
                 if (comment.parent_id === null) {
                   dispatch(removeComment(commentID));
                 } else {
-                  dispatch(removeReply(commentID, comment.parent_id));
+                  return handleRemoveReply(comment.id);
                 }
 
               }} title={"Удалить"} />
