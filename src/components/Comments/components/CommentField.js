@@ -32,6 +32,7 @@ const CommentField = ({ task_id, setValue, value }) => {
                   user_id: currentUser.id,
                   content: value,
                   date: new Date(),
+                  parent_id: null,
                   comments: []
                 }))
 
