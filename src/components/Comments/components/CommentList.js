@@ -4,7 +4,7 @@ import IsAuth from "../../../hooks/IsAuth";
 import moment from 'moment';
 import ShowButtons from "./ShowButtons";
 import ButtonCustom from "./ButtonCustom";
-import {addComment} from "../../../store/Reducers/commentReducer";
+import {addComment, replyComment} from "../../../store/Reducers/commentReducer";
 import {v4 as uuid} from "uuid";
 
 const CommentList = ({ task_id, commentsStore }) => {
@@ -18,42 +18,20 @@ const CommentList = ({ task_id, commentsStore }) => {
   const dispatch = useDispatch();
 
   const ReplyComment = (state, content, currentComment) => {
-    // const index = state.findIndex(item => item.id === commentIDClicked && item.user_id === currentUser.id);
-    //
-    // console.log(state[index]);
-    //
-    // if (index !== -1) {
-    //   return {
-    //     ...state[index],
-    //     comments: [...state[index].comments, {
-    //       id: uuid(),
-    //       task_id: task_id,
-    //       user_id: currentUser.id,
-    //       date: new Date(),
-    //       content: content,
-    //       comments: []
-    //     }]
-    //   };
-    // }
-    //
-    // return state;
-
-    const newComment = {
-      id: uuid(),
-      task_id: task_id,
-      user_id: currentUser.id,
-      date: new Date(),
-      content: content,
-      parent_id: currentComment.id,
-      comments: []
-    };
-
     const addChildToComment = (comment, parentId) => {
       if (comment.id === parentId) {
         if (!comment.comments) {
           comment.comments = [];
         }
-        comment.comments.push(newComment);
+        comment.comments.push({
+          id: uuid(),
+          task_id: task_id,
+          user_id: currentUser.id,
+          date: new Date(),
+          content: content,
+          parent_id: currentComment.id,
+          comments: []
+        });
       } else if (comment.comments) {
         for (const child of comment.comments) {
           addChildToComment(child, parentId);
@@ -68,22 +46,12 @@ const CommentList = ({ task_id, commentsStore }) => {
     return state;
   }
 
-
-
-  // useEffect(() => {
-  //   console.log(commentsStore);
-  // }, [commentsStore])
-
   if (commentsStore.length !== 0) {
     return commentsStore.map((comment) => {
       if (comment.task_id === task_id) {
         return (
           <div className={"container-tree-comments"} key={comment.id} onClick={() => {
             setCommentIDClicked(comment.id);
-
-            // if (statusComment === "default") {
-            //
-            // }
           }}>
 
             <div className={"container-comment content"}>
@@ -149,8 +117,15 @@ const CommentList = ({ task_id, commentsStore }) => {
                     });
                   }} />
                   <ButtonCustom className={"button-on-comment button-reply"} title={"Ответить"} handleCLick={() => {
-                    ReplyComment(commentsStore, inputReplyValues[comment.id], comment);
-                    // dispatch(addComment(ReplyComment(commentsStore, inputReplyValues[comment.id])))
+                    dispatch(replyComment({
+                      id: uuid(),
+                      task_id: task_id,
+                      user_id: currentUser.id,
+                      date: new Date(),
+                      content: inputReplyValues[comment.id],
+                      parent_id: comment.id,
+                      comments: []
+                    }));
                   }} />
                 </div>
               ) : null}
