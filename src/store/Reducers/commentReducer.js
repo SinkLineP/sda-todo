@@ -5,6 +5,7 @@ const ActionTypes = {
   REMOVE_COMMENT: 'REMOVE_COMMENT',
   EDIT_COMMENT: 'EDIT_COMMENT',
   REPLY_COMMENT: 'REPLY_COMMENT',
+  REMOVE_REPLY_COMMENT: 'REMOVE_REPLY_COMMENT'
 };
 
 
@@ -48,6 +49,21 @@ function CommentReducer(state = initialState, action) {
         addChildToComment({...comment}, action.payload.parent_id, newComment)
       );
 
+    case ActionTypes.REMOVE_REPLY_COMMENT:
+      const { commentId, parent_id } = action.payload;
+
+      return state.map((comment) => {
+        if (comment.id === parent_id) {
+          return {
+            ...comment,
+            comments: comment.comments.filter(
+              (replyComment) => replyComment.id !== commentId
+            ),
+          };
+        }
+        return comment;
+      });
+
     case ActionTypes.EDIT_COMMENT:
       const { commentID, updatedComment } = action.payload;
 
@@ -79,7 +95,7 @@ export const addComment = (formData) => ({
   payload: formData,
 });
 
-export const replyComment = (formData) => ({
+export const addReply = (formData) => ({
   type: ActionTypes.REPLY_COMMENT,
   payload: formData,
 });
@@ -88,5 +104,11 @@ export const removeComment = (commentId) => ({
   type: ActionTypes.REMOVE_COMMENT,
   payload: commentId,
 });
+
+export const removeReply = (commentId, parent_id) => ({
+  type: ActionTypes.REMOVE_REPLY_COMMENT,
+  payload: { commentId, parent_id },
+});
+
 
 export default CommentReducer;

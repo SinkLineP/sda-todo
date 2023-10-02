@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import ButtonCustom from "./ButtonCustom";
-import {editComment, removeComment} from "../../../store/Reducers/commentReducer";
+import {editComment, removeComment, removeReply} from "../../../store/Reducers/commentReducer";
 import {useDispatch, useSelector} from "react-redux";
 
 const ShowButtons = ({ commentID , comment, task_id, setIsEditing, isEditing, commentIDClicked, inputEditValues, setInputEditValues, setStatusComment, statusComment }) => {
@@ -12,10 +12,6 @@ const ShowButtons = ({ commentID , comment, task_id, setIsEditing, isEditing, co
   useEffect(() => {
     if (statusComment === "default") setStatus("default");
   }, [statusComment, setStatus])
-
-  useEffect(() => {
-
-  }, [commentsStore])
 
     if (status === "default") {
       return (
@@ -32,7 +28,12 @@ const ShowButtons = ({ commentID , comment, task_id, setIsEditing, isEditing, co
               }} title={"Редактировать"} />
               <ButtonCustom className={"button-on-comment button-remove"} handleCLick={() => {
                 setStatus("default")
-                dispatch(removeComment(commentID))
+                if (comment.parent_id === null) {
+                  dispatch(removeComment(commentID));
+                } else {
+                  dispatch(removeReply(commentID, comment.parent_id));
+                }
+
               }} title={"Удалить"} />
             </>
           )}

@@ -4,7 +4,7 @@ import IsAuth from "../../../hooks/IsAuth";
 import moment from 'moment';
 import ShowButtons from "./ShowButtons";
 import ButtonCustom from "./ButtonCustom";
-import {addComment, replyComment} from "../../../store/Reducers/commentReducer";
+import {addComment, addReply, replyComment} from "../../../store/Reducers/commentReducer";
 import {v4 as uuid} from "uuid";
 
 const CommentList = ({ task_id, commentsStore }) => {
@@ -117,7 +117,7 @@ const CommentList = ({ task_id, commentsStore }) => {
                     });
                   }} />
                   <ButtonCustom className={"button-on-comment button-reply"} title={"Ответить"} handleCLick={() => {
-                    dispatch(replyComment({
+                    dispatch(addReply({
                       id: uuid(),
                       task_id: task_id,
                       user_id: currentUser.id,
@@ -128,6 +128,10 @@ const CommentList = ({ task_id, commentsStore }) => {
                     }));
 
                     setStatusComment("default");
+                    setInputReplyValues({
+                      ...inputReplyValues,
+                      [comment.id]: ""
+                    });
                   }} />
                 </div>
               ) : null}
