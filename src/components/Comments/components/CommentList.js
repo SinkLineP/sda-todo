@@ -17,31 +17,62 @@ const CommentList = ({ task_id, commentsStore }) => {
   const [statusComment, setStatusComment] = useState("default");
   const dispatch = useDispatch();
 
-  const ReplyComment = (state, content) => {
-    const index = state.findIndex(item => item.id === commentIDClicked && item.user_id === currentUser.id);
+  const ReplyComment = (state, content, currentComment) => {
+    // const index = state.findIndex(item => item.id === commentIDClicked && item.user_id === currentUser.id);
+    //
+    // console.log(state[index]);
+    //
+    // if (index !== -1) {
+    //   return {
+    //     ...state[index],
+    //     comments: [...state[index].comments, {
+    //       id: uuid(),
+    //       task_id: task_id,
+    //       user_id: currentUser.id,
+    //       date: new Date(),
+    //       content: content,
+    //       comments: []
+    //     }]
+    //   };
+    // }
+    //
+    // return state;
 
-    console.log(state[index]);
+    const newComment = {
+      id: uuid(),
+      task_id: task_id,
+      user_id: currentUser.id,
+      date: new Date(),
+      content: content,
+      parent_id: currentComment.id,
+      comments: []
+    };
 
-    if (index !== -1) {
-      return {
-        ...state[index],
-        comments: [...state[index].comments, {
-          id: uuid(),
-          task_id: task_id,
-          user_id: currentUser.id,
-          date: new Date(),
-          content: content,
-          comments: []
-        }]
-      };
+    const addChildToComment = (comment, parentId) => {
+      if (comment.id === parentId) {
+        if (!comment.comments) {
+          comment.comments = [];
+        }
+        comment.comments.push(newComment);
+      } else if (comment.comments) {
+        for (const child of comment.comments) {
+          addChildToComment(child, parentId);
+        }
+      }
+    };
+
+    for (const comment of state) {
+      addChildToComment(comment, currentComment.id);
     }
 
     return state;
   }
 
-  useEffect(() => {
-    console.log(commentsStore);
-  }, [commentsStore])
+
+
+  // useEffect(() => {
+  //   console.log(commentsStore);
+  // }, [commentsStore])
 
   if (commentsStore.length !== 0) {
     return commentsStore.map((comment) => {
@@ -50,9 +81,9 @@ const CommentList = ({ task_id, commentsStore }) => {
           <div className={"container-tree-comments"} key={comment.id} onClick={() => {
             setCommentIDClicked(comment.id);
 
-            if (statusComment === "default") {
-
-            }
+            // if (statusComment === "default") {
+            //
+            // }
           }}>
 
             <div className={"container-comment content"}>
@@ -73,6 +104,7 @@ const CommentList = ({ task_id, commentsStore }) => {
                   <p>User ID: {comment.user_id}.</p>
                   <p>Comment: {comment.content}.</p>
                   <p>Comment ID: {comment.id}.</p>
+                  <p>Comment parent ID: {comment.parent_id}.</p>
                   <p>Connect to Task ID: {comment.task_id}.</p>
                   <p>Date: {moment(comment.date).fromNow()}</p>
                 </>
@@ -116,7 +148,10 @@ const CommentList = ({ task_id, commentsStore }) => {
                       [comment.id]: ""
                     });
                   }} />
-                  <ButtonCustom className={"button-on-comment button-reply"} title={"Ответить"} handleCLick={() => dispatch(addComment(ReplyComment(commentsStore, inputReplyValues[comment.id])))} />
+                  <ButtonCustom className={"button-on-comment button-reply"} title={"Ответить"} handleCLick={() => {
+                    ReplyComment(commentsStore, inputReplyValues[comment.id], comment);
+                    // dispatch(addComment(ReplyComment(commentsStore, inputReplyValues[comment.id])))
+                  }} />
                 </div>
               ) : null}
 
