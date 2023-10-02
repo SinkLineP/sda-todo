@@ -116,3 +116,9 @@
     font-weight: bold;
     margin-top: 2rem;
 }
+
+.link-auth {
+    text-decoration: underline;
+    color: dodgerblue;
+    cursor: pointer;
+}

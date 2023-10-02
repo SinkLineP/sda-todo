@@ -1,14 +1,18 @@
-import React from "react";
+import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {addComment} from "../../../store/Reducers/commentReducer";
 import { v4 as uuid } from 'uuid';
 import IsAuth from "../../../hooks/IsAuth";
+import AuthModal from "../../AuthModal/AuthModal";
 
 
 const CommentField = ({ task_id, setValue, value }) => {
   const currentUser = useSelector(state => state.auth.currentUser);
   const dispatch = useDispatch();
   const isAuth = IsAuth();
+  const [show, setShow] = useState(false);
+  const onOpen = () => setShow(true);
+  const onClose = () => setShow(false);
 
   return (
     <div className={"container-create-comment"}>
@@ -43,9 +47,14 @@ const CommentField = ({ task_id, setValue, value }) => {
             </button>
           </>
         ) : (
-          <p className={"no-select-text title-not-auth"}>Войдите в свой профиль чтобы отсавить комментарий</p>
+          <p className={"no-select-text title-not-auth"}><span className={"link-auth"} onClick={() => onOpen()}>Войдите</span> в свой профиль чтобы отсавить комментарий</p>
         )
       }
+
+      <AuthModal
+        onClose={onClose}
+        show={show}
+      />
     </div>
   );
 }

@@ -402,9 +402,11 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                           onChange={(event) => {
                             const selectedFiles = Array.from(event.currentTarget.files);
 
-                            setUploadedFiles(selectedFiles);
+                            const newSelectedFiles = selectedFiles.filter(item => item.size > 0);
 
-                            SliceSelectedFiles(selectedFiles, setFieldValue, event.currentTarget.value);
+                            setUploadedFiles(newSelectedFiles);
+
+                            SliceSelectedFiles(newSelectedFiles, setFieldValue, event.currentTarget.value);
                           }}
                         />
                       </div>
