@@ -7,6 +7,7 @@ import ButtonCustom from "./ButtonCustom";
 import {addReply} from "../../../store/Reducers/commentReducer";
 import {v4 as uuid} from "uuid";
 import {getUser} from "../../../Variables";
+import {AddReply, handleKeyPress} from "../functions";
 
 const CommentList = ({ task_id, commentsStore }) => {
   const [inputEditValues, setInputEditValues] = useState({});
@@ -20,48 +21,6 @@ const CommentList = ({ task_id, commentsStore }) => {
   const dispatch = useDispatch();
   const isAuth = IsAuth();
 
-
-  const functionAddReply = (comment) => {
-    setErrorReply("")
-
-    dispatch(addReply({
-      id: uuid(),
-      task_id: task_id,
-      user_id: currentUser.id,
-      date: new Date(),
-      content: inputReplyValues[comment.id],
-      parent_id: comment.id,
-      comments: []
-    }));
-
-    setStatusComment("default");
-    setInputReplyValues({
-      ...inputReplyValues,
-      [comment.id]: ""
-    });
-  }
-
-  const checkValueReply = (func, comment) => {
-    if (inputReplyValues[comment.id] !== undefined) {
-      if (inputReplyValues[comment.id].length > 0) {
-        return func()
-      } else {
-        setErrorReply("Введите ответ...")
-      }
-    } else {
-      setErrorReply("Введите ответ...")
-    }
-  }
-
-  const handleKeyPress = (e, comment) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      console.log();
-      checkValueReply(() => {
-        functionAddReply(comment);
-      }, comment);
-    }
-  };
 
   if (commentsStore.length !== 0) {
     return commentsStore.map((comment) => {
@@ -137,7 +96,13 @@ const CommentList = ({ task_id, commentsStore }) => {
                         });
                       }}
                       placeholder={"Введите ответ..."}
-                      onKeyPress={(e) => handleKeyPress(e, comment)}
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault();
+                          console.log();
+                          AddReply(comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setStatusComment, setInputReplyValues);
+                        }
+                      }}
                     />
 
                     <ButtonCustom className={"button-on-comment button-remove"} title={"Отменить"} handleCLick={() => {
@@ -150,9 +115,7 @@ const CommentList = ({ task_id, commentsStore }) => {
                       });
                     }} />
                     <ButtonCustom className={"button-on-comment button-reply"} title={"Ответить"} handleCLick={() => {
-                      checkValueReply(() => {
-                        functionAddReply(comment);
-                      }, comment)
+                      AddReply(comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setStatusComment, setInputReplyValues);
                     }} />
                   </div>
                 </div>
