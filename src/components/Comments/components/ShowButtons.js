@@ -51,7 +51,6 @@ const ShowButtons = ({ commentID , comment, task_id, setIsEditing, isEditing, co
           <>
             <ButtonCustom className={"button-on-comment button-save"} handleCLick={() => {
               setStatus("default")
-
               setIsEditing(false);
 
               setInputEditValues({

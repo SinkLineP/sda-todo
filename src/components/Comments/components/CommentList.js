@@ -32,7 +32,7 @@ const CommentList = ({ task_id, commentsStore }) => {
             setCommentIDClicked(comment.id);
           }}>
 
-            <div className={"container-comment content"}>
+            <div className={`container-comment content ${isEditing && commentIDClicked === comment.id && "is-editing-background"}`}>
               {isEditing && commentIDClicked === comment.id ? (
                 <input
                   className={"input-create-comment"}
@@ -56,12 +56,6 @@ const CommentList = ({ task_id, commentsStore }) => {
                   <div className={"container-show-content"}>
                     <p>{comment.content}</p>
                   </div>
-                  {/*<p>User ID: {comment.user_id}.</p>*/}
-                  {/*<p>Comment: {comment.content}.</p>*/}
-                  {/*<p>Comment ID: {comment.id}.</p>*/}
-                  {/*<p>Comment parent ID: {comment.parent_id}.</p>*/}
-                  {/*<p>Connect to Task ID: {comment.task_id}.</p>*/}
-                  {/*<p>Date: {moment(comment.date).fromNow()}</p>*/}
                 </div>
               )}
 

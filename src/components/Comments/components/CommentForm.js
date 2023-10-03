@@ -63,7 +63,7 @@ const CommentForm = ({ task_id }) => {
         />
 
         <button
-          className={"button-create-comment"}
+          className={"button-on-comment button-reply"}
           type="submit"
           disabled={formik.isSubmitting || !formik.isValid}
         >
