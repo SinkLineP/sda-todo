@@ -22,8 +22,6 @@ const ShowButtons = ({
   const dispatch = useDispatch();
   const [status, setStatus] = useState("default");
 
-  console.log(statusComment);
-
   useEffect(() => {
     if (statusComment === "default") setStatus("default");
   }, [statusComment, setStatus]);

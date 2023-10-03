@@ -110,16 +110,58 @@ const CommentList = ({ task_id, commentsStore }) => {
                         if (e.target.value.length > 0) setErrorReply("");
                         if (e.target.value.length === 0) setErrorReply("Введите ответ...");
 
-                        setInputReplyValues({
-                          ...inputReplyValues,
-                          [comment.id]: e.target.value,
-                        });
-                      }}
-                      placeholder={"Введите ответ..."}
-                      onKeyPress={(e) => {
-                        if (e.key === "Enter" && !e.shiftKey) {
-                          e.preventDefault();
-                          console.log();
+                          setInputReplyValues({
+                            ...inputReplyValues,
+                            [comment.id]: e.target.value,
+                          });
+                        }}
+                        placeholder={"Введите ответ..."}
+                        onKeyPress={(e) => {
+                          if (e.key === "Enter" && !e.shiftKey) {
+                            e.preventDefault();
+                            console.log();
+
+                            setIsShowComments({
+                              status: true,
+                              title: "Скрыть комментарии",
+                            })
+
+                            AddReply(
+                              comment,
+                              setErrorReply,
+                              dispatch,
+                              task_id,
+                              currentUser,
+                              inputReplyValues,
+                              setStatusComment,
+                              setInputReplyValues
+                            );
+                          }
+                        }}
+                      />
+
+                    <ButtonCustom
+                      className={"button-on-comment button-remove"}
+                      title={"Отменить"}
+                      handleCLick={() => {
+                        if (errorReply !== "") setErrorReply("");
+
+                          setStatusComment("default");
+                          setInputReplyValues({
+                            ...inputReplyValues,
+                            [comment.id]: "",
+                          });
+                        }}
+                      />
+                      <ButtonCustom
+                        className={"button-on-comment button-reply"}
+                        title={"Ответить"}
+                        handleCLick={() => {
+                          setIsShowComments({
+                            status: true,
+                            title: "Скрыть комментарии",
+                          })
+
                           AddReply(
                             comment,
                             setErrorReply,
@@ -130,41 +172,10 @@ const CommentList = ({ task_id, commentsStore }) => {
                             setStatusComment,
                             setInputReplyValues
                           );
-                        }
-                      }}
-                    />
-
-                    <ButtonCustom
-                      className={"button-on-comment button-remove"}
-                      title={"Отменить"}
-                      handleCLick={() => {
-                        if (errorReply !== "") setErrorReply("");
-
-                        setStatusComment("default");
-                        setInputReplyValues({
-                          ...inputReplyValues,
-                          [comment.id]: "",
-                        });
-                      }}
-                    />
-                    <ButtonCustom
-                      className={"button-on-comment button-reply"}
-                      title={"Ответить"}
-                      handleCLick={() => {
-                        AddReply(
-                          comment,
-                          setErrorReply,
-                          dispatch,
-                          task_id,
-                          currentUser,
-                          inputReplyValues,
-                          setStatusComment,
-                          setInputReplyValues
-                        );
-                      }}
-                    />
+                        }}
+                      />
+                    </div>
                   </div>
-                </div>
               ) : null}
 
               <div>
