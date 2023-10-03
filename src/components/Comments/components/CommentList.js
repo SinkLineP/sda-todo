@@ -110,6 +110,7 @@ const CommentList = ({ task_id, commentsStore }) => {
                           e.preventDefault();
                           console.log();
                           AddReply(comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setStatusComment, setInputReplyValues);
+                          setIsShowComments({ status: true, title: "Скрыть комментарии" });
                         }
                       }}
                     />
@@ -125,6 +126,7 @@ const CommentList = ({ task_id, commentsStore }) => {
                     }} />
                     <ButtonCustom className={"button-on-comment button-reply"} title={"Ответить"} handleCLick={() => {
                       AddReply(comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setStatusComment, setInputReplyValues);
+                      setIsShowComments({ status: true, title: "Скрыть комментарии" });
                     }} />
                   </div>
                 </div>
@@ -152,7 +154,7 @@ const CommentList = ({ task_id, commentsStore }) => {
                     {
                       isShowComments.status && (
                         <div className={"container-reply"}>
-                          <CommentList commentsStore={comment.comments} task_id={task_id} />
+                          <CommentList commentsStore={comment.comments} task_id={task_id} setIsShowComments={setIsShowComments}  />
                         </div>
                       )
                     }
