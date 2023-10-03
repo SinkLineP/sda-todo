@@ -10,7 +10,7 @@ import {addComment} from "../../../store/Reducers/commentReducer";
 const validationSchema = Yup.object().shape({
   value: Yup.string()
     .required('Введите комментарий...')
-    .max(255, 'Комментарий не может превышать 255 символов'),
+    .max(600, 'Комментарий не может превышать 600 символов'),
 });
 
 const CommentForm = ({ task_id }) => {

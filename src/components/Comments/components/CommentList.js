@@ -14,6 +14,10 @@ const CommentList = ({ task_id, commentsStore }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [statusComment, setStatusComment] = useState("default");
   const [errorReply, setErrorReply] = useState("");
+  const [isShowComments, setIsShowComments] = useState({
+    status: false,
+    title: "Показать комментарии"
+  })
   const currentUser = useSelector(state => state.auth.currentUser);
   const usersStore = useSelector(state => state.auth.users);
   const dispatch = useDispatch();
@@ -45,17 +49,17 @@ const CommentList = ({ task_id, commentsStore }) => {
                 <div className={"container-show-comment"}>
                   <div className={"container-show-comment-header"}>
                     <div className={"container-show-username"}>Пользователь: <b>{getUser(comment.user_id, usersStore).username}</b></div>
-                    <div className={"container-dote-for-title"}>•</div>
+                    <div className={"container-show-dote-for-title"}>•</div>
                     <div className={"container-show-date"}>Оставил комментарий: {moment(comment.date).fromNow()}</div>
                     <div></div>
                   </div>
-                  <div>
+                  <div className={"container-show-content"}>
                     <p>{comment.content}</p>
                   </div>
-                  <p>User ID: {comment.user_id}.</p>
+                  {/*<p>User ID: {comment.user_id}.</p>*/}
                   {/*<p>Comment: {comment.content}.</p>*/}
-                  <p>Comment ID: {comment.id}.</p>
-                  <p>Comment parent ID: {comment.parent_id}.</p>
+                  {/*<p>Comment ID: {comment.id}.</p>*/}
+                  {/*<p>Comment parent ID: {comment.parent_id}.</p>*/}
                   {/*<p>Connect to Task ID: {comment.task_id}.</p>*/}
                   {/*<p>Date: {moment(comment.date).fromNow()}</p>*/}
                 </div>
@@ -121,11 +125,28 @@ const CommentList = ({ task_id, commentsStore }) => {
               ) : null}
 
               <div>
-                {isAuth && comment.comments.length !== 0 && (
-                  <div className={"container-reply"}>
-                    <CommentList commentsStore={comment.comments} task_id={task_id} />
+                {comment.comments.length !== 0 && (
+                  <>
                     <p className={"reply-label"}>Ответы: </p>
-                  </div>
+
+                    <button
+                      className={"reply-show-or-hide-comments"}
+                      onClick={() => setIsShowComments({
+                        status: !isShowComments.status,
+                        title: !isShowComments.status ? "Скрыть комментарии" : "Показать комментарии"
+                      })}
+                    >
+                      {isShowComments.title}{isShowComments.status ? <span className={"arrow"}> ▼</span> : <span className={"arrow"}> ▲</span>}
+                    </button>
+
+                    {
+                      isShowComments.status && (
+                        <div className={"container-reply"}>
+                          <CommentList commentsStore={comment.comments} task_id={task_id} />
+                        </div>
+                      )
+                    }
+                  </>
                 )}
               </div>
             </div>

@@ -1,3 +1,7 @@
+:root {
+    --color-link: dodgerblue;
+}
+
 .container-comment {
     border: 1px solid lightgrey;
     padding: 0.4rem;
@@ -128,7 +132,7 @@
 
 .link-auth {
     text-decoration: underline;
-    color: dodgerblue;
+    color: var(--color-link);
     cursor: pointer;
 }
 
@@ -159,7 +163,7 @@
 .container-show-date {
 }
 
-.container-dote-for-title {
+.container-show-dote-for-title {
     margin-left: 1%;
     margin-right: 1%;
 }
@@ -172,3 +176,26 @@
 }
 
 .container-tree-comments {}
+
+.container-show-content {
+    border: 1px solid lightgrey;
+    border-radius: 0.5rem;
+    padding: 0 1rem;
+    margin-top: 1rem;
+    background-color: #f6f6f6;
+}
+
+.reply-show-or-hide-comments {
+    background: transparent;
+    border: none;
+    font-size: 100%;
+    padding: 1% 0;
+    color: var(--color-link);
+}
+
+.reply-show-or-hide-comments > .arrow {
+    /*padding-left: 2%;*/
+}
+.reply-show-or-hide-comments > .arrow {
+    /*padding-left: 2%;*/
+}
