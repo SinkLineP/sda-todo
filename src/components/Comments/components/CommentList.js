@@ -4,10 +4,8 @@ import IsAuth from "../../../hooks/IsAuth";
 import moment from 'moment';
 import ShowButtons from "./ShowButtons";
 import ButtonCustom from "./ButtonCustom";
-import {addReply} from "../../../store/Reducers/commentReducer";
-import {v4 as uuid} from "uuid";
 import {getUser} from "../../../Variables";
-import {AddReply, handleKeyPress} from "../functions";
+import {AddReply} from "../functions";
 
 const CommentList = ({ task_id, commentsStore }) => {
   const [inputEditValues, setInputEditValues] = useState({});
