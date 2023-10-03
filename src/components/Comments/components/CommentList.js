@@ -41,7 +41,7 @@ const CommentList = ({ task_id, commentsStore }) => {
 
                   <input
                     className={"input-create-comment"}
-                    value={inputEditValues[comment.id] || ""}
+                    value={inputEditValues[comment.id] ?? comment.content}
                     onChange={(e) => {
                       if (e.target.value.length > 0) setErrorEdit("");
                       if (e.target.value.length === 0) setErrorEdit("Поле не должно быть пустым!");
