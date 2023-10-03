@@ -1,4 +1,4 @@
-import {addReply} from "../../store/Reducers/commentReducer";
+import {addReply, editComment} from "../../store/Reducers/commentReducer";
 import {v4 as uuid} from "uuid";
 
 const functionAddReply = (comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setStatusComment, setInputReplyValues) => {
@@ -37,4 +37,22 @@ export const AddReply = (comment, setErrorReply, dispatch, task_id, currentUser,
   checkValueReply(() => {
     functionAddReply(comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setStatusComment, setInputReplyValues);
   }, comment, inputReplyValues, setErrorReply);
+}
+
+export const EditReply = (comment, dispatch, inputEditValues, setEditError, setStatus, setIsEditing, setInputEditValues, setStatusComment) => {
+  if (inputEditValues[comment.id].length > 0) {
+    setEditError("");
+    setStatus("default");
+    setStatusComment("default");
+    setIsEditing(false);
+
+    setInputEditValues({
+      ...inputEditValues,
+      [comment.id]: inputEditValues[comment.id]
+    });
+
+    dispatch(editComment(comment.id, inputEditValues[comment.id]));
+  } else {
+    setEditError("Поле не должно быть пустым!");
+  }
 }

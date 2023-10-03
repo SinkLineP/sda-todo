@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import ButtonCustom from "./ButtonCustom";
 import {editComment, removeComment, removeReply} from "../../../store/Reducers/commentReducer";
 import {useDispatch, useSelector} from "react-redux";
+import {EditReply} from "../functions";
 
 const ShowButtons = ({
   commentID ,
@@ -20,6 +21,8 @@ const ShowButtons = ({
   const currentUser = useSelector(state => state.auth.currentUser);
   const dispatch = useDispatch();
   const [status, setStatus] = useState("default");
+
+  console.log(statusComment);
 
   useEffect(() => {
     if (statusComment === "default") setStatus("default");
@@ -63,20 +66,7 @@ const ShowButtons = ({
         return (
           <>
             <ButtonCustom className={"button-on-comment button-save"} handleCLick={() => {
-              if (inputEditValues[comment.id].length > 0) {
-                setEditError("");
-                setStatus("default")
-                setIsEditing(false);
-
-                setInputEditValues({
-                  ...inputEditValues,
-                  [comment.id]: inputEditValues[comment.id]
-                });
-
-                dispatch(editComment(comment.id, inputEditValues[comment.id]));
-              } else {
-                setEditError("Поле не должно быть пустым!");
-              }
+              EditReply(comment, dispatch, inputEditValues, setEditError, setStatus, setIsEditing, setInputEditValues, setStatusComment)
             }} title={"Сохранить"} />
             <ButtonCustom className={"button-on-comment button-cancel"} handleCLick={() => {
               if (errorEdit !== "") setEditError("");

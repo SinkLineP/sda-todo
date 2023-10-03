@@ -5,7 +5,8 @@ import moment from 'moment';
 import ShowButtons from "./ShowButtons";
 import ButtonCustom from "./ButtonCustom";
 import {getUser, getUserReplyComment, getUserWithParentID} from "../../../Variables";
-import {AddReply} from "../functions";
+import {AddReply, EditReply} from "../functions";
+import {editComment} from "../../../store/Reducers/commentReducer";
 
 const CommentList = ({ task_id, commentsStore }) => {
   const [inputEditValues, setInputEditValues] = useState({});
@@ -43,7 +44,7 @@ const CommentList = ({ task_id, commentsStore }) => {
                     value={inputEditValues[comment.id] || ""}
                     onChange={(e) => {
                       if (e.target.value.length > 0) setErrorEdit("");
-                      if (e.target.value.length === 0) setErrorEdit("Введите новый текст комментария...");
+                      if (e.target.value.length === 0) setErrorEdit("Поле не должно быть пустым!");
 
                       setInputEditValues({
                         ...inputEditValues,
