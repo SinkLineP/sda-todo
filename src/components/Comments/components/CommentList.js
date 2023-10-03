@@ -34,7 +34,7 @@ const CommentList = ({ task_id, commentsStore }) => {
             setCommentIDClicked(comment.id);
           }}>
 
-            <div className={`container-comment content ${isEditing && commentIDClicked === comment.id && "is-editing-background"}`}>
+            <div className={"container-comment content"}>
               {isEditing && commentIDClicked === comment.id ? (
                 <>
                   {errorEdit !== "" ? <div className={"errors-reply"}>{errorEdit}</div> : <div className={"errors"}></div>}
@@ -133,6 +133,10 @@ const CommentList = ({ task_id, commentsStore }) => {
               <div>
                 {comment.comments.length !== 0 && (
                   <>
+                    <hr style={{
+                      marginTop: "2rem",
+                      marginBottom: "1rem"
+                    }} color={"lightgrey"} />
                     <p className={"reply-label"}>Ответы: </p>
 
                     <button
