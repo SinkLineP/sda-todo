@@ -1,7 +1,7 @@
 import {addReply, editComment} from "../../store/Reducers/commentReducer";
 import {v4 as uuid} from "uuid";
 
-const functionAddReply = (comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setStatusComment, setInputReplyValues) => {
+const functionAddReply = (comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setInputReplyValues) => {
   setErrorReply("")
 
   dispatch(addReply({
@@ -14,7 +14,6 @@ const functionAddReply = (comment, setErrorReply, dispatch, task_id, currentUser
     comments: []
   }));
 
-  setStatusComment("default");
   setInputReplyValues({
     ...inputReplyValues,
     [comment.id]: ""
@@ -33,17 +32,16 @@ const checkValueReply = (func, comment, inputReplyValues, setErrorReply) => {
   }
 }
 
-export const AddReply = (comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setStatusComment, setInputReplyValues) => {
+export const AddReply = (comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setInputReplyValues) => {
   checkValueReply(() => {
-    functionAddReply(comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setStatusComment, setInputReplyValues);
+    functionAddReply(comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setInputReplyValues);
   }, comment, inputReplyValues, setErrorReply);
 }
 
-export const EditReply = (comment, dispatch, inputEditValues, setEditError, setStatus, setIsEditing, setInputEditValues, setStatusComment) => {
+export const EditReply = (comment, dispatch, inputEditValues, setEditError, setStatus, setIsEditing, setInputEditValues) => {
   if (inputEditValues[comment.id].length > 0) {
     setEditError("");
     setStatus("default");
-    setStatusComment("default");
     setIsEditing(false);
 
     setInputEditValues({

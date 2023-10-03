@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import ButtonCustom from "./ButtonCustom";
-import {editComment, removeComment, removeReply} from "../../../store/Reducers/commentReducer";
-import {useDispatch, useSelector} from "react-redux";
-import {EditReply} from "../functions";
+import { editComment, removeComment, removeReply } from "../../../store/Reducers/commentReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { EditReply } from "../functions";
 
 const ShowButtons = ({
-  commentID ,
+  commentID,
   comment,
   task_id,
   setIsEditing,
@@ -13,39 +13,57 @@ const ShowButtons = ({
   commentIDClicked,
   inputEditValues,
   setInputEditValues,
-  setStatusComment,
-  statusComment,
   setEditError,
-  errorEdit
+  errorEdit,
+  setIsReplyInputVisible,
+  isReplyInputVisible,
+  getStatus,
+  newStatus
 }) => {
-  const currentUser = useSelector(state => state.auth.currentUser);
+  const currentUser = useSelector((state) => state.auth.currentUser);
   const dispatch = useDispatch();
   const [status, setStatus] = useState("default");
 
-  console.log(statusComment);
+  useEffect(() => {
+    if (status !== "edit") {
+      // Убедимся, что при переключении статуса на не "edit" input видим
+      setIsReplyInputVisible(comment.id, isReplyInputVisible[comment.id]);
+    }
+  }, [status, setIsReplyInputVisible, comment.id, isReplyInputVisible]);
 
   useEffect(() => {
-    if (statusComment === "default") setStatus("default");
-  }, [statusComment, setStatus]);
+    if (getStatus() !== null) setStatus(getStatus());
+  }, [getStatus]);
 
   const handleRemoveReply = (commentId) => {
-    dispatch(removeReply(commentId)); // Вызываете экшен removeReply
+    dispatch(removeReply(commentId));
+    setIsReplyInputVisible(commentId, false);
   };
 
-    if (status === "default") {
-      return (
-        <>
-          <ButtonCustom className={"button-on-comment button-reply"} handleCLick={() => {
-            setStatus("reply")
-            setStatusComment("reply")
-          }} title={"Ответить"} />
-          {comment.user_id === currentUser.id && (
-            <>
-              <ButtonCustom className={"button-on-comment button-edit"} handleCLick={() => {
-                setStatus("edit")
-                // setI
-              }} title={"Редактировать"} />
-              <ButtonCustom className={"button-on-comment button-remove"} handleCLick={() => {
+  if (status === "default") {
+    return (
+      <>
+        <ButtonCustom
+          className={"button-on-comment button-reply"}
+          handleCLick={() => {
+            setStatus("reply");
+            newStatus("reply");
+            setIsReplyInputVisible(comment.id, true); // Показать input ответа
+          }}
+          title={"Ответить"}
+        />
+        {comment.user_id === currentUser.id && (
+          <>
+            <ButtonCustom
+              className={"button-on-comment button-edit"}
+              handleCLick={() => {
+                setStatus("edit");
+              }}
+              title={"Редактировать"}
+            />
+            <ButtonCustom
+              className={"button-on-comment button-remove"}
+              handleCLick={() => {
                 setStatus("default");
 
                 if (comment.parent_id === null) {
@@ -53,37 +71,59 @@ const ShowButtons = ({
                 } else {
                   return handleRemoveReply(comment.id);
                 }
-
-              }} title={"Удалить"} />
-            </>
-          )}
-        </>
-      )
-    } else if (status === "edit") {
-      setIsEditing(true)
-
-      if (comment.user_id === currentUser.id && comment.task_id === task_id || comment.task_id === task_id || isEditing && commentIDClicked === comment.id) {
-        return (
-          <>
-            <ButtonCustom className={"button-on-comment button-save"} handleCLick={() => {
-              EditReply(comment, dispatch, inputEditValues, setEditError, setStatus, setIsEditing, setInputEditValues, setStatusComment)
-            }} title={"Сохранить"} />
-            <ButtonCustom className={"button-on-comment button-cancel"} handleCLick={() => {
-              if (errorEdit !== "") setEditError("");
-              setStatus("default")
-              setIsEditing(false)
-
-              setInputEditValues({
-                ...inputEditValues,
-                [comment.id]: comment.content
-              });
-            }} title={"Отменить"} />
+              }}
+              title={"Удалить"}
+            />
           </>
-        )
-      } else if (status === "reply") {
-        console.log("status: " + status);
-      }
+        )}
+      </>
+    );
+  } else if (status === "edit") {
+    if (
+      comment.user_id === currentUser.id &&
+      comment.task_id === task_id &&
+      !isEditing &&
+      commentIDClicked !== comment.id
+    ) {
+      setIsEditing(true);
+      setInputEditValues({
+        ...inputEditValues,
+        [comment.id]: comment.content,
+      });
     }
-}
+    return (
+      <>
+        <ButtonCustom
+          className={"button-on-comment button-save"}
+          handleCLick={() => {
+            EditReply(
+              comment,
+              dispatch,
+              inputEditValues,
+              setEditError,
+              setStatus,
+              setIsEditing,
+              setInputEditValues
+            );
+          }}
+          title={"Сохранить"}
+        />
+        <ButtonCustom
+          className={"button-on-comment button-cancel"}
+          handleCLick={() => {
+            if (errorEdit !== "") setEditError("");
+            setStatus("default");
+            setIsEditing(false);
+            setInputEditValues({
+              ...inputEditValues,
+              [comment.id]: comment.content,
+            });
+          }}
+          title={"Отменить"}
+        />
+      </>
+    );
+  }
+};
 
 export default ShowButtons;
