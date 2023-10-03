@@ -30,10 +30,6 @@ export const getUser = (user_id, users) => {
 }
 
 export const getUserWithParentID = (currentComment, users, comments) => {
-  // console.log(parent_id);
-
-
-
   const comment = comments.filter((comment) => {
     return comment.parent_id === currentComment.parent_id;
   })

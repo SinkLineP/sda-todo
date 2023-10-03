@@ -4,7 +4,7 @@ import IsAuth from "../../../hooks/IsAuth";
 import moment from 'moment';
 import ShowButtons from "./ShowButtons";
 import ButtonCustom from "./ButtonCustom";
-import {getUser} from "../../../Variables";
+import {getUser, getUserWithParentID} from "../../../Variables";
 import {AddReply} from "../functions";
 
 const CommentList = ({ task_id, commentsStore }) => {
@@ -44,9 +44,10 @@ const CommentList = ({ task_id, commentsStore }) => {
               ) : (
                 <div className={"container-show-comment"}>
                   <div className={"container-show-comment-header"}>
-                    <div className={"container-show-username"}>Пользователь: {getUser(comment.user_id, usersStore).username}</div>
-                    <div>•</div>
+                    <div className={"container-show-username"}><b>{getUser(comment.user_id, usersStore).username}</b>{comment.parent_id !== null && (<span>, ответил пользователю: <b>{getUserWithParentID(comment, usersStore, commentsStore).username}</b></span>)}</div>
+                    <div className={"container-dote-for-title"}>•</div>
                     <div className={"container-show-date"}>{moment(comment.date).fromNow()}</div>
+                    <div></div>
                   </div>
                   <div>
                     <p>{comment.content}</p>
