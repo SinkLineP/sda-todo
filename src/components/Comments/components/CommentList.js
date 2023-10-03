@@ -1,41 +1,48 @@
-import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import IsAuth from "../../../hooks/IsAuth";
-import moment from 'moment';
+import moment from "moment";
 import ShowButtons from "./ShowButtons";
 import ButtonCustom from "./ButtonCustom";
-import {getUser, getUserReplyComment, getUserWithParentID} from "../../../Variables";
-import {AddReply, EditReply} from "../functions";
-import {editComment} from "../../../store/Reducers/commentReducer";
+import { getUser, getUserReplyComment, getUserWithParentID } from "../../../Variables";
+import { AddReply, EditReply } from "../functions";
+import { editComment } from "../../../store/Reducers/commentReducer";
 
 const CommentList = ({ task_id, commentsStore }) => {
   const [inputEditValues, setInputEditValues] = useState({});
   const [inputReplyValues, setInputReplyValues] = useState({});
-  const [commentIDClicked, setCommentIDClicked] = useState("");
-  const [isEditing, setIsEditing] = useState(false);
+  const [inputVisible, setInputVisible] = useState({});
   const [statusComment, setStatusComment] = useState("default");
   const [errorReply, setErrorReply] = useState("");
   const [errorEdit, setErrorEdit] = useState("");
   const [isShowComments, setIsShowComments] = useState({
     status: false,
-    title: "Показать комментарии"
-  })
-  const currentUser = useSelector(state => state.auth.currentUser);
-  const usersStore = useSelector(state => state.auth.users);
+    title: "Показать комментарии",
+  });
+  const [commentIDClicked, setCommentIDClicked] = useState(null);
+  const currentUser = useSelector((state) => state.auth.currentUser);
+  const usersStore = useSelector((state) => state.auth.users);
   const dispatch = useDispatch();
   const isAuth = IsAuth();
 
+  const handleCommentClick = (commentId) => {
+    // Закрыть все поля ввода, кроме того, на который нажали
+    setCommentIDClicked(commentId);
+    setInputVisible((prevInputVisible) => ({
+      ...Object.keys(prevInputVisible).reduce((acc, id) => {
+        acc[id] = id === commentId;
+        return acc;
+      }, {}),
+    }));
+  };
 
   if (commentsStore.length !== 0) {
     return commentsStore.map((comment) => {
       if (comment.task_id === task_id) {
         return (
-          <div className={"container-tree-comments"} key={comment.id} onClick={() => {
-            setCommentIDClicked(comment.id);
-          }}>
-
+          <div className={"container-tree-comments"} key={comment.id} onClick={() => handleCommentClick(comment.id)}>
             <div className={"container-comment content"}>
-              {isEditing && commentIDClicked === comment.id ? (
+              {inputVisible[comment.id] ? (
                 <>
                   {errorEdit !== "" ? <div className={"errors-reply"}>{errorEdit}</div> : <div className={"errors"}></div>}
 
@@ -48,7 +55,7 @@ const CommentList = ({ task_id, commentsStore }) => {
 
                       setInputEditValues({
                         ...inputEditValues,
-                        [comment.id]: e.target.value
+                        [comment.id]: e.target.value,
                       });
                     }}
                     placeholder={"Введите новый текст комментария..."}
@@ -57,9 +64,13 @@ const CommentList = ({ task_id, commentsStore }) => {
               ) : (
                 <div className={"container-show-comment"}>
                   <div className={"container-show-comment-header"}>
-                    <div className={"container-show-username"}>Пользователь: <b>{getUser(comment.user_id, usersStore).username}</b></div>
+                    <div className={"container-show-username"}>
+                      Пользователь: <b>{getUser(comment.user_id, usersStore).username}</b>
+                    </div>
                     <div className={"container-show-dote-for-title"}>•</div>
-                    <div className={"container-show-date"}>Оставил комментарий: {moment(comment.date).fromNow()}</div>
+                    <div className={"container-show-date"}>
+                      Оставил комментарий: {moment(comment.date).fromNow()}
+                    </div>
                     <div></div>
                   </div>
                   <div className={"container-show-content"}>
@@ -72,11 +83,11 @@ const CommentList = ({ task_id, commentsStore }) => {
                 <div className={"container-buttons"}>
                   <ShowButtons
                     commentID={comment.id}
-                    commentIDClicked={commentIDClicked}
+                    commentIDClicked={comment.id}
                     comment={comment}
                     task_id={task_id}
-                    setIsEditing={setIsEditing}
-                    isEditing={isEditing}
+                    setIsEditing={setStatusComment}
+                    isEditing={statusComment === "edit" && comment.id === commentIDClicked}
                     inputEditValues={inputEditValues}
                     setInputEditValues={setInputEditValues}
                     setStatusComment={setStatusComment}
@@ -87,7 +98,7 @@ const CommentList = ({ task_id, commentsStore }) => {
                 </div>
               )}
 
-              {isAuth && statusComment === "reply" && commentIDClicked === comment.id ? (
+              {isAuth && statusComment === "reply" && comment.id === commentIDClicked ? (
                 <div className={"container-reply-input"}>
                   {errorReply !== "" ? <div className={"errors-reply"}>{errorReply}</div> : <div className={"errors"}></div>}
 
@@ -101,31 +112,57 @@ const CommentList = ({ task_id, commentsStore }) => {
 
                         setInputReplyValues({
                           ...inputReplyValues,
-                          [comment.id]: e.target.value
+                          [comment.id]: e.target.value,
                         });
                       }}
                       placeholder={"Введите ответ..."}
                       onKeyPress={(e) => {
-                        if (e.key === 'Enter' && !e.shiftKey) {
+                        if (e.key === "Enter" && !e.shiftKey) {
                           e.preventDefault();
                           console.log();
-                          AddReply(comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setStatusComment, setInputReplyValues);
+                          AddReply(
+                            comment,
+                            setErrorReply,
+                            dispatch,
+                            task_id,
+                            currentUser,
+                            inputReplyValues,
+                            setStatusComment,
+                            setInputReplyValues
+                          );
                         }
                       }}
                     />
 
-                    <ButtonCustom className={"button-on-comment button-remove"} title={"Отменить"} handleCLick={() => {
-                      if (errorReply !== "") setErrorReply("");
+                    <ButtonCustom
+                      className={"button-on-comment button-remove"}
+                      title={"Отменить"}
+                      handleCLick={() => {
+                        if (errorReply !== "") setErrorReply("");
 
-                      setStatusComment("default")
-                      setInputReplyValues({
-                        ...inputReplyValues,
-                        [comment.id]: ""
-                      });
-                    }} />
-                    <ButtonCustom className={"button-on-comment button-reply"} title={"Ответить"} handleCLick={() => {
-                      AddReply(comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setStatusComment, setInputReplyValues);
-                    }} />
+                        setStatusComment("default");
+                        setInputReplyValues({
+                          ...inputReplyValues,
+                          [comment.id]: "",
+                        });
+                      }}
+                    />
+                    <ButtonCustom
+                      className={"button-on-comment button-reply"}
+                      title={"Ответить"}
+                      handleCLick={() => {
+                        AddReply(
+                          comment,
+                          setErrorReply,
+                          dispatch,
+                          task_id,
+                          currentUser,
+                          inputReplyValues,
+                          setStatusComment,
+                          setInputReplyValues
+                        );
+                      }}
+                    />
                   </div>
                 </div>
               ) : null}
@@ -133,28 +170,32 @@ const CommentList = ({ task_id, commentsStore }) => {
               <div>
                 {comment.comments.length !== 0 && (
                   <>
-                    <hr style={{
-                      marginTop: "2rem",
-                    }} color={"lightgrey"} />
+                    <hr
+                      style={{
+                        marginTop: "2rem",
+                      }}
+                      color={"lightgrey"}
+                    />
                     <p className={"reply-label"}>Ответы: </p>
 
                     <button
                       className={"reply-show-or-hide-comments"}
-                      onClick={() => setIsShowComments({
-                        status: !isShowComments.status,
-                        title: !isShowComments.status ? "Скрыть комментарии" : "Показать комментарии"
-                      })}
+                      onClick={() =>
+                        setIsShowComments({
+                          status: !isShowComments.status,
+                          title: !isShowComments.status ? "Скрыть комментарии" : "Показать комментарии",
+                        })
+                      }
                     >
-                      {isShowComments.title}{isShowComments.status ? <span className={"arrow"}> ▼</span> : <span className={"arrow"}> ▲</span>}
+                      {isShowComments.title}
+                      {isShowComments.status ? <span className={"arrow"}> ▼</span> : <span className={"arrow"}> ▲</span>}
                     </button>
 
-                    {
-                      isShowComments.status && (
-                        <div className={"container-reply"}>
-                          <CommentList commentsStore={comment.comments} task_id={task_id} />
-                        </div>
-                      )
-                    }
+                    {isShowComments.status && (
+                      <div className={"container-reply"}>
+                        <CommentList commentsStore={comment.comments} task_id={task_id} />
+                      </div>
+                    )}
                   </>
                 )}
               </div>
@@ -167,6 +208,6 @@ const CommentList = ({ task_id, commentsStore }) => {
   } else {
     return <p>Комментариев не найдено!</p>;
   }
-}
+};
 
 export default CommentList;
