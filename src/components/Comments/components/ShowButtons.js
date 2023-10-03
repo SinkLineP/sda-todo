@@ -3,7 +3,20 @@ import ButtonCustom from "./ButtonCustom";
 import {editComment, removeComment, removeReply} from "../../../store/Reducers/commentReducer";
 import {useDispatch, useSelector} from "react-redux";
 
-const ShowButtons = ({ commentID , comment, task_id, setIsEditing, isEditing, commentIDClicked, inputEditValues, setInputEditValues, setStatusComment, statusComment }) => {
+const ShowButtons = ({
+  commentID ,
+  comment,
+  task_id,
+  setIsEditing,
+  isEditing,
+  commentIDClicked,
+  inputEditValues,
+  setInputEditValues,
+  setStatusComment,
+  statusComment,
+  setEditError,
+  errorEdit
+}) => {
   const currentUser = useSelector(state => state.auth.currentUser);
   const dispatch = useDispatch();
   const [status, setStatus] = useState("default");
@@ -50,17 +63,23 @@ const ShowButtons = ({ commentID , comment, task_id, setIsEditing, isEditing, co
         return (
           <>
             <ButtonCustom className={"button-on-comment button-save"} handleCLick={() => {
-              setStatus("default")
-              setIsEditing(false);
+              if (inputEditValues[comment.id].length > 0) {
+                setEditError("");
+                setStatus("default")
+                setIsEditing(false);
 
-              setInputEditValues({
-                ...inputEditValues,
-                [comment.id]: inputEditValues[comment.id]
-              });
+                setInputEditValues({
+                  ...inputEditValues,
+                  [comment.id]: inputEditValues[comment.id]
+                });
 
-              dispatch(editComment(comment.id, inputEditValues[comment.id]));
+                dispatch(editComment(comment.id, inputEditValues[comment.id]));
+              } else {
+                setEditError("Поле не должно быть пустым!");
+              }
             }} title={"Сохранить"} />
             <ButtonCustom className={"button-on-comment button-cancel"} handleCLick={() => {
+              if (errorEdit !== "") setEditError("");
               setStatus("default")
               setIsEditing(false)
 
