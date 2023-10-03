@@ -59,10 +59,7 @@ const ShowButtons = ({ commentID , comment, task_id, setIsEditing, isEditing, co
                 [comment.id]: inputEditValues[comment.id]
               });
 
-              dispatch(editComment({
-                commentID: comment.id,
-                updatedComment: inputEditValues[comment.id]
-              }));
+              dispatch(editComment(comment.id, inputEditValues[comment.id]));
             }} title={"Сохранить"} />
             <ButtonCustom className={"button-on-comment button-cancel"} handleCLick={() => {
               setStatus("default")

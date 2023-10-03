@@ -43,6 +43,32 @@ const removeItemByIdRecursive = (array, idToRemove) => {
   return updatedArray;
 };
 
+const editCommentRecursive = (comments, commentId, newContent) => {
+  console.log(comments);
+  console.log(commentId);
+  console.log(newContent);
+
+  return comments.map(comment => {
+    if (comment.id === commentId) {
+      // Если это комментарий, который нужно отредактировать, верните новый объект с обновленным content
+      return {
+        ...comment,
+        content: newContent
+      };
+    } else if (comment.comments.length > 0) {
+      // Если у комментария есть дочерние комментарии, рекурсивно вызовите эту функцию для них
+      return {
+        ...comment,
+        comments: editCommentRecursive(comment.comments, commentId, newContent)
+      };
+    } else {
+      // Если комментарий не подходит по id, верните его без изменений
+      return comment;
+    }
+  });
+};
+
+
 function CommentReducer(state = initialState, action) {
   switch (action.type) {
     case ActionTypes.ADD_COMMENT:
@@ -67,15 +93,7 @@ function CommentReducer(state = initialState, action) {
       return removeItemByIdRecursive(state, action.payload);
 
     case ActionTypes.EDIT_COMMENT:
-      const { commentID, updatedComment } = action.payload;
-
-
-      return state.map((comment) => {
-        return comment.id === commentID ? {
-          ...comment,
-          content: updatedComment
-        } : comment;
-      });
+      return editCommentRecursive(state, action.payload.commentId, action.payload.newContent);
 
     case ActionTypes.REMOVE_COMMENT:
       return state.filter((comment) => {
@@ -87,10 +105,11 @@ function CommentReducer(state = initialState, action) {
   }
 }
 
-export const editComment = (editData) => ({
-  type: ActionTypes.EDIT_COMMENT,
-  payload: editData,
+export const editComment = (commentId, newContent) => ({
+    type: ActionTypes.EDIT_COMMENT,
+    payload: {commentId, newContent }
 });
+
 
 export const addComment = (formData) => ({
   type: ActionTypes.ADD_COMMENT,
