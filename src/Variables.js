@@ -29,18 +29,6 @@ export const getUser = (user_id, users) => {
   })
 }
 
-export const getUserWithParentID = (currentComment, users, comments) => {
-  const comment = comments.filter((comment) => {
-    return comment.parent_id === currentComment.parent_id;
-  })
-
-  // console.log(comment);
-
-  return {
-    username: "test"
-  }
-}
-
 export const CountSliceFilesTask = 40;
 
 

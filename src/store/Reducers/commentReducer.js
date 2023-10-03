@@ -44,10 +44,6 @@ const removeItemByIdRecursive = (array, idToRemove) => {
 };
 
 const editCommentRecursive = (comments, commentId, newContent) => {
-  console.log(comments);
-  console.log(commentId);
-  console.log(newContent);
-
   return comments.map(comment => {
     if (comment.id === commentId) {
       // Если это комментарий, который нужно отредактировать, верните новый объект с обновленным content

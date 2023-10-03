@@ -1,10 +1,10 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import IsAuth from "../../../hooks/IsAuth";
 import moment from 'moment';
 import ShowButtons from "./ShowButtons";
 import ButtonCustom from "./ButtonCustom";
-import {getUser, getUserWithParentID} from "../../../Variables";
+import {getUser, getUserReplyComment, getUserWithParentID} from "../../../Variables";
 import {AddReply} from "../functions";
 
 const CommentList = ({ task_id, commentsStore }) => {
@@ -44,18 +44,18 @@ const CommentList = ({ task_id, commentsStore }) => {
               ) : (
                 <div className={"container-show-comment"}>
                   <div className={"container-show-comment-header"}>
-                    <div className={"container-show-username"}><b>{getUser(comment.user_id, usersStore).username}</b>{comment.parent_id !== null && (<span>, ответил пользователю: <b>{getUserWithParentID(comment, usersStore, commentsStore).username}</b></span>)}</div>
+                    <div className={"container-show-username"}>Пользователь: <b>{getUser(comment.user_id, usersStore).username}</b></div>
                     <div className={"container-dote-for-title"}>•</div>
-                    <div className={"container-show-date"}>{moment(comment.date).fromNow()}</div>
+                    <div className={"container-show-date"}>Оставил комментарий: {moment(comment.date).fromNow()}</div>
                     <div></div>
                   </div>
                   <div>
                     <p>{comment.content}</p>
                   </div>
-                  {/*<p>User ID: {comment.user_id}.</p>*/}
+                  <p>User ID: {comment.user_id}.</p>
                   {/*<p>Comment: {comment.content}.</p>*/}
-                  {/*<p>Comment ID: {comment.id}.</p>*/}
-                  {/*<p>Comment parent ID: {comment.parent_id}.</p>*/}
+                  <p>Comment ID: {comment.id}.</p>
+                  <p>Comment parent ID: {comment.parent_id}.</p>
                   {/*<p>Connect to Task ID: {comment.task_id}.</p>*/}
                   {/*<p>Date: {moment(comment.date).fromNow()}</p>*/}
                 </div>
