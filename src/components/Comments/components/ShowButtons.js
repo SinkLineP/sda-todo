@@ -24,7 +24,6 @@ const ShowButtons = ({
 
   useEffect(() => {
     const status = CheckStatusReplyComments(showInputFromID, comment.id);
-    console.log(status);
   }, [showInputFromID, comment.id]);
 
   const handleRemoveReply = (commentId) => {
@@ -37,7 +36,6 @@ const ShowButtons = ({
         <ButtonCustom
           className={"button-on-comment button-reply"}
           handleCLick={() => {
-            console.log("clicked SEND!")
             setShowInputFromID(commentID, true, "reply");
           }}
           title={"Ответить"}

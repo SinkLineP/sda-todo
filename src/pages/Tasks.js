@@ -91,9 +91,8 @@ export default function Tasks() {
       <div className={"row"}>
         {statuses.map((s, index) => {
           return (
-            // eslint-disable-next-line no-restricted-globals
             <div key={index} className={"col-wrapper"}>
-              <h2 className={"col-header"}>{s.status.toUpperCase()}</h2>
+              <h2 className={"col-header no-select-text"}>{s.status.toUpperCase()}</h2>
               <DropWrapper onDrop={onDrop} status={s.status}>
                 <Col>
                   {showTask(items, s)}

@@ -97,7 +97,7 @@ export default function AuthModal({ show, onClose }) {
           return (
             <div className={'form'}>
               {/* username */}
-              <p>
+              <>
                 <label className={"label"} htmlFor={'username'}>Имя пользователя: </label><br></br>
                 {touched.username && errors.username ? (<p className="errors">{errors.username}</p>) : (errorUsername !== "" ? (<p className="errors">{errorUsername}</p>) : (<p className="errors"> &nbsp;</p>))}
 
@@ -113,10 +113,10 @@ export default function AuthModal({ show, onClose }) {
                     value={values.username}
                   />
                 </div>
-              </p>
+              </>
 
               {/* password */}
-              <p>
+              <>
                 <label className={"label"} htmlFor={'password'}>Пароль: </label><br></br>
                 {touched.password && errors.password ? (<p className="errors">{errors.password}</p>) : (errorPassword !== "" ? (<p className="errors">{errorPassword}</p>) : (<p className="errors"> &nbsp;</p>))}
 
@@ -136,7 +136,7 @@ export default function AuthModal({ show, onClose }) {
                     {isShowPassword ? "Скрыть" : "Показать"}
                   </button>
                 </div>
-              </p>
+              </>
 
               <FormSubmit
                 title={currentForm === "login"  ? ("Войти") : ("Зарегистрироваться")}

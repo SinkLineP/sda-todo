@@ -105,8 +105,6 @@ export const setActiveReplyComments = (commentId, isVisible, setShowInputFromID,
       });
     }
 
-    console.log(updatedState.filter(value => Object.keys(value).length !== 0));
-
     // Верните обновленное состояние
     return updatedState.filter(value => Object.keys(value).length !== 0);
   })

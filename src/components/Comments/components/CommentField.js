@@ -11,9 +11,11 @@ const CommentField = ({ task_id, setValue, value }) => {
   const onClose = () => setShow(false);
 
   return (
-    <div className={"container-create-comment"}>
+    <div className={"container-create-comment shadow-box"}>
       {
-        isAuth ? <CommentForm task_id={task_id} /> : (
+        isAuth ? (
+          <CommentForm task_id={task_id} />
+        ) : (
           <p className={"no-select-text title-not-auth"}><span className={"link-auth"} onClick={() => onOpen()}>Войдите</span> в свой профиль чтобы отсавить комментарий</p>
         )
       }

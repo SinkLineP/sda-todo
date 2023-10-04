@@ -28,10 +28,7 @@ const CommentList = ({ task_id, commentsStore }) => {
   const usersStore = useSelector(state => state.auth.users);
   const dispatch = useDispatch();
   const isAuth = IsAuth();
-  // const [status, setStatus] = useState(null);
   const [showInputFromID, setShowInputFromID] = useState([{}]);
-
-
 
 
   if (commentsStore.length !== 0) {

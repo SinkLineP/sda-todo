@@ -55,12 +55,11 @@ const Item = ({ item, index, moveItem, status }) => {
 
   drag(drop(ref));
 
-
   useEffect(() => {
     if (!isDragging) {
-      dispatch(editTask(item.id, item))
+      dispatch(editTask(item.id, item));
     }
-  }, [dispatch, isDragging, item])
+  }, [dispatch, isDragging]);
 
   return (
     <Fragment>

@@ -9,7 +9,7 @@ import {persistor, store} from "./store/store.js";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import {PersistGate} from "redux-persist/integration/react";
-
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 
 
 
@@ -20,7 +20,9 @@ root.render(
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <React.StrictMode>
-            <App />
+            <ErrorBoundary>
+              <App />
+            </ErrorBoundary>
           </React.StrictMode>
         </PersistGate>
       </Provider>

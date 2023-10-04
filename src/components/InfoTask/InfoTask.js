@@ -134,7 +134,7 @@ export default function InfoTask({ show, onClose, item }) {
                   const currentIndex = index + 1;
 
                   return (
-                    <div key={index} className={`container-file ${filesArrayLength !== currentIndex ? "space-between-elements" : ""}`}
+                    <div key={file.id || index} className={`container-file ${filesArrayLength !== currentIndex ? "space-between-elements" : ""}`}
                          onClick={() => {
                            handleDownloadClick(file)
                          }}>
@@ -186,9 +186,9 @@ export default function InfoTask({ show, onClose, item }) {
                     backgroundColor: "#fff0dc",
                   }}>
                   {
-                    item.subtasks.map(subtask => {
+                    item.subtasks.map((subtask, index) => {
                       return (
-                        <tr>
+                        <tr key={index}>
                           <td>
                             {subtask.titleSubtask}
                           </td>
