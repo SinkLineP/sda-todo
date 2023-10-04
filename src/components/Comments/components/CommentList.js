@@ -117,9 +117,8 @@ const CommentList = ({ task_id, commentsStore }) => {
                           updatedState.push({[commentId]: isVisible});
                         }
 
-                        console.log(updatedState.filter(value => Object.keys(value).length !== 0))
                         // Верните обновленное состояние
-                        return updatedState;
+                        return updatedState.filter(value => Object.keys(value).length !== 0);
                       })
                     }}
                     showInputFromID={showInputFromID}
