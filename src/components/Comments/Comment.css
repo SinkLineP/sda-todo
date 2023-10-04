@@ -2,6 +2,7 @@
     --color-link: dodgerblue;
     --border-input: 1px solid lightgrey;
     --backgroung-color-input-container: #f6f6f6;
+    --box-shadow-for-container: 0 0 7px 1px rgba(0, 0, 0, 0.2);
 }
 
 .container-comment {
@@ -9,10 +10,13 @@
     padding: 0.4rem;
     border-radius: 0.5rem;
     box-sizing: border-box;
-    -webkit-box-shadow: 0 0 7px 1px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0 0 7px 1px rgba(0, 0, 0, 0.3);
-    box-shadow: 0 0 7px 1px rgba(0, 0, 0, 0.3);
     background-color: var(--backgroung-color-input-container);
+}
+
+.shadow-box {
+    -webkit-box-shadow: var(--box-shadow-for-container);
+    -moz-box-shadow: var(--box-shadow-for-container);
+    box-shadow: var(--box-shadow-for-container);
 }
 
 .container-all-comments {
@@ -188,7 +192,7 @@
     border-radius: 0.5rem;
     padding: 0 1rem;
     margin-top: 1rem;
-    background-color: #f6f6f6;
+    background-color: #ffffff;
 }
 
 .reply-show-or-hide-comments {

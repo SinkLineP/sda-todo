@@ -37,6 +37,7 @@ const ShowButtons = ({
         <ButtonCustom
           className={"button-on-comment button-reply"}
           handleCLick={() => {
+            console.log("clicked SEND!")
             setShowInputFromID(commentID, true, "reply");
           }}
           title={"Ответить"}
@@ -46,7 +47,7 @@ const ShowButtons = ({
             <ButtonCustom
               className={"button-on-comment button-edit"}
               handleCLick={() => {
-                setActiveReplyComments(comment.id, false, setShowInputFromID, "edit");
+                setShowInputFromID(commentID, false, "edit");
               }}
               title={"Редактировать"}
             />
@@ -94,6 +95,8 @@ const ShowButtons = ({
               setIsEditing,
               setInputEditValues
             );
+
+            setShowInputFromID(commentID, false, "default");
           }}
           title={"Сохранить"}
         />
@@ -107,6 +110,7 @@ const ShowButtons = ({
               ...inputEditValues,
               [comment.id]: comment.content,
             });
+            setShowInputFromID(commentID, false, "default");
           }}
           title={"Отменить"}
         />

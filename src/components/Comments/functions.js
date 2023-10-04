@@ -41,19 +41,21 @@ export const AddReply = (comment, setErrorReply, dispatch, task_id, currentUser,
 }
 
 export const EditReply = (comment, dispatch, inputEditValues, setEditError, setStatus, setIsEditing, setInputEditValues) => {
-  if (inputEditValues[comment.id].length > 0) {
-    setEditError("");
-    setStatus("default");
-    setIsEditing(false);
+  if (inputEditValues[comment.id] !== undefined) {
+    if (inputEditValues[comment.id].length > 0) {
+      setEditError("");
+      setStatus("default");
+      setIsEditing(false);
 
-    setInputEditValues({
-      ...inputEditValues,
-      [comment.id]: inputEditValues[comment.id]
-    });
+      setInputEditValues({
+        ...inputEditValues,
+        [comment.id]: inputEditValues[comment.id]
+      });
 
-    dispatch(editComment(comment.id, inputEditValues[comment.id]));
-  } else {
-    setEditError("Поле не должно быть пустым!");
+      dispatch(editComment(comment.id, inputEditValues[comment.id]));
+    } else {
+      setEditError("Поле не должно быть пустым!");
+    }
   }
 }
 

@@ -42,8 +42,8 @@ const CommentList = ({ task_id, commentsStore }) => {
             setCommentIDClicked(comment.id);
           }}>
 
-            <div className={"container-comment content"}>
-              {isEditing && commentIDClicked === comment.id ? (
+            <div className={"container-comment content shadow-box"}>
+              {CheckStatusReplyComments(showInputFromID, comment.id) === "edit" ? (
                 <>
                   {errorEdit !== "" ? <div className={"errors-reply"}>{errorEdit}</div> : <div className={"errors"}></div>}
 
@@ -98,8 +98,8 @@ const CommentList = ({ task_id, commentsStore }) => {
                 </div>
               )}
 
-              {isAuth && CheckActiveReplyComments(showInputFromID, comment.id) ? (
-                <div className={"container-reply-input"}>
+              {isAuth && CheckActiveReplyComments(showInputFromID, comment.id) && CheckStatusReplyComments(showInputFromID, comment.id) === "reply" ? (
+                <div className={"container-reply-input shadow-box"}>
                   <>
                     {errorReply !== "" ? <div className={"errors-reply"}>{errorReply}</div> : <div className={"errors"}></div>}
 
