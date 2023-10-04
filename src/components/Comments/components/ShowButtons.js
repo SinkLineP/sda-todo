@@ -15,8 +15,6 @@ const ShowButtons = ({
   setInputEditValues,
   setEditError,
   errorEdit,
-  getStatus,
-  newStatus,
   setShowInputFromID,
   showInputFromID
 }) => {
@@ -24,9 +22,9 @@ const ShowButtons = ({
   const dispatch = useDispatch();
   const [status, setStatus] = useState("default");
 
-  useEffect(() => {
-    if (getStatus() !== null) setStatus(getStatus());
-  }, [getStatus]);
+  // useEffect(() => {
+  //   if (getStatus() !== null) setStatus(getStatus());
+  // }, [getStatus]);
 
   const handleRemoveReply = (commentId) => {
     dispatch(removeReply(commentId));
@@ -38,9 +36,8 @@ const ShowButtons = ({
         <ButtonCustom
           className={"button-on-comment button-reply"}
           handleCLick={() => {
-            // setStatus("reply");
-            // newStatus("reply");
-            setShowInputFromID(commentID, true);
+            setShowInputFromID(commentID, true, "reply");
+            setStatus("reply")
           }}
           title={"Ответить"}
         />

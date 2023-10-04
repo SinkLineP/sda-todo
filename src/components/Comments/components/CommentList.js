@@ -5,7 +5,7 @@ import moment from 'moment';
 import ShowButtons from "./ShowButtons";
 import ButtonCustom from "./ButtonCustom";
 import {getUser} from "../../../Variables";
-import {AddReply} from "../functions";
+import {AddReply, CheckActiveComments, CheckActiveReplyComments, setActiveReplyComments} from "../functions";
 
 const CommentList = ({ task_id, commentsStore }) => {
   const [inputEditValues, setInputEditValues] = useState({});
@@ -22,18 +22,11 @@ const CommentList = ({ task_id, commentsStore }) => {
   const usersStore = useSelector(state => state.auth.users);
   const dispatch = useDispatch();
   const isAuth = IsAuth();
-  const [status, setStatus] = useState(null);
+  // const [status, setStatus] = useState(null);
   const [showInputFromID, setShowInputFromID] = useState([{}]);
 
 
-  const CheckActiveComments = (data, commentID) => {
-    const matchingObj = data.find((obj) => {
-      const key = Object.keys(obj).toString();
-      return key === commentID;
-    });
 
-    return !!(matchingObj && matchingObj[commentID]);
-  }
 
   if (commentsStore.length !== 0) {
     return commentsStore.map((comment) => {
@@ -91,40 +84,15 @@ const CommentList = ({ task_id, commentsStore }) => {
                     setInputEditValues={setInputEditValues}
                     setEditError={setErrorEdit}
                     errorEdit={errorEdit}
-                    setShowInputFromID={(commentId, isVisible) => {
-                      setShowInputFromID((prevState) => {
-                        // Создайте копию предыдущего состояния (клон объекта)
-                        const updatedState = [...prevState];
-
-                        // Найдите объект в массиве, соответствующий commentId
-                        const index = updatedState.findIndex((obj) => {
-                          const key = Object.keys(obj).toString();
-                          return key === commentId;
-                        });
-
-                        if (index !== -1) {
-                          // Если объект с commentId найден, инвертируйте его значение
-                          const existingObj = updatedState[index];
-                          const existingKey = Object.keys(existingObj)[0];
-                          const existingValue = existingObj[existingKey];
-                          updatedState[index] = {[existingKey]: !existingValue};
-                        } else {
-                          // Если объект с commentId не найден, добавьте новый объект
-                          updatedState.push({[commentId]: isVisible});
-                        }
-
-                        // Верните обновленное состояние
-                        return updatedState.filter(value => Object.keys(value).length !== 0);
-                      })
+                    setShowInputFromID={(commentId, isVisible, status) => {
+                      setActiveReplyComments(commentId, isVisible, setShowInputFromID, status);
                     }}
                     showInputFromID={showInputFromID}
-                    getStatus={() => status}
-                    newStatus={(val) => setStatus(val)}
                   />
                 </div>
               )}
 
-              {isAuth && CheckActiveComments(showInputFromID, comment.id) ? (
+              {isAuth && CheckActiveReplyComments(showInputFromID, comment.id) ? (
                 <div className={"container-reply-input"}>
                   <>
                     {errorReply !== "" ? <div className={"errors-reply"}>{errorReply}</div> : <div className={"errors"}></div>}
@@ -167,13 +135,10 @@ const CommentList = ({ task_id, commentsStore }) => {
                           ...prevState,
                           [comment.id]: false,
                         }))
-
-                        setStatus("default");
                       }} />
                       <ButtonCustom className={"button-on-comment button-reply"} title={"Ответить"} handleCLick={() => {
                         AddReply(comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setInputReplyValues);
                         setIsShowComments({ status: true, title: "Скрыть комментарии" });
-                        setStatus("default");
                       }} />
                     </div>
                   </>

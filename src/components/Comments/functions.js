@@ -54,3 +54,57 @@ export const EditReply = (comment, dispatch, inputEditValues, setEditError, setS
     setEditError("Поле не должно быть пустым!");
   }
 }
+
+export const CheckActiveReplyComments = (data, commentID) => {
+  const matchingObj = data.find((obj) => {
+    const key = Object.keys(obj).toString();
+    return key.split(",")[0] === commentID;
+  });
+
+  return !!(matchingObj && matchingObj[commentID]);
+}
+
+// export const CheckStatusReplyComments = (data, commentID) => {
+//   const matchingObj = data.find((obj) => {
+//     const key = Object.keys(obj).toString();
+//     return key === commentID;
+//   });
+//
+//   return matchingObj ? matchingObj.status : "default";
+// }
+
+export const setActiveReplyComments = (commentId, isVisible, setShowInputFromID, status) => {
+  setShowInputFromID((prevState) => {
+    // Создайте копию предыдущего состояния (клон объекта)
+    const updatedState = [...prevState];
+
+    // Найдите объект в массиве, соответствующий commentId
+    const index = updatedState.findIndex((obj) => {
+      const key = Object.keys(obj).toString();
+      return key === commentId;
+    });
+
+    if (index !== -1) {
+      // Если объект с commentId найден, инвертируйте его значение
+      const existingObj = updatedState[index];
+      const existingKey = Object.keys(existingObj)[0];
+      const existingValue = existingObj[existingKey];
+      console.log(updatedState[index]);
+      updatedState[index] = {
+        [existingKey]: !existingValue,
+        status: status
+      };
+    } else {
+      // Если объект с commentId не найден, добавьте новый объект
+      updatedState.push({
+        [commentId]: isVisible,
+        status: status
+      });
+    }
+
+    console.log(updatedState);
+
+    // Верните обновленное состояние
+    return updatedState.filter(value => Object.keys(value).length !== 0);
+  })
+}
