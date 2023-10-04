@@ -15,21 +15,14 @@ const ShowButtons = ({
   setInputEditValues,
   setEditError,
   errorEdit,
-  setIsReplyInputVisible,
-  isReplyInputVisible,
   getStatus,
-  newStatus
+  newStatus,
+  setShowInputFromID,
+  showInputFromID
 }) => {
   const currentUser = useSelector((state) => state.auth.currentUser);
   const dispatch = useDispatch();
   const [status, setStatus] = useState("default");
-
-  useEffect(() => {
-    if (status !== "edit") {
-      // Убедимся, что при переключении статуса на не "edit" input видим
-      setIsReplyInputVisible(comment.id, isReplyInputVisible[comment.id]);
-    }
-  }, [status, setIsReplyInputVisible, comment.id, isReplyInputVisible]);
 
   useEffect(() => {
     if (getStatus() !== null) setStatus(getStatus());
@@ -37,7 +30,6 @@ const ShowButtons = ({
 
   const handleRemoveReply = (commentId) => {
     dispatch(removeReply(commentId));
-    setIsReplyInputVisible(commentId, false);
   };
 
   if (status === "default") {
@@ -46,9 +38,9 @@ const ShowButtons = ({
         <ButtonCustom
           className={"button-on-comment button-reply"}
           handleCLick={() => {
-            setStatus("reply");
-            newStatus("reply");
-            setIsReplyInputVisible(comment.id, true); // Показать input ответа
+            // setStatus("reply");
+            // newStatus("reply");
+            setShowInputFromID(commentID, true);
           }}
           title={"Ответить"}
         />

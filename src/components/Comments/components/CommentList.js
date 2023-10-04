@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import IsAuth from "../../../hooks/IsAuth";
 import moment from 'moment';
 import ShowButtons from "./ShowButtons";
 import ButtonCustom from "./ButtonCustom";
-import { getUser } from "../../../Variables";
-import { AddReply, EditReply } from "../functions";
+import {getUser} from "../../../Variables";
+import {AddReply} from "../functions";
 
 const CommentList = ({ task_id, commentsStore }) => {
   const [inputEditValues, setInputEditValues] = useState({});
@@ -23,7 +23,21 @@ const CommentList = ({ task_id, commentsStore }) => {
   const dispatch = useDispatch();
   const isAuth = IsAuth();
   const [status, setStatus] = useState(null);
-  const [isReplyInputVisible, setIsReplyInputVisible] = useState({});
+  const [showInputFromID, setShowInputFromID] = useState([{}]);
+
+
+  const CheckActiveComments = (data, commentID) => {
+    const matchingObj = data.find((obj) => {
+      const key = Object.keys(obj).toString();
+      return key === commentID;
+    });
+
+    if (matchingObj && matchingObj[commentID]) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   if (commentsStore.length !== 0) {
     return commentsStore.map((comment) => {
@@ -31,8 +45,6 @@ const CommentList = ({ task_id, commentsStore }) => {
         return (
           <div className={"container-tree-comments"} key={comment.id} onClick={() => {
             setCommentIDClicked(comment.id);
-            // setStatus("default");
-            setIsReplyInputVisible({});
           }}>
 
             <div className={"container-comment content"}>
@@ -65,6 +77,7 @@ const CommentList = ({ task_id, commentsStore }) => {
                   </div>
                   <div className={"container-show-content"}>
                     <p>{comment.content}</p>
+                    <p>Comment ID: {comment.id}</p>
                   </div>
                 </div>
               )}
@@ -82,23 +95,45 @@ const CommentList = ({ task_id, commentsStore }) => {
                     setInputEditValues={setInputEditValues}
                     setEditError={setErrorEdit}
                     errorEdit={errorEdit}
-                    setIsReplyInputVisible={(commentId, isVisible) => {
-                      setIsReplyInputVisible((prev) => ({
-                        ...prev,
-                        [commentId]: isVisible,
-                      }));
+                    setShowInputFromID={(commentId, isVisible) => {
+                      setShowInputFromID((prevState) => {
+                        // Создайте копию предыдущего состояния (клон объекта)
+                        const updatedState = [...prevState];
+
+                        // Найдите объект в массиве, соответствующий commentId
+                        const index = updatedState.findIndex((obj) => {
+                          const key = Object.keys(obj).toString();
+                          return key === commentId;
+                        });
+
+                        if (index !== -1) {
+                          // Если объект с commentId найден, инвертируйте его значение
+                          const existingObj = updatedState[index];
+                          const existingKey = Object.keys(existingObj)[0];
+                          const existingValue = existingObj[existingKey];
+                          updatedState[index] = {[existingKey]: !existingValue};
+                        } else {
+                          // Если объект с commentId не найден, добавьте новый объект
+                          updatedState.push({[commentId]: isVisible});
+                        }
+
+                        console.log(updatedState.filter(value => Object.keys(value).length !== 0))
+                        // Верните обновленное состояние
+                        return updatedState;
+                      })
                     }}
-                    isReplyInputVisible={isReplyInputVisible}
+                    showInputFromID={showInputFromID}
                     getStatus={() => status}
                     newStatus={(val) => setStatus(val)}
                   />
                 </div>
               )}
 
-              {isAuth && status === "reply" && commentIDClicked === comment.id ? (
+              {isAuth && CheckActiveComments(showInputFromID, comment.id) ? (
                 <div className={"container-reply-input"}>
                   <>
                     {errorReply !== "" ? <div className={"errors-reply"}>{errorReply}</div> : <div className={"errors"}></div>}
+
 
                     <div className={"container-reply-comment content"}>
                       <input
@@ -112,6 +147,8 @@ const CommentList = ({ task_id, commentsStore }) => {
                             ...inputReplyValues,
                             [comment.id]: e.target.value
                           });
+
+
                         }}
                         placeholder={"Введите ответ..."}
                         onKeyPress={(e) => {
@@ -130,7 +167,13 @@ const CommentList = ({ task_id, commentsStore }) => {
                           ...inputReplyValues,
                           [comment.id]: ""
                         });
-                        // setStatus("default");
+
+                        setShowInputFromID((prevState) => ({
+                          ...prevState,
+                          [comment.id]: false,
+                        }))
+
+                        setStatus("default");
                       }} />
                       <ButtonCustom className={"button-on-comment button-reply"} title={"Ответить"} handleCLick={() => {
                         AddReply(comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setInputReplyValues);
@@ -140,7 +183,7 @@ const CommentList = ({ task_id, commentsStore }) => {
                     </div>
                   </>
                 </div>
-              ) : null}
+              ): null}
 
               <div>
                 {comment.comments.length !== 0 && (
