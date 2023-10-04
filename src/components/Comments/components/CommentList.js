@@ -32,11 +32,7 @@ const CommentList = ({ task_id, commentsStore }) => {
       return key === commentID;
     });
 
-    if (matchingObj && matchingObj[commentID]) {
-      return true;
-    } else {
-      return false;
-    }
+    return !!(matchingObj && matchingObj[commentID]);
   }
 
   if (commentsStore.length !== 0) {
@@ -200,7 +196,7 @@ const CommentList = ({ task_id, commentsStore }) => {
                         title: !isShowComments.status ? "Скрыть комментарии" : "Показать комментарии"
                       })}
                     >
-                      {isShowComments.title}{isShowComments.status ? <span className={"arrow"}> ▼</span> : <span className={"arrow"}> ▲</span>}
+                      {isShowComments.title}{isShowComments.status ? <span className={"arrow"}> ▲</span> : <span className={"arrow"}> ▼</span>}
                     </button>
 
                     {
