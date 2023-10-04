@@ -104,7 +104,19 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
       <div className={"container-create-task"}>
         <h1 className={"title-create-task"}>Создание задачи</h1>
           <Formik
-            initialValues={combinedInitialValues}
+            initialValues={{
+              title: "",
+              file: null,
+              numberTask: '',
+              description: '',
+              priority: 'low',
+              status: 'queue',
+              titleSubtask: "",
+              numberSubtask: '',
+              descriptionSubtask: '',
+              prioritySubtask: 'low',
+              statusSubtask: 'queue',
+            }}
             validateOnMount
             validateOnBlur
             onSubmit={({ title, file, numberTask, description, priority, status, titleSubtask, numberSubtask, descriptionSubtask, prioritySubtask, statusSubtask  }) => {
