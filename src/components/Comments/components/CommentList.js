@@ -142,6 +142,8 @@ const CommentList = ({ task_id, commentsStore }) => {
                       <ButtonCustom className={"button-on-comment button-reply"} title={"Ответить"} handleCLick={() => {
                         AddReply(comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setInputReplyValues);
                         setIsShowComments({ status: true, title: "Скрыть комментарии" });
+
+                        setActiveReplyComments(comment.id, false, setShowInputFromID, "default");
                       }} />
                     </div>
                   </>
