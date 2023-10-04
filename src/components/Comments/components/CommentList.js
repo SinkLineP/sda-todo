@@ -5,7 +5,13 @@ import moment from 'moment';
 import ShowButtons from "./ShowButtons";
 import ButtonCustom from "./ButtonCustom";
 import {getUser} from "../../../Variables";
-import {AddReply, CheckActiveComments, CheckActiveReplyComments, setActiveReplyComments} from "../functions";
+import {
+  AddReply,
+  CheckActiveComments,
+  CheckActiveReplyComments,
+  CheckStatusReplyComments,
+  setActiveReplyComments
+} from "../functions";
 
 const CommentList = ({ task_id, commentsStore }) => {
   const [inputEditValues, setInputEditValues] = useState({});
@@ -131,10 +137,7 @@ const CommentList = ({ task_id, commentsStore }) => {
                           [comment.id]: ""
                         });
 
-                        setShowInputFromID((prevState) => ({
-                          ...prevState,
-                          [comment.id]: false,
-                        }))
+                        setActiveReplyComments(comment.id, false, setShowInputFromID, "default");
                       }} />
                       <ButtonCustom className={"button-on-comment button-reply"} title={"Ответить"} handleCLick={() => {
                         AddReply(comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setInputReplyValues);

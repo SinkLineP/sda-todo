@@ -64,14 +64,14 @@ export const CheckActiveReplyComments = (data, commentID) => {
   return !!(matchingObj && matchingObj[commentID]);
 }
 
-// export const CheckStatusReplyComments = (data, commentID) => {
-//   const matchingObj = data.find((obj) => {
-//     const key = Object.keys(obj).toString();
-//     return key === commentID;
-//   });
-//
-//   return matchingObj ? matchingObj.status : "default";
-// }
+export const CheckStatusReplyComments = (data, commentID) => {
+  const matchingObj = data.find((obj) => {
+    const key = Object.keys(obj).toString();
+    return key.split(",")[0] === commentID;
+  });
+
+  return matchingObj ? matchingObj.status : 'default';
+}
 
 export const setActiveReplyComments = (commentId, isVisible, setShowInputFromID, status) => {
   setShowInputFromID((prevState) => {
@@ -81,7 +81,7 @@ export const setActiveReplyComments = (commentId, isVisible, setShowInputFromID,
     // Найдите объект в массиве, соответствующий commentId
     const index = updatedState.findIndex((obj) => {
       const key = Object.keys(obj).toString();
-      return key === commentId;
+      return key.split(",")[0] === commentId;
     });
 
     if (index !== -1) {
@@ -89,7 +89,6 @@ export const setActiveReplyComments = (commentId, isVisible, setShowInputFromID,
       const existingObj = updatedState[index];
       const existingKey = Object.keys(existingObj)[0];
       const existingValue = existingObj[existingKey];
-      console.log(updatedState[index]);
       updatedState[index] = {
         [existingKey]: !existingValue,
         status: status
@@ -102,7 +101,7 @@ export const setActiveReplyComments = (commentId, isVisible, setShowInputFromID,
       });
     }
 
-    console.log(updatedState);
+    console.log(updatedState.filter(value => Object.keys(value).length !== 0));
 
     // Верните обновленное состояние
     return updatedState.filter(value => Object.keys(value).length !== 0);

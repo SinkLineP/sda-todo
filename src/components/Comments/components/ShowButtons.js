@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ButtonCustom from "./ButtonCustom";
 import { editComment, removeComment, removeReply } from "../../../store/Reducers/commentReducer";
 import { useDispatch, useSelector } from "react-redux";
-import { EditReply } from "../functions";
+import {CheckStatusReplyComments, EditReply} from "../functions";
 
 const ShowButtons = ({
   commentID,
@@ -22,22 +22,22 @@ const ShowButtons = ({
   const dispatch = useDispatch();
   const [status, setStatus] = useState("default");
 
-  // useEffect(() => {
-  //   if (getStatus() !== null) setStatus(getStatus());
-  // }, [getStatus]);
+  useEffect(() => {
+    const status = CheckStatusReplyComments(showInputFromID, comment.id);
+    console.log(status);
+  }, [showInputFromID, comment.id]);
 
   const handleRemoveReply = (commentId) => {
     dispatch(removeReply(commentId));
   };
 
-  if (status === "default") {
+  if (CheckStatusReplyComments(showInputFromID, comment.id) === "default") {
     return (
       <>
         <ButtonCustom
           className={"button-on-comment button-reply"}
           handleCLick={() => {
             setShowInputFromID(commentID, true, "reply");
-            setStatus("reply")
           }}
           title={"Ответить"}
         />
@@ -112,7 +112,7 @@ const ShowButtons = ({
         />
       </>
     );
-  }
+  } else return null;
 };
 
 export default ShowButtons;
