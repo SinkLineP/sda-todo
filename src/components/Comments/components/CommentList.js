@@ -123,9 +123,8 @@ const CommentList = ({ task_id, commentsStore }) => {
                         onKeyPress={(e) => {
                           if (e.key === 'Enter' && !e.shiftKey) {
                             e.preventDefault();
-                            AddReply(comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setInputReplyValues);
+                            AddReply(comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setInputReplyValues, setShowInputFromID);
                             setIsShowComments({ status: true, title: "Скрыть комментарии" });
-                            // setStatus("default");
                           }
                         }}
                       />
@@ -140,10 +139,8 @@ const CommentList = ({ task_id, commentsStore }) => {
                         setActiveReplyComments(comment.id, false, setShowInputFromID, "default");
                       }} />
                       <ButtonCustom className={"button-on-comment button-reply"} title={"Ответить"} handleCLick={() => {
-                        AddReply(comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setInputReplyValues);
+                        AddReply(comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setInputReplyValues, setShowInputFromID);
                         setIsShowComments({ status: true, title: "Скрыть комментарии" });
-
-                        setActiveReplyComments(comment.id, false, setShowInputFromID, "default");
                       }} />
                     </div>
                   </>

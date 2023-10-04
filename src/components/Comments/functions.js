@@ -1,7 +1,7 @@
 import {addReply, editComment} from "../../store/Reducers/commentReducer";
 import {v4 as uuid} from "uuid";
 
-const functionAddReply = (comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setInputReplyValues) => {
+const functionAddReply = (comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setInputReplyValues, setShowInputFromID) => {
   setErrorReply("")
 
   dispatch(addReply({
@@ -18,6 +18,8 @@ const functionAddReply = (comment, setErrorReply, dispatch, task_id, currentUser
     ...inputReplyValues,
     [comment.id]: ""
   });
+
+  setActiveReplyComments(comment.id, false, setShowInputFromID, "default");
 }
 
 const checkValueReply = (func, comment, inputReplyValues, setErrorReply) => {
@@ -32,9 +34,9 @@ const checkValueReply = (func, comment, inputReplyValues, setErrorReply) => {
   }
 }
 
-export const AddReply = (comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setInputReplyValues) => {
+export const AddReply = (comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setInputReplyValues, setShowInputFromID) => {
   checkValueReply(() => {
-    functionAddReply(comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setInputReplyValues);
+    functionAddReply(comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setInputReplyValues, setShowInputFromID);
   }, comment, inputReplyValues, setErrorReply);
 }
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ButtonCustom from "./ButtonCustom";
 import { editComment, removeComment, removeReply } from "../../../store/Reducers/commentReducer";
 import { useDispatch, useSelector } from "react-redux";
-import {CheckStatusReplyComments, EditReply} from "../functions";
+import {CheckStatusReplyComments, EditReply, setActiveReplyComments} from "../functions";
 
 const ShowButtons = ({
   commentID,
@@ -46,7 +46,7 @@ const ShowButtons = ({
             <ButtonCustom
               className={"button-on-comment button-edit"}
               handleCLick={() => {
-                setStatus("edit");
+                setActiveReplyComments(comment.id, false, setShowInputFromID, "edit");
               }}
               title={"Редактировать"}
             />
@@ -67,7 +67,7 @@ const ShowButtons = ({
         )}
       </>
     );
-  } else if (status === "edit") {
+  } else if (CheckStatusReplyComments(showInputFromID, comment.id) === "edit") {
     if (
       comment.user_id === currentUser.id &&
       comment.task_id === task_id &&
