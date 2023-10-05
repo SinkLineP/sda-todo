@@ -10,7 +10,7 @@ import ShowSubtasks from "./components/ShowSubtask/ShowSubtasks";
 import {getCurrentDate, iconWithStatus, onDropHandler, SliceSelectedFiles, uploadedFilesShow} from "./Functions";
 import styles from "./CreateTaskModal.module.css";
 import {initialValues} from "./InitialValues";
-import {validationSchema} from "./Schemas";
+import {validationSchema} from "./Schema";
 import ButtonShowOrHideSubtask from "./components/ButtonShowOrHideSubtask/ButtonShowOrHideSubtask";
 
 

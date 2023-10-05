@@ -7,6 +7,9 @@ const ShowSubtasks = ({ data }) => {
   const isAuth = IsAuth();
   const currentUser = useSelector(state => state.auth.currentUser);
 
+  const deleteSubtask = () => {};
+  const editSubtask = () => {};
+
 
   if (data.length !== 0) {
     return data.map((item, index) => {
@@ -28,8 +31,8 @@ const ShowSubtasks = ({ data }) => {
 
           {isAuth && currentUser.id === item.author && (
             <div className={styles.container_buttons}>
-              <button className={styles.edit}>edit</button>
-              <button className={styles.delete}>delete</button>
+              <button className={styles.edit} onClick={() => editSubtask(item.id)}>edit</button>
+              <button className={styles.delete} onClick={() => deleteSubtask(item.id)}>delete</button>
             </div>
           )}
         </div>
