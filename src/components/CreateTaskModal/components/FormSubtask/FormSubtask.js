@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import ShowSubtasks from "./ShowSubtasks";
+import ShowSubtasks from "../ShowSubtask/ShowSubtasks";
 import styles from "./FormSubtask.module.css";
 import * as yup from "yup";
 import {ErrorMessage, Field, Form, Formik} from "formik";

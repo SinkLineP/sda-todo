@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./ShowSubtasks.module.css";
-import IsAuth from "../../../hooks/IsAuth";
+import IsAuth from "../../../../hooks/IsAuth";
 import {useSelector} from "react-redux";
 
 const ShowSubtasks = ({ data }) => {

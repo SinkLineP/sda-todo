@@ -12,7 +12,7 @@ import IsAuth from "../../hooks/IsAuth";
 import {ReactComponent as IconDeleteCrossSVG} from "./icons/delete-cross.svg";
 import {ReactComponent as IconApplyDeleteSVG} from "./icons/apply-delete.svg";
 import Comments from "../Comments/Comments";
-import ShowSubtasks from "../CreateTaskModal/components/ShowSubtasks";
+import ShowSubtasks from "../CreateTaskModal/components/ShowSubtask/ShowSubtasks";
 
 
 Modal.setAppElement("#root");

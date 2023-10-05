@@ -5,13 +5,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {addTask} from "../../store/Reducers/taskReducer";
 import ButtonSubmit from "./components/ButtonSubmit";
 import {v4 as uuid} from "uuid";
-import FormSubtask from "./components/FormSubtask";
-import ShowSubtasks from "./components/ShowSubtasks";
+import FormSubtask from "./components/FormSubtask/FormSubtask";
+import ShowSubtasks from "./components/ShowSubtask/ShowSubtasks";
 import {getCurrentDate, iconWithStatus, onDropHandler, SliceSelectedFiles, uploadedFilesShow} from "./Functions";
 import styles from "./CreateTaskModal.module.css";
 import {initialValues} from "./InitialValues";
 import {validationSchema} from "./Schemas";
-import ButtonShowOrHideSubtask from "./components/ButtonShowOrHideSubtask";
+import ButtonShowOrHideSubtask from "./components/ButtonShowOrHideSubtask/ButtonShowOrHideSubtask";
 
 
 export default function CreateTaskModal({ show, onClose, project_id }) {
