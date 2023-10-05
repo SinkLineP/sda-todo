@@ -1,10 +1,10 @@
 import React, {useState} from "react";
-import "./styles/table.css";
 import {useNavigate} from "react-router-dom";
 import {getAuthorProject } from "../Variables";
 import {useSelector} from "react-redux";
 import ProjectModal from "../components/ProjectModal/ProjectModal";
 import IsAuth from "../hooks/IsAuth";
+import styles from "./styles/SelectProject.module.css";
 
 export default function SelectProjects() {
   const navigate = useNavigate();
@@ -17,55 +17,39 @@ export default function SelectProjects() {
 
   return (
     <>
-      <div className={"container"}>
-        {IsAuth() ? (
-          <div className={"container-create-project"}>
-            <button
-              className={"btn-create-project"}
-              onClick={onOpen}
-            >Добавить проект</button>
+      <div className={styles.container}>
+        {IsAuth() && (
+          <div className={styles.container_create_project}>
+            <button className={styles.btn_create_project} onClick={onOpen}>Добавить проект</button>
           </div>
-        ) : ("")}
-        <table className={"table"}
-               style={{
-                 fontWeight: "bold"
-               }}
-        >
-          <thead style={{
-            backgroundColor: "#054F7C",
-            color: "white"
-          }}>
-          <tr>
-            <th className={"no-select-text"} style={{
-              width: "10rem"
-            }}>Номер проекта</th>
-            <th className={"no-select-text"}>Название проекта</th>
-            <th className={"no-select-text"} style={{
-              width: "20rem"
-            }}>Владец проекта</th>
+        )}
+        <table className={styles.table}>
+          <thead className={styles.thead}>
+          <tr className={styles.tr}>
+            <th className={`${styles.number_project} ${styles.th} no-select-text`}>Номер проекта</th>
+            <th className={`${styles.title_project} ${styles.th} no-select-text`}>Название проекта</th>
+            <th className={`${styles.author_project} ${styles.th} no-select-text`}>Владец проекта</th>
           </tr>
           </thead>
-          <tbody style={{
-            backgroundColor: "#f5eaea"
-          }}>
+          <tbody className={styles.tbody}>
           {projectsStore.length !== 0 ? projectsStore.map((item, index) => {
             index += 1;
 
             return (
-              <tr key={item.id} onClick={() => {
+              <tr className={styles.tr} key={item.id} onClick={() => {
                 navigate(`${item.id}`);
               }}>
-                <td>{index}</td>
-                <td>
+                <td className={styles.td}>{index}</td>
+                <td className={styles.td}>
                   <p>{item.title}</p>
                 </td>
-                <td>{getAuthorProject(item.user_id, usersStore)}</td>
+                <td className={styles.td}>{getAuthorProject(item.user_id, usersStore)}</td>
               </tr>
             )
           }) : (
-            <tr id={"projects-not-found"}>
-              <td colSpan={3}>
-                Проектов не найдено
+            <tr className={styles.tr} id={styles.project_not_found}>
+              <td className={styles.td} colSpan={3}>
+                <p>Проектов не найдено</p>
               </td>
             </tr>
           )}

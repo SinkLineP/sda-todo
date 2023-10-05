@@ -4,31 +4,35 @@
     width: 100%;
     border-radius: 7px;
     overflow: hidden;
+    font-weight: bold
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    box-sizing: border-box;
+.thead {
+    background-color: #054F7C;
+    color: white;
 }
 
-th {
+.tbody {
+    background-color: #f5eaea;
+}
+
+.th {
     border: 1px solid black;
     padding: 10px;
 }
 
-td {
+.td {
     border: 1px solid black;
     padding: 10px;
     text-align: center;
 }
 
-.item {
-    background-color: rgba(0, 255, 255, 0.46);
+.tbody > .tr:hover {
+    background-color: var(--background-color-hover);
+    cursor: pointer;
 }
 
-.btn-create-project {
+.btn_create_project {
     display: inline-block;
     color: white;
     font-weight: bold;
@@ -44,27 +48,33 @@ td {
     background-color: #044369;
 }
 
-.container-create-project {
+
+.container_create_project {
     width: 100%;
     text-align: right;
     margin-bottom: 1rem;
 }
 
-tbody > tr:hover {
-    background-color: var(--background-color-hover);
-    cursor: pointer;
+.number_project {
+    width: 10rem;
 }
 
-.no-select-text {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+.title_project {
+
 }
 
-#projects-not-found:hover {
+.author_project {
+    width: 20rem;
+}
+
+.project_not_found:hover {
     background-color: var(--background-color);
     cursor: default;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
 }

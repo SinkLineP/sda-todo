@@ -6,7 +6,7 @@ import {useSelector} from "react-redux";
 import {NavLink, useParams} from "react-router-dom";
 import IsAuth from "../hooks/IsAuth";
 import CreateTaskModal from "../components/CreateTaskModal/CreateTaskModal";
-import styles from "./Tasks.module.css";
+import styles from "./styles/Tasks.module.css";
 
 
 export default function Tasks() {
