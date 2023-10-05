@@ -1,0 +1,57 @@
+.btn-subtask-submit {
+    background-color: #27aa80;
+    color: white;
+    border-radius: 0.5rem;
+    border: none;
+    padding: 1rem;
+    width: 100%;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-bottom: 3rem;
+}
+
+.container-subtask-form {
+    width: 100%
+}
+
+.container-subtask-title {
+    width: 100%;
+}
+
+.subtask-title {
+    text-align: center;
+}
+
+.subtask-input {
+    border: 1px solid lightgrey;
+    width: 100%;
+    box-sizing: border-box;
+    height: 2.1rem;
+    padding-left: 10px;
+}
+
+.subtask-input > .select {
+    border: 1px solid lightgrey;
+    width: 100%;
+    box-sizing: border-box;
+    height: 2.1rem;
+    padding-left: 10px;
+}
+
+.container-subtask-field {
+    margin-bottom: 1rem;
+}
+
+.subtask-label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.hide-submit {
+
+}
+
+.show-submit {
+
+}

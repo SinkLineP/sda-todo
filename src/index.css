@@ -208,6 +208,21 @@ select {
   background-color: #044369;
 }
 
+.btn-success {
+  background-color: #70a138;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-success:hover {
+  background-color: #669333;
+}
+
+.btn-disabled {
+  background-color: #a1a1a1;
+  color: #757575;
+  cursor: not-allowed;
+}
 
 
 

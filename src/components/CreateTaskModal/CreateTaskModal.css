@@ -12,15 +12,12 @@
     padding-left: 10px;
 }
 
-.subtask-input {
+.task-input > .select {
     border: 1px solid lightgrey;
-    height: 20px;
-    padding-left: 10px;
     width: 100%;
     box-sizing: border-box;
-}
-
-.container-create-task {
+    height: 2.1rem;
+    padding-left: 10px;
 }
 
 .container-label-field {
@@ -81,11 +78,6 @@
     font-weight: bold;
 }
 
-.subtask-errors {
-    text-align: left;
-    color: #f36464
-}
-
 .warning {
     background-color: #fdeda5;
     width: auto;
@@ -104,11 +96,6 @@
     cursor: pointer;
 }
 
-.subtask-select {
-    height: 20px;
-    width: 100%
-}
-
 .icon-subtask {
     width: 20px;
     height: auto
@@ -116,9 +103,19 @@
 
 .drop-area {
     padding-bottom: 10px;
-    border: 5px dashed black;
+    border: 2px dashed #3f3f3f;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+}
+
+.btn-show {
+    background-color: #27aa80;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-show:hover {
+    background-color: #239671;
 }

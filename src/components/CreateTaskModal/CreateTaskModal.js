@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Modal from "react-modal";
 import {Field, Formik, ErrorMessage} from "formik";
 import {useDispatch, useSelector} from "react-redux";
@@ -8,6 +8,7 @@ import {convertTypeFileToObject, CountSliceFilesTask, getCurrentDate} from "../.
 import ButtonSubmit from "./components/ButtonSubmit";
 import {v4 as uuid} from "uuid";
 import * as yup from "yup";
+import FormSubtask from "./components/FormSubtask";
 
 
 export default function CreateTaskModal({ show, onClose, project_id }) {
@@ -24,7 +25,10 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
       right: 'auto',
       bottom: 'auto',
       transform: 'translate(-50%, -50%)',
-      width: "60%",
+      width: "80%",
+      height: "82vh",
+      maxHeight: "82vh",
+      overflowY: "auto",
     }
   };
 
@@ -87,141 +91,11 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
     }
   }
 
-  const ShowSubtasks = ({ data }) => {
-    return (
-      <table style={{
-        borderCollapse: "collapse",
-        width: "100%",
-        borderRadius: "0.3rem",
-        overflow: "hidden",
-        border: "solid",
-        borderColor: "black",
-        borderWidth: "1px"
-      }}>
-        <thead>
-        <tr style={{
-          backgroundColor: "#054F7C",
-          color: "white",
-        }}>
-          <th>Заголовок подзадачи</th>
-          <th>Номер подзадачи</th>
-          <th>Описание подзадачи</th>
-          <th>Приоритет подзадачи</th>
-          <th>Статус подзадачи</th>
-        </tr>
-        </thead>
-        <tbody style={{
-          backgroundColor: "#fff0dc",
-        }}>
-        {
-          data.map((subtask, index) => {
-            return (
-              <tr key={index}>
-                <td>
-                  {subtask.titleSubtask}
-                </td>
-                <td>
-                  {subtask.numberSubtask}
-                </td>
-                <td>
-                  {subtask.descriptionSubtask}
-                </td>
-                <td>
-                  {subtask.prioritySubtask}
-                </td>
-                <td>
-                  {subtask.statusSubtask}
-                </td>
-              </tr>
-            )
-          })
-        }
-        </tbody>
-      </table>
-    )
-  }
 
-  const FormSubtask = () => {
-    const [titleSubtask, setTitleSubtask] = useState("");
+  useEffect(() => {
+    console.log(subtasks);
+  }, [subtasks]);
 
-    return (
-      <>
-        <div>
-          <div>
-            <h2>Создание подзадачи</h2>
-          </div>
-
-          <div>
-            <label>Заголовок подзадачи</label>
-            <input
-              name={"titleSubtask"}
-              className={""}
-              style={{}}
-              placeholder={"Введите заголовок подзадачи..."}
-              onChange={(e) => {console.log(e)}}
-              onBlur={(e) => {console.log(e)}}
-            />
-
-            <label>Номер подзадачи</label>
-            <input
-              name={"titleSubtask"}
-              className={""}
-              style={{}}
-              placeholder={"Введите заголовок подзадачи..."}
-              onChange={(e) => {console.log(e)}}
-              onBlur={(e) => {console.log(e)}}
-            />
-
-            <label>Описание подзадачи</label>
-            <input
-              name={"titleSubtask"}
-              className={""}
-              style={{}}
-              placeholder={"Введите заголовок подзадачи..."}
-              onChange={(e) => {console.log(e)}}
-              onBlur={(e) => {console.log(e)}}
-            />
-
-            <label>Приоритет подзадачи</label>
-            <select>
-              <option value="low">Низкий</option>
-              <option value="medium">Средний</option>
-              <option value="height">Высокий</option>
-            </select>
-            {/*<input*/}
-            {/*  name={"titleSubtask"}*/}
-            {/*  className={""}*/}
-            {/*  style={{}}*/}
-            {/*  placeholder={"Введите заголовок подзадачи..."}*/}
-            {/*  onChange={(e) => {console.log(e)}}*/}
-            {/*  onBlur={(e) => {console.log(e)}}*/}
-            {/*/>*/}
-
-            <label>Статус подзадачи</label>
-            <select>
-              <option value="queue">Queue</option>
-              <option value="development">Development</option>
-              <option value="done">Done</option>
-            </select>
-            {/*<input*/}
-            {/*  name={"titleSubtask"}*/}
-            {/*  className={""}*/}
-            {/*  style={{}}*/}
-            {/*  placeholder={"Введите заголовок подзадачи..."}*/}
-            {/*  onChange={(e) => {console.log(e)}}*/}
-            {/*  onBlur={(e) => {console.log(e)}}*/}
-            {/*/>*/}
-          </div>
-
-          <button>Сохранить под задачу</button>
-        </div>
-
-        <div>
-          {subtasks.length !== 0 && <ShowSubtasks data={subtasks} />}
-        </div>
-      </>
-    )
-  }
 
 
   return (
@@ -231,6 +105,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
         setShowFormSubtask(false);
         onClose();
         setUploadedFiles([]);
+        setSubtasks([]);
       }}
       overlayClassName={"overlay"}
       style={customStyles}
@@ -245,11 +120,6 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
               description: '',
               priority: 'low',
               status: 'queue',
-              titleSubtask: "",
-              numberSubtask: '',
-              descriptionSubtask: '',
-              prioritySubtask: 'low',
-              statusSubtask: 'queue',
             }}
             validateOnMount
             validateOnBlur
@@ -266,7 +136,6 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                 priority: priority,
                 files: file,
                 status: status,
-                // subtasks: customSubtasksValidate(titleSubtask, numberSubtask, descriptionSubtask, prioritySubtask, statusSubtask),
                 icon: iconWithStatus(status),
                 author: currentUser.id,
               }));
@@ -292,37 +161,6 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                 .required("Введите описание задачи"),
               priority: yup.string().required('Выберите приоритет задачи'),
               status: yup.string().required('Выберите статус задачи'),
-              // titleSubtask: yup
-              //   .string()
-              //   .min(5, "Заголовок должен быть больше 5 символов!")
-              //   .max(100, "Заголовок должен быть меньше 100 символов!")
-              //   .when("showFormSubtask", {
-              //     is: true,
-              //     then: yup.string().required("Введите заголовок подзадачи"),
-              //     otherwise: yup.string(),
-              //   }),
-              // numberSubtask: yup
-              //   .number()
-              //   .typeError("Должно быть число")
-              //   .test('is-number', 'Номер подзадачи должен быть числом', (value) => {
-              //     if (!value) return true;
-              //     return !isNaN(value);
-              //   }),
-                // .when("showFormSubtask", {
-                //   is: true,
-                //   then: yup.string().required("Введите заголовок подзадачи"),
-                //   otherwise: yup.string(),
-                // }),
-              // descriptionSubtask: yup.string()
-              //   .min(10, "Описание подзадачи должно быть больше 10 символов")
-              //   .max(2000, "Описание подзадачи должно быть меньше 2000 символов"),
-                // .when("showFormSubtask", {
-                //   is: true,
-                //   then: yup.string().required("Введите заголовок подзадачи"),
-                //   otherwise: yup.string(),
-                // }),
-              // prioritySubtask: yup.string(),
-              // statusSubtask: yup.string(),
             })}
           >
             {({ values,validateForm, resetForm, errors, touched, handleChange, handleBlur, isValid, handleSubmit, dirty, setFieldValue }) => {
@@ -336,13 +174,12 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                       type="text"
                       id="title"
                       name="title"
+                      placeholder={"Введите заголовок задачи..."}
                       onChange={(e) => {
                         handleChange(e);
-                        validateForm();  // Включите валидацию после изменения значения
                       }}
                       onBlur={(e) => {
                         handleBlur(e);
-                        validateForm();  // Включите валидацию после потери фокуса
                       }}
                     />
                   </div>
@@ -355,13 +192,12 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                       type="text"
                       id="numberTask"
                       name="numberTask"
+                      placeholder={"Введите номер задачи..."}
                       onChange={(e) => {
                         handleChange(e);
-                        validateForm();  // Включите валидацию после изменения значения
                       }}
                       onBlur={(e) => {
                         handleBlur(e);
-                        validateForm();  // Включите валидацию после потери фокуса
                       }}
                     />
                   </div>
@@ -374,13 +210,12 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                       type="text"
                       id="description"
                       name="description"
+                      placeholder={"Введите описание задачи..."}
                       onChange={(e) => {
                         handleChange(e);
-                        validateForm();  // Включите валидацию после изменения значения
                       }}
                       onBlur={(e) => {
                         handleBlur(e);
-                        validateForm();  // Включите валидацию после потери фокуса
                       }}
                     />
                   </div>
@@ -389,16 +224,14 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                   <div className={"container-label-field"}>
                     <label htmlFor="priority">Выберите приоритет задачи: <ErrorMessage className={"errors"} name="priority" component="span" /></label>
                     <Field
-                      className={"task-select"}
+                      className={"task-input select"}
                       as="select"
                       name="priority"
                       onChange={(e) => {
                         handleChange(e);
-                        validateForm();  // Включите валидацию после изменения значения
                       }}
                       onBlur={(e) => {
                         handleBlur(e);
-                        validateForm();  // Включите валидацию после потери фокуса
                       }}
                     >
                       <option value="low">Низкий</option>
@@ -411,16 +244,14 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                   <div className={"container-label-field"}>
                     <label htmlFor="status">Выберите статус задачи: <ErrorMessage className={"errors"} name="status" component="span" /></label>
                     <Field
-                      className={"task-select"}
+                      className={"task-input"}
                       as="select"
                       name="status"
                       onChange={(e) => {
                         handleChange(e);
-                        validateForm();  // Включите валидацию после изменения значения
                       }}
                       onBlur={(e) => {
                         handleBlur(e);
-                        validateForm();  // Включите валидацию после потери фокуса
                       }}
                     >
                       <option value="queue">Queue</option>
@@ -440,11 +271,11 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                       <div style={{ float: "right" }}>
                         {
                           !showFormSubtask ? (
-                            <p className={`btn-subtask add-subtask`} onClick={() => setShowFormSubtask(!showFormSubtask)}>Добавить подзадачи</p>
+                            <p className={`btn-subtask add-subtask`} onClick={() => setShowFormSubtask(true)}>Добавить подзадачи</p>
                           ) : (
                             <p className={`btn-subtask remove-subtask`} onClick={() => {
-                              setShowFormSubtask(!showFormSubtask)
-                              resetForm()
+                              setShowFormSubtask(false)
+                              // resetForm()
                             }}>Удалить подзадачи</p>
                           )
                         }
@@ -453,7 +284,12 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                     </div>
 
                     {showFormSubtask === true && (
-                      <FormSubtask />
+                      <FormSubtask subtasks={subtasks} setSubtasks={(val) => {
+                        setSubtasks((prevState) => ([
+                          ...prevState,
+                          val,
+                        ]))
+                      }} />
                     )}
                   </div>
 
@@ -504,12 +340,10 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
 
                   <ButtonSubmit
                     onClose={onClose}
-                    customSubtasksValidate={customSubtasksValidate}
-                    setShowFormSubtask={setShowFormSubtask}
-                    showFormSubtask={showFormSubtask}
                     isValid={isValid}
                     values={values}
                     handleSubmit={handleSubmit}
+                    closeSubtasks={() => setShowFormSubtask(false)}
                     clearUploadedFiles={setUploadedFiles}
                   />
                 </>
