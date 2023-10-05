@@ -6,6 +6,7 @@ import {useSelector} from "react-redux";
 import {NavLink, useParams} from "react-router-dom";
 import IsAuth from "../hooks/IsAuth";
 import CreateTaskModal from "../components/CreateTaskModal/CreateTaskModal";
+import styles from "./Tasks.module.css";
 
 
 export default function Tasks() {
@@ -58,41 +59,32 @@ export default function Tasks() {
 
 
   return (
-    <div className={"container"}>
-      <div style={{
-        display: "block",
-        textAlign: "center",
-        paddingLeft: "1.8rem",
-        paddingRight: "1.8rem"
-      }}>
-        <div style={{
-          paddingBottom: "4rem"
-        }}>
-          <div style={{ float: "left" }}>
-            <NavLink to={"/"}>
-              <p className={"button-back"}>
-                ◀ Вернуться к проектам
-              </p>
-            </NavLink>
-          </div>
-          {IsAuth() && checkProjectsAuthor() ? (
-            <div style={{ float: "right" }}>
-              <p
-                className={"button-back"}
-                onClick={onOpen}
-              >
-                Добавить задачу
-              </p>
-            </div>
-          ) : ("")}
+    <div className={styles.container}>
+      <div className={styles.container_header}>
+        <div>
+          <NavLink to={"/"}>
+            <p className={styles.button_header}>
+              ◀ Вернуться к проектам
+            </p>
+          </NavLink>
         </div>
+        {IsAuth() && checkProjectsAuthor() ? (
+          <div>
+            <p
+              className={styles.button_header}
+              onClick={onOpen}
+            >
+              Добавить задачу
+            </p>
+          </div>
+        ) : ("")}
       </div>
 
-      <div className={"row"}>
+      <div className={styles.container_card}>
         {statuses.map((s, index) => {
           return (
-            <div key={index} className={"col-wrapper"}>
-              <h2 className={"col-header no-select-text"}>{s.status.toUpperCase()}</h2>
+            <div key={index} className={styles.card_item}>
+              <h2 className={`${styles.title}`}>{s.status.toUpperCase()}</h2>
               <DropWrapper onDrop={onDrop} status={s.status}>
                 <Col>
                   {showTask(items, s)}
@@ -109,5 +101,6 @@ export default function Tasks() {
         project_id={project_id}
       />
     </div>
+
   );
 }

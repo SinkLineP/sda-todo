@@ -193,21 +193,7 @@ select {
   color: #d00000;
 }
 
-.button-back {
-  display: inline-block;
-  /*margin-left: 1.8rem;*/
-  color: white;
-  font-weight: bold;
-  font-size: 1.2rem;
-  background-color: #054F7C;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
 
-.button-back:hover {
-  background-color: #044369;
-}
 
 .btn-success {
   background-color: #70a138;
