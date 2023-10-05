@@ -1,12 +1,12 @@
 import React from "react";
 import Modal from "react-modal";
 import {FormSubmit} from "../FormSubmit/FormSubmit";
-import {Formik} from "formik";
+import {ErrorMessage, Field, Formik} from "formik";
 import * as yup from "yup";
-import "./ProjectModal.css";
 import {useDispatch, useSelector} from "react-redux";
 import {addProject} from "../../store/Reducers/projectReducer";
 import {v4 as uuid} from "uuid";
+import styles from "./ProjectModal.module.css";
 
 
 export default function ProjectModal({ onClose, show }) {
@@ -42,47 +42,38 @@ export default function ProjectModal({ onClose, show }) {
       style={customStyles}
     >
       <div>
-        <h1 style={{
-          display: "block",
-          textAlign: "center",
-          marginBottom: "3rem"
-        }}>Создание проекта</h1>
-
+        <h1 className={styles.title}>Создание проекта</h1>
         <Formik
           initialValues={{
             projectName: '',
           }}
           validateOnBlur
-          onSubmit={(values) => {
+          onSubmit={(values, { resetForm }) => {
             dispatch(addProject({
               id: uuid(),
               title: values.projectName,
               status: "queue",
               user_id: currentUser.id
             }));
+
+            resetForm();
           }}
           validationSchema={validationsSchema}>
           {({ values, errors, touched, handleChange, handleBlur, isValid, handleSubmit, dirty, resetForm }) => {
             return (
               <div className={'form'}>
-                {/* projectName */}
-                <p>
-                  <label className={"label"} htmlFor={'projectName'}>Введите название проекта: </label><br></br>
-                  {touched.projectName && errors.projectName ? (<p className="errors">{errors.projectName}</p>) : (<p className="errors">&nbsp;</p>)}
-
-                  <div style={{
-                    display: "flex"
-                  }}>
-                    <input
-                      className={"input-form input-form-project-name"}
-                      type={'text'}
-                      name={'projectName'}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.projectName}
-                    />
-                  </div>
-                </p>
+                <div>
+                  <label htmlFor="title" className={styles.label}>Введите название проекта: <ErrorMessage name={"projectName"} className={"errors"} component={"span"} /></label>
+                  <Field
+                    className={styles.input_form_project_name}
+                    type="text"
+                    id="title"
+                    name={"projectName"}
+                    placeholder={"Введите название проекта..."}
+                    onChange={(e) => handleChange(e)}
+                    onBlur={(e) => handleBlur(e)}
+                  />
+                </div>
 
                 <FormSubmit
                   title={"Создать проект"}
@@ -94,7 +85,6 @@ export default function ProjectModal({ onClose, show }) {
                 />
               </div>
             )
-
           }}
         </Formik>
       </div>

@@ -12,15 +12,13 @@ export default function SelectProjects() {
   const usersStore = useSelector(state => state.auth.users);
   const [show, setShow] = useState(false);
 
-  const onOpen = () => setShow(true);
-  const onClose = () => setShow(false);
 
   return (
     <>
       <div className={styles.container}>
         {IsAuth() && (
           <div className={styles.container_create_project}>
-            <button className={styles.btn_create_project} onClick={onOpen}>Добавить проект</button>
+            <button className={styles.btn_create_project} onClick={() => setShow(true)}>Добавить проект</button>
           </div>
         )}
         <table className={styles.table}>
@@ -59,7 +57,7 @@ export default function SelectProjects() {
 
       <div>
         <ProjectModal
-          onClose={onClose}
+          onClose={() => setShow(false)}
           show={show}
         />
       </div>
