@@ -47,7 +47,7 @@ export default function SelectProjects() {
           }) : (
             <tr className={styles.tr} id={styles.project_not_found}>
               <td className={styles.td} colSpan={3}>
-                <p>Проектов не найдено</p>
+                <p className={styles.project_not_found_title}>Проектов не найдено</p>
               </td>
             </tr>
           )}

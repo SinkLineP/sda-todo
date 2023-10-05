@@ -63,7 +63,7 @@ export default function ProjectModal({ onClose, show }) {
             return (
               <div className={'form'}>
                 <div>
-                  <label htmlFor="title" className={styles.label}>Введите название проекта: <ErrorMessage name={"projectName"} className={"errors"} component={"span"} /></label>
+                  <label htmlFor="title" className={styles.label}>Введите название проекта: <ErrorMessage name={"projectName"} className={`errors ${styles.error}`} component={"span"} /></label>
                   <Field
                     className={styles.input_form_project_name}
                     type="text"

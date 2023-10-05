@@ -67,6 +67,10 @@
     width: 20rem;
 }
 
+.project_not_found_title {
+    text-align: center;
+}
+
 .project_not_found:hover {
     background-color: var(--background-color);
     cursor: default;
