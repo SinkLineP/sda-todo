@@ -4,7 +4,7 @@ import IsAuth from "../../../../hooks/IsAuth";
 import {useDispatch, useSelector} from "react-redux";
 import {removeSubtask} from "../../../../store/Reducers/subtaskReducer";
 
-const ShowSubtasks = ({ data, setData, location }) => {
+const ShowSubtasks = ({ data, setData, location, task_id }) => {
   const isAuth = IsAuth();
   const currentUser = useSelector(state => state.auth.currentUser);
   const dispatch = useDispatch();

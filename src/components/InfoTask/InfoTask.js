@@ -13,6 +13,7 @@ import {ReactComponent as IconDeleteCrossSVG} from "./icons/delete-cross.svg";
 import {ReactComponent as IconApplyDeleteSVG} from "./icons/apply-delete.svg";
 import Comments from "../Comments/Comments";
 import ShowSubtasks from "../CreateTaskModal/components/ShowSubtask/ShowSubtasks";
+import {removeSubtask} from "../../store/Reducers/subtaskReducer";
 
 
 Modal.setAppElement("#root");
@@ -98,6 +99,9 @@ export default function InfoTask({ show, onClose, item }) {
                 onClick={() => {
                   setIsClicked(true);
                   setTimeout(() => {
+                    item.subtasks.map((id) => {
+                      dispatch(removeSubtask(id));
+                    })
                     dispatch(removeTask(item.id));
                     setIsClicked(false);
                   }, 500);
@@ -167,7 +171,7 @@ export default function InfoTask({ show, onClose, item }) {
             <>
               <h3>Подзадачи:</h3>
 
-              <ShowSubtasks data={getSubtask(item.subtasks)} location={"info-task"} />
+              <ShowSubtasks task_id={item.id} data={getSubtask(item.subtasks)} location={"info-task"} />
             </>
           ) : (
             <>
