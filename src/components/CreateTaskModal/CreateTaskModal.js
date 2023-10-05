@@ -189,7 +189,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                       <>
                         <p className={styles.title_subtask}>Список подзадач: </p>
                         <div className={styles.container_subtask_content}>
-                          <ShowSubtasks data={subtasks} />
+                          <ShowSubtasks data={subtasks} setData={(val) => setSubtasks(val)} location={"create-task"} />
                         </div>
                       </>
                     )}

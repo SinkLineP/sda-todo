@@ -162,7 +162,7 @@ export default function InfoTask({ show, onClose, item }) {
             <>
               <h3>Подзадачи:</h3>
 
-              <ShowSubtasks data={item.subtasks} />
+              <ShowSubtasks data={item.subtasks} location={"info-task"} />
             </>
           ) : (
             <>

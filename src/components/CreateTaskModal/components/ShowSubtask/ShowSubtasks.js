@@ -1,14 +1,28 @@
-import React from "react";
+import React, {useState} from "react";
 import styles from "./ShowSubtasks.module.css";
 import IsAuth from "../../../../hooks/IsAuth";
 import {useSelector} from "react-redux";
 
-const ShowSubtasks = ({ data }) => {
+const ShowSubtasks = ({ data, setData, location }) => {
   const isAuth = IsAuth();
   const currentUser = useSelector(state => state.auth.currentUser);
 
-  const deleteSubtask = () => {};
-  const editSubtask = () => {};
+  const deleteSubtask = (item) => {
+    if (location === "create-task") {
+      const updatedData = data.filter((item) => item.id !== item.id);
+
+      return setData(updatedData);
+    } else {
+      console.log("with dispatch!");
+    }
+  };
+  const editSubtask = () => {
+    if (location === "create-task") {
+      console.log("local-subtask");
+    } else {
+      console.log("with dispatch!");
+    }
+  };
 
 
   if (data.length !== 0) {
@@ -32,7 +46,7 @@ const ShowSubtasks = ({ data }) => {
           {isAuth && currentUser.id === item.author && (
             <div className={styles.container_buttons}>
               <button className={styles.edit} onClick={() => editSubtask(item.id)}>edit</button>
-              <button className={styles.delete} onClick={() => deleteSubtask(item.id)}>delete</button>
+              <button className={styles.delete} onClick={() => deleteSubtask(item)}>delete</button>
             </div>
           )}
         </div>
