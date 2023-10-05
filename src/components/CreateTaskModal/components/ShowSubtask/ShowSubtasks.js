@@ -25,34 +25,43 @@ const ShowSubtasks = ({ data, setData, location }) => {
   };
 
 
-  if (data.length !== 0) {
-    return data.map((item, index) => {
-      return (
-        <div key={index} className={styles.container}>
-          <div>
+
+  const Subtasks = ({data}) => {
+    if (data.length !== 0) {
+      return data.map((item, index) => {
+        return (
+          <div key={index} className={styles.container}>
             <div>
               <div>
-                <p className={styles.title}>{item.titleSubtask} #{item.numberSubtask}</p>
+                <div>
+                  <p className={styles.title}>{item.titleSubtask} #{item.numberSubtask}</p>
+                </div>
+              </div>
+
+              <div className={styles.container_desc}>
+                <p className={styles.title}>Описание подзадачи: </p>
+                <p className={styles.desc}>{item.descriptionSubtask}</p>
               </div>
             </div>
 
-            <div className={styles.container_desc}>
-              <p className={styles.title}>Описание подзадачи: </p>
-              <p className={styles.desc}>{item.descriptionSubtask}</p>
-            </div>
+
+            {isAuth && currentUser.id === item.author && (
+              <div className={styles.container_buttons}>
+                <button className={styles.edit} onClick={() => editSubtask(item.id)}>edit</button>
+                <button className={styles.delete} onClick={() => deleteSubtask(item)}>delete</button>
+              </div>
+            )}
           </div>
-
-
-          {isAuth && currentUser.id === item.author && (
-            <div className={styles.container_buttons}>
-              <button className={styles.edit} onClick={() => editSubtask(item.id)}>edit</button>
-              <button className={styles.delete} onClick={() => deleteSubtask(item)}>delete</button>
-            </div>
-          )}
-        </div>
-      )
-    })
+        )
+      })
+    }
   }
+
+  return (
+    <div className={styles.list}>
+      <Subtasks data={data} />
+    </div>
+  )
 }
 
 export default ShowSubtasks;

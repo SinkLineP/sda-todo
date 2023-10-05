@@ -12,6 +12,7 @@ import styles from "./CreateTaskModal.module.css";
 import {initialValues} from "./InitialValues";
 import {validationSchema} from "./Schema";
 import ButtonShowOrHideSubtask from "./components/ButtonShowOrHideSubtask/ButtonShowOrHideSubtask";
+import {addSubtask} from "../../store/Reducers/subtaskReducer";
 
 
 export default function CreateTaskModal({ show, onClose, project_id }) {
@@ -54,6 +55,12 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
             validateOnMount
             validateOnBlur
             onSubmit={({ title, file, numberTask, description, priority, status}, { resetForm }) => {
+              const subtaskIDs = subtasks.map((item) => {
+                dispatch(addSubtask(item));
+                return item.id;
+              })
+
+
               dispatch(addTask({
                 id: uuid(),
                 projectId: project_id,
@@ -64,12 +71,14 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                 timeInWork: null,
                 endDate: null,
                 priority: priority,
-                subtasks: subtasks,
+                subtasks: subtaskIDs,
                 files: file,
                 status: status,
                 icon: iconWithStatus(status),
                 author: currentUser.id,
               }));
+
+
 
               setUploadedFiles([]);
               setSubtasks([]);
@@ -188,9 +197,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                     {subtasks.length !== 0 && (
                       <>
                         <p className={styles.title_subtask}>Список подзадач: </p>
-                        <div className={styles.container_subtask_content}>
-                          <ShowSubtasks data={subtasks} setData={(val) => setSubtasks(val)} location={"create-task"} />
-                        </div>
+                        <ShowSubtasks data={subtasks} setData={(val) => setSubtasks(val)} location={"create-task"} />
                       </>
                     )}
                   </div>

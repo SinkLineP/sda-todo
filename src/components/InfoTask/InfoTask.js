@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import Modal from "react-modal";
 import {convertTypeObjectToFile, formatFileSize, getAuthorProject} from "../../Functions";
 import {useDispatch, useSelector} from "react-redux";
@@ -21,6 +21,7 @@ export default function InfoTask({ show, onClose, item }) {
   const usersStore = useSelector(state => state.auth.users);
   const dispatch = useDispatch();
   const currentUser = useSelector(state => state.auth.currentUser);
+  const subtasksStore = useSelector(state => state.subtasks);
 
   const handleDownloadClick = (file) => {
     if (file) {
@@ -62,6 +63,10 @@ export default function InfoTask({ show, onClose, item }) {
 
   const [isHovered, setIsHovered] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
+
+  const getSubtask = (data) => {
+    return subtasksStore.filter(item => data.includes(item.id));
+  }
 
   return (
     <Modal
@@ -162,7 +167,7 @@ export default function InfoTask({ show, onClose, item }) {
             <>
               <h3>Подзадачи:</h3>
 
-              <ShowSubtasks data={item.subtasks} location={"info-task"} />
+              <ShowSubtasks data={getSubtask(item.subtasks)} location={"info-task"} />
             </>
           ) : (
             <>
