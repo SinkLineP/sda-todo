@@ -6,7 +6,7 @@ import {validationChildSchema} from "./Schema";
 import {initialChildValues} from "./InitialValues";
 
 
-const FormSubtask = ({ author, setSubtasks, task_id }) => {
+const FormSubtask = ({ author, setSubtasks }) => {
   return (
     <>
       <div className={styles.container}>
@@ -29,7 +29,6 @@ const FormSubtask = ({ author, setSubtasks, task_id }) => {
               prioritySubtask: prioritySubtask,
               statusSubtask: statusSubtask,
               author: author,
-              task_id: task_id
             });
 
             resetForm()

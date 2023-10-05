@@ -3,8 +3,9 @@ import styles from "./ShowSubtasks.module.css";
 import IsAuth from "../../../../hooks/IsAuth";
 import {useDispatch, useSelector} from "react-redux";
 import {removeSubtask} from "../../../../store/Reducers/subtaskReducer";
+import {removeSubtaskFromTask} from "../../../../store/Reducers/taskReducer";
 
-const ShowSubtasks = ({ data, setData, location, task_id }) => {
+const ShowSubtasks = ({ task_id, setData, data, location }) => {
   const isAuth = IsAuth();
   const currentUser = useSelector(state => state.auth.currentUser);
   const dispatch = useDispatch();
@@ -16,6 +17,8 @@ const ShowSubtasks = ({ data, setData, location, task_id }) => {
       return setData(updatedData);
     } else {
       dispatch(removeSubtask(item.id));
+
+      dispatch(removeSubtaskFromTask(item.id, task_id))
     }
   };
   const editSubtask = () => {
