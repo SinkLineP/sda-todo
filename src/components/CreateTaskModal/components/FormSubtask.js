@@ -6,7 +6,7 @@ import {ErrorMessage, Field, Form, Formik} from "formik";
 import {v4 as uuid} from "uuid";
 
 
-const FormSubtask = ({ subtasks, setSubtasks }) => {
+const FormSubtask = ({ author, setSubtasks }) => {
   const validationChildSchema = yup.object().shape({
     titleSubtask: yup
       .string()
@@ -20,11 +20,16 @@ const FormSubtask = ({ subtasks, setSubtasks }) => {
         if (!value) return true;
         return !isNaN(value);
       })
-      .required("Поле не должно быть пустым!"),
+      .required("Поле не должно быть пустым!")
+      .min(1, "Номер должен быть больше 1 символа!")
+      .max(99999999, "Номер должен быть меньше 8 символов!"),
     descriptionSubtask: yup.string()
       .min(10, "Описание подзадачи должно быть больше 10 символов")
       .max(2000, "Описание подзадачи должно быть меньше 2000 символов")
-      .required("Поле не должно быть пустым!"),
+      .required("Поле не должно быть пустым!")
+      .test('max-length', 'Описание подзадачи должно быть меньше 2000 символов', (value) => {
+        return !value || value.length <= 2000;
+      }),
     prioritySubtask: yup.string(),
     statusSubtask: yup.string(),
   });
@@ -35,6 +40,7 @@ const FormSubtask = ({ subtasks, setSubtasks }) => {
     descriptionSubtask: "",
     prioritySubtask: "low",
     statusSubtask: "queue",
+    author: author
   };
 
 
@@ -59,7 +65,8 @@ const FormSubtask = ({ subtasks, setSubtasks }) => {
               numberSubtask: Number(numberSubtask),
               descriptionSubtask: descriptionSubtask,
               prioritySubtask: prioritySubtask,
-              statusSubtask: statusSubtask
+              statusSubtask: statusSubtask,
+              author: author,
             });
 
             resetForm()
@@ -86,7 +93,7 @@ const FormSubtask = ({ subtasks, setSubtasks }) => {
               </div>
 
               <div className={styles.container_field}>
-                <label className={styles.label}>Описание подзадачи: <ErrorMessage name="describeSubtask" component="span" className="errors" /></label>
+                <label className={styles.label}>Описание подзадачи: <ErrorMessage name="descriptionSubtask" component="span" className="errors" /></label>
                 <Field
                   name="descriptionSubtask"
                   className={styles.input}

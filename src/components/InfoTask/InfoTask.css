@@ -19,26 +19,6 @@
     float: right;
 }
 
-::-webkit-scrollbar {
-    height: 0.7rem;
-}
-
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 1rem;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #c5c5c5;
-    width: 2rem;
-    height: 1rem;
-    border-radius: 1rem;
-}
-
-/* Добавляем тень к ползунку */
-::-webkit-scrollbar-thumb:hover {
-    background: #a9a9a9;
-}
 
 .container-file {
     border-radius: 10px;

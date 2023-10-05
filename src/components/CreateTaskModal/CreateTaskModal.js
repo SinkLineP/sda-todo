@@ -74,30 +74,6 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
     SliceSelectedFiles(files, setFieldValue, e.dataTransfer.files);
   };
 
-  const customSubtasksValidate = (titleSubtask, numberSubtask, descriptionSubtask, prioritySubtask, statusSubtask) => {
-    if (titleSubtask && numberSubtask && descriptionSubtask && prioritySubtask && statusSubtask) {
-      const obj = {
-        titleSubtask:titleSubtask,
-        numberSubtask:numberSubtask,
-        descriptionSubtask:descriptionSubtask,
-        prioritySubtask: prioritySubtask,
-        statusSubtask: statusSubtask
-      };
-
-      const array = [];
-      array.push(obj);
-      return array;
-    } else {
-      return [];
-    }
-  }
-
-
-  useEffect(() => {
-    console.log(subtasks);
-  }, [subtasks]);
-
-
 
   return (
     <Modal
@@ -124,7 +100,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
             }}
             validateOnMount
             validateOnBlur
-            onSubmit={({ title, file, numberTask, description, priority, status, titleSubtask, numberSubtask, descriptionSubtask, prioritySubtask, statusSubtask  }) => {
+            onSubmit={({ title, file, numberTask, description, priority, status  }) => {
               dispatch(addTask({
                 id: uuid(),
                 projectId: project_id,
@@ -135,6 +111,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                 timeInWork: null,
                 endDate: null,
                 priority: priority,
+                subtasks: subtasks,
                 files: file,
                 status: status,
                 icon: iconWithStatus(status),
@@ -142,6 +119,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
               }));
 
               setUploadedFiles([]);
+              setSubtasks([]);
             }}
             validationSchema={yup.object().shape({
               title: yup.string()
@@ -155,7 +133,9 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                 .test('is-number', 'Номер задачи должен быть числом', (value) => {
                   if (!value) return true;
                   return !isNaN(value);
-                }),
+                })
+                .min(1, "Номер должен быть больше 1 символа!")
+                .max(99999999, "Номер должен быть меньше 8 символов!"),
               description: yup.string()
                 .min(10, "Описание задачи должно быть больше 10 символов")
                 .max(2000, "Описание задачи должно быть меньше 2000 символов")
@@ -282,21 +262,27 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                         </div>
                       </div>
 
+                      {showFormSubtask === true && (
+                        <FormSubtask author={currentUser.id} setSubtasks={(val) => {
+                          setSubtasks((prevState) => ([
+                            ...prevState,
+                            val,
+                          ]))
+                        }} />
+                      )}
+
                       {subtasks.length !== 0 && (
-                        <div className={"container-subtask-content"}>
-                          <ShowSubtasks data={subtasks} />
-                        </div>
+                        <>
+                          <p className={"title-subtask"}>Список подзадач: </p>
+
+                          <div className={"container-subtask-content"}>
+                            <ShowSubtasks data={subtasks} />
+                          </div>
+                        </>
                       )}
                     </div>
 
-                    {showFormSubtask === true && (
-                      <FormSubtask subtasks={subtasks} setSubtasks={(val) => {
-                        setSubtasks((prevState) => ([
-                          ...prevState,
-                          val,
-                        ]))
-                      }} />
-                    )}
+
                   </div>
 
                   {/* file */}

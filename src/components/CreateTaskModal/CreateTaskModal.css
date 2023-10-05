@@ -78,24 +78,6 @@
     font-weight: bold;
 }
 
-.warning {
-    background-color: #fdeda5;
-    width: auto;
-    float: left;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 1rem;
-    color: #967d00;
-    font-weight: bold;
-    line-height: 0.5rem;
-}
-
-.warning .hide {
-    text-align: right;
-    padding-bottom: 10px;
-    cursor: pointer;
-}
-
 .icon-subtask {
     width: 20px;
     height: auto
@@ -131,10 +113,12 @@
 .container-subtask-content {
     width: 100%;
     max-height: 30vh;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    padding: 0.5rem 0.2rem;
     box-sizing: border-box;
     display: flex;
     flex-direction: column-reverse;
     gap: 10px;
+    overflow: auto;
+    border: 1px solid #cccccc;
+    border-radius: 0.2rem;
 }

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Modal from "react-modal";
 import {convertTypeObjectToFile, formatFileSize, getAuthorProject} from "../../Variables";
 import {useDispatch, useSelector} from "react-redux";
@@ -12,6 +12,7 @@ import IsAuth from "../../hooks/IsAuth";
 import {ReactComponent as IconDeleteCrossSVG} from "./icons/delete-cross.svg";
 import {ReactComponent as IconApplyDeleteSVG} from "./icons/apply-delete.svg";
 import Comments from "../Comments/Comments";
+import ShowSubtasks from "../CreateTaskModal/components/ShowSubtasks";
 
 
 Modal.setAppElement("#root");
@@ -157,66 +158,17 @@ export default function InfoTask({ show, onClose, item }) {
             </>
           )}
 
-          {/*{item.subtasks.length !== 0 ? (*/}
-          {/*  <>*/}
-          {/*    <h3>Подзадачи:</h3>*/}
-          {/*    <p>{item.subtasks.length === 0 ? ("Подзадач нету") : (*/}
-          {/*      <table style={{*/}
-          {/*        borderCollapse: "collapse",*/}
-          {/*        width: "100%",*/}
-          {/*        borderRadius: "0.3rem",*/}
-          {/*        overflow: "hidden",*/}
-          {/*        border: "solid",*/}
-          {/*        borderColor: "black",*/}
-          {/*        borderWidth: "1px"*/}
-          {/*      }}>*/}
-          {/*        <thead>*/}
-          {/*        <tr style={{*/}
-          {/*          backgroundColor: "#054F7C",*/}
-          {/*          color: "white",*/}
-          {/*        }}>*/}
-          {/*          <th>Заголовок подзадачи</th>*/}
-          {/*          <th>Номер подзадачи</th>*/}
-          {/*          <th>Описание подзадачи</th>*/}
-          {/*          <th>Приоритет подзадачи</th>*/}
-          {/*          <th>Статус подзадачи</th>*/}
-          {/*        </tr>*/}
-          {/*        </thead>*/}
-          {/*        <tbody style={{*/}
-          {/*          backgroundColor: "#fff0dc",*/}
-          {/*        }}>*/}
-          {/*        {*/}
-          {/*          item.subtasks.map((subtask, index) => {*/}
-          {/*            return (*/}
-          {/*              <tr key={index}>*/}
-          {/*                <td>*/}
-          {/*                  {subtask.titleSubtask}*/}
-          {/*                </td>*/}
-          {/*                <td>*/}
-          {/*                  {subtask.numberSubtask}*/}
-          {/*                </td>*/}
-          {/*                <td>*/}
-          {/*                  {subtask.descriptionSubtask}*/}
-          {/*                </td>*/}
-          {/*                <td>*/}
-          {/*                  {subtask.prioritySubtask}*/}
-          {/*                </td>*/}
-          {/*                <td>*/}
-          {/*                  {subtask.statusSubtask}*/}
-          {/*                </td>*/}
-          {/*              </tr>*/}
-          {/*            )*/}
-          {/*          })*/}
-          {/*        }*/}
-          {/*        </tbody>*/}
-          {/*      </table>*/}
-          {/*    )}</p>*/}
-          {/*  </>*/}
-          {/*) : (*/}
-          {/*  <>*/}
-          {/*    <h3>Подзадач не найдено!</h3>*/}
-          {/*  </>*/}
-          {/*)}*/}
+          {item.subtasks.length !== 0 ? (
+            <>
+              <h3>Подзадачи:</h3>
+
+              <ShowSubtasks data={item.subtasks} />
+            </>
+          ) : (
+            <>
+              <h3>Подзадач не найдено!</h3>
+            </>
+          )}
         </div>
 
         <div style={{
