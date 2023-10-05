@@ -3,6 +3,7 @@ import ButtonCustom from "./ButtonCustom";
 import { editComment, removeComment, removeReply } from "../../../store/Reducers/commentReducer";
 import { useDispatch, useSelector } from "react-redux";
 import {CheckStatusReplyComments, EditReply, setActiveReplyComments} from "../functions";
+import {removeCommentFromTask, removeSubtaskFromTask} from "../../../store/Reducers/taskReducer";
 
 const ShowButtons = ({
   commentID,
@@ -28,6 +29,7 @@ const ShowButtons = ({
 
   const handleRemoveReply = (commentId) => {
     dispatch(removeReply(commentId));
+    dispatch(removeCommentFromTask(commentId, task_id))
   };
 
   if (CheckStatusReplyComments(showInputFromID, comment.id) === "default") {
@@ -56,6 +58,7 @@ const ShowButtons = ({
 
                 if (comment.parent_id === null) {
                   dispatch(removeComment(commentID));
+                  dispatch(removeCommentFromTask(commentID, task_id))
                 } else {
                   return handleRemoveReply(comment.id);
                 }
