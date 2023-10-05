@@ -9,7 +9,7 @@ const ShowSubtasks = ({ data, setData, location }) => {
 
   const deleteSubtask = (item) => {
     if (location === "create-task") {
-      const updatedData = data.filter((item) => item.id !== item.id);
+      const updatedData = data.filter((subtask) => subtask.id !== item.id);
 
       return setData(updatedData);
     } else {
