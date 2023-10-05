@@ -72,6 +72,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                 endDate: null,
                 priority: priority,
                 subtasks: subtaskIDs,
+                comments: [],
                 files: file,
                 status: status,
                 icon: iconWithStatus(status),

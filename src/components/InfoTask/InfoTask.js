@@ -14,6 +14,7 @@ import {ReactComponent as IconApplyDeleteSVG} from "./icons/apply-delete.svg";
 import Comments from "../Comments/Comments";
 import ShowSubtasks from "../CreateTaskModal/components/ShowSubtask/ShowSubtasks";
 import {removeSubtask} from "../../store/Reducers/subtaskReducer";
+import {removeComment} from "../../store/Reducers/commentReducer";
 
 
 Modal.setAppElement("#root");
@@ -23,6 +24,7 @@ export default function InfoTask({ show, onClose, item }) {
   const dispatch = useDispatch();
   const currentUser = useSelector(state => state.auth.currentUser);
   const subtasksStore = useSelector(state => state.subtasks);
+  const commentsStore = useSelector(state => state.comments);
 
   const handleDownloadClick = (file) => {
     if (file) {
@@ -102,6 +104,11 @@ export default function InfoTask({ show, onClose, item }) {
                     item.subtasks.map((id) => {
                       dispatch(removeSubtask(id));
                     })
+
+                    item.comments.map((id) => {
+                      dispatch(removeComment(id));
+                    })
+
                     dispatch(removeTask(item.id));
                     setIsClicked(false);
                   }, 500);

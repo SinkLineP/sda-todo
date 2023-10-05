@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import {useDispatch, useSelector} from "react-redux";
 import { v4 as uuid } from 'uuid';
 import {addComment} from "../../../store/Reducers/commentReducer";
+import {addCommentToTask} from "../../../store/Reducers/taskReducer";
 
 
 
@@ -22,8 +23,11 @@ const CommentForm = ({ task_id }) => {
     },
     validationSchema,
     onSubmit: (values, { resetForm }) => {
+      const commentID = uuid();
+      dispatch(addCommentToTask(commentID, task_id));
+
       dispatch(addComment({
-        id: uuid(),
+        id: commentID,
         task_id: task_id,
         user_id: currentUser.id,
         content: values.value,
