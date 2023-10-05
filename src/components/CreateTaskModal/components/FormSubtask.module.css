@@ -1,4 +1,4 @@
-.btn-subtask-submit {
+.submit {
     background-color: #27aa80;
     color: white;
     border-radius: 0.5rem;
@@ -11,19 +11,23 @@
     margin-bottom: 3rem;
 }
 
-.container-subtask-form {
+.submit:hover {
+    background-color: #1e8a68;
+}
+
+.container {
     width: 100%
 }
 
-.container-subtask-title {
+.container_title {
     width: 100%;
 }
 
-.subtask-title {
+.title {
     text-align: center;
 }
 
-.subtask-input {
+.input{
     border: 1px solid lightgrey;
     width: 100%;
     box-sizing: border-box;
@@ -31,7 +35,7 @@
     padding-left: 10px;
 }
 
-.subtask-input > .select {
+.input > .select {
     border: 1px solid lightgrey;
     width: 100%;
     box-sizing: border-box;
@@ -39,11 +43,11 @@
     padding-left: 10px;
 }
 
-.container-subtask-field {
+.container_field {
     margin-bottom: 1rem;
 }
 
-.subtask-label {
+.label{
     font-weight: bold;
     margin-bottom: 0.5rem;
 }

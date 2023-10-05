@@ -9,6 +9,7 @@ import ButtonSubmit from "./components/ButtonSubmit";
 import {v4 as uuid} from "uuid";
 import * as yup from "yup";
 import FormSubtask from "./components/FormSubtask";
+import ShowSubtasks from "./components/ShowSubtasks";
 
 
 export default function CreateTaskModal({ show, onClose, project_id }) {
@@ -262,25 +263,30 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
 
                   {/* subtask */}
                   <div className={"container-label-field"}>
-                    <div style={{
-                      paddingBottom: "4rem"
-                    }}>
-                      <div style={{ float: "left" }}>
-                        <p className={"title-subtask"}>Подзадачи: <ErrorMessage className={"errors"} name="status" component="span" /></p>
+                    <div>
+                      <div className={"container-subtask-header"}>
+                        <div>
+                          <p className={"title-subtask"}>Подзадачи: <ErrorMessage className={"errors"} name="status" component="span" /></p>
+                        </div>
+                        <div>
+                          {
+                            !showFormSubtask ? (
+                              <p className={`btn-subtask add-subtask`} onClick={() => setShowFormSubtask(true)}>Добавить подзадачи</p>
+                            ) : (
+                              <p className={`btn-subtask add-subtask`} onClick={() => {
+                                setShowFormSubtask(false)
+                                // resetForm()
+                              }}>Скрыть подзадачи</p>
+                            )
+                          }
+                        </div>
                       </div>
-                      <div style={{ float: "right" }}>
-                        {
-                          !showFormSubtask ? (
-                            <p className={`btn-subtask add-subtask`} onClick={() => setShowFormSubtask(true)}>Добавить подзадачи</p>
-                          ) : (
-                            <p className={`btn-subtask remove-subtask`} onClick={() => {
-                              setShowFormSubtask(false)
-                              // resetForm()
-                            }}>Удалить подзадачи</p>
-                          )
-                        }
 
-                      </div>
+                      {subtasks.length !== 0 && (
+                        <div className={"container-subtask-content"}>
+                          <ShowSubtasks data={subtasks} />
+                        </div>
+                      )}
                     </div>
 
                     {showFormSubtask === true && (

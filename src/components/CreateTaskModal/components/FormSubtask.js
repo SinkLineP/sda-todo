@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import ShowSubtasks from "./ShowSubtasks";
-import "./FormSubtask.css";
+import styles from "./FormSubtask.module.css";
 import * as yup from "yup";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import {v4 as uuid} from "uuid";
@@ -21,7 +21,7 @@ const FormSubtask = ({ subtasks, setSubtasks }) => {
         return !isNaN(value);
       })
       .required("Поле не должно быть пустым!"),
-    describeSubtask: yup.string()
+    descriptionSubtask: yup.string()
       .min(10, "Описание подзадачи должно быть больше 10 символов")
       .max(2000, "Описание подзадачи должно быть меньше 2000 символов")
       .required("Поле не должно быть пустым!"),
@@ -32,7 +32,7 @@ const FormSubtask = ({ subtasks, setSubtasks }) => {
   const initialChildValues = {
     titleSubtask: "",
     numberSubtask: "",
-    describeSubtask: "",
+    descriptionSubtask: "",
     prioritySubtask: "low",
     statusSubtask: "queue",
   };
@@ -41,9 +41,9 @@ const FormSubtask = ({ subtasks, setSubtasks }) => {
 
   return (
     <>
-      <div className={"container-subtask-form"}>
-        <div className={"container-subtask-title"}>
-          <h2 className={"subtask-title"}>Создание подзадачи</h2>
+      <div className={styles.container}>
+        <div className={styles.container_title}>
+          <h2 className={styles.title}>Создание подзадачи</h2>
         </div>
 
         <Formik
@@ -51,13 +51,13 @@ const FormSubtask = ({ subtasks, setSubtasks }) => {
           initialValues={initialChildValues}
           validationSchema={validationChildSchema}
           onSubmit={(values, { resetForm }) => {
-            const { titleSubtask, numberSubtask, describeSubtask, prioritySubtask, statusSubtask } = values;
+            const { titleSubtask, numberSubtask, descriptionSubtask, prioritySubtask, statusSubtask } = values;
 
             setSubtasks({
               id: uuid(),
               titleSubtask: titleSubtask,
               numberSubtask: Number(numberSubtask),
-              describeSubtask: describeSubtask,
+              descriptionSubtask: descriptionSubtask,
               prioritySubtask: prioritySubtask,
               statusSubtask: statusSubtask
             });
@@ -67,39 +67,39 @@ const FormSubtask = ({ subtasks, setSubtasks }) => {
         >
           {() => (
             <Form>
-              <div className={"container-subtask-field"}>
-                <label className={"subtask-label"}>Заголовок подзадачи: <ErrorMessage name="titleSubtask" component="span" className="errors" /></label>
+              <div className={styles.container_field}>
+                <label className={styles.label}>Заголовок подзадачи: <ErrorMessage name="titleSubtask" component="span" className="errors" /></label>
                 <Field
                   name="titleSubtask"
-                  className={"subtask-input"}
+                  className={styles.input}
                   placeholder={"Введите заголовок подзадачи..."}
                 />
               </div>
 
-              <div className={"container-subtask-field"}>
-                <label className={"subtask-label"}>Номер подзадачи: <ErrorMessage name="numberSubtask" component="span" className="errors" /></label>
+              <div className={styles.container_field}>
+                <label className={styles.label}>Номер подзадачи: <ErrorMessage name="numberSubtask" component="span" className="errors" /></label>
                 <Field
                   name="numberSubtask"
-                  className={"subtask-input"}
+                  className={styles.input}
                   placeholder={"Введите номер подзадачи..."}
                 />
               </div>
 
-              <div className={"container-subtask-field"}>
-                <label className={"subtask-label"}>Описание подзадачи: <ErrorMessage name="describeSubtask" component="span" className="errors" /></label>
+              <div className={styles.container_field}>
+                <label className={styles.label}>Описание подзадачи: <ErrorMessage name="describeSubtask" component="span" className="errors" /></label>
                 <Field
-                  name="describeSubtask"
-                  className={"subtask-input"}
+                  name="descriptionSubtask"
+                  className={styles.input}
                   placeholder={"Введите описание подзадачи..."}
                 />
               </div>
 
-              <div className={"container-subtask-field"}>
-                <label className={"subtask-label"}>Приоритет подзадачи: </label>
+              <div className={styles.container_field}>
+                <label className={styles.label}>Приоритет подзадачи: </label>
                 <Field
                   as="select"
                   name="prioritySubtask"
-                  className={"subtask-input"}
+                  className={styles.input}
                 >
                   <option value="low">Низкий</option>
                   <option value="medium">Средний</option>
@@ -107,12 +107,12 @@ const FormSubtask = ({ subtasks, setSubtasks }) => {
                 </Field>
               </div>
 
-              <div className={"container-subtask-field"}>
-                <label className={"subtask-label"}>Статус подзадачи: </label>
+              <div className={styles.container_field}>
+                <label className={styles.label}>Статус подзадачи: </label>
                 <Field
                   as="select"
                   name="statusSubtask"
-                  className={"subtask-input"}
+                  className={styles.input}
                 >
                   <option value="queue">Queue</option>
                   <option value="development">Development</option>
@@ -120,7 +120,7 @@ const FormSubtask = ({ subtasks, setSubtasks }) => {
                 </Field>
               </div>
 
-              <button type="submit" className={`btn-subtask-submit`} >
+              <button type="submit" className={styles.submit} >
                 Сохранить подзадачу
               </button>
             </Form>

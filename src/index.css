@@ -5,6 +5,7 @@
   --disabled-color: #fad6d6;
   --background-color: #f5eaea;
   --background-color-hover: #e7dbdb;
+  --box-shadow-for-container: 0 0 4px 1px rgba(0, 0, 0, 0.15);
 }
 
 html {
@@ -224,6 +225,11 @@ select {
   cursor: not-allowed;
 }
 
+.shadow-box {
+  -webkit-box-shadow: var(--box-shadow-for-container);
+  -moz-box-shadow: var(--box-shadow-for-container);
+  box-shadow: var(--box-shadow-for-container);
+}
 
 
 

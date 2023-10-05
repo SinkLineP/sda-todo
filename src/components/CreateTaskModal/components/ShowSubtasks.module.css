@@ -1,0 +1,46 @@
+.container {
+    border: 1px solid #cccccc;
+    padding: 0.2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: 0.2rem;
+}
+
+.container_buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+}
+
+.container_buttons button {
+    width: 7vw;
+    height: 100%;
+    border: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 0.2rem;
+    cursor: pointer;
+}
+
+.container_buttons > .edit {
+    background-color: #0a69a4;
+    color: white;
+    border: none;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.container_buttons > .edit:hover {
+    background-color: #085686;
+}
+
+.container_buttons > .delete {
+    background-color: #f36464;
+    color: white;
+}
+
+.container_buttons > .delete:hover {
+    background-color: #b74a4a;
+}

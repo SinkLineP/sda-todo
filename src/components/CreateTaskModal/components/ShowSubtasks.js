@@ -1,58 +1,33 @@
 import React from "react";
-
+import styles from "./ShowSubtasks.module.css";
 
 const ShowSubtasks = ({ data }) => {
-  return (
-    <table style={{
-      borderCollapse: "collapse",
-      width: "100%",
-      borderRadius: "0.3rem",
-      overflow: "hidden",
-      border: "solid",
-      borderColor: "black",
-      borderWidth: "1px"
-    }}>
-      <thead>
-      <tr style={{
-        backgroundColor: "#054F7C",
-        color: "white",
-      }}>
-        <th>Заголовок подзадачи</th>
-        <th>Номер подзадачи</th>
-        <th>Описание подзадачи</th>
-        <th>Приоритет подзадачи</th>
-        <th>Статус подзадачи</th>
-      </tr>
-      </thead>
-      <tbody style={{
-        backgroundColor: "#fff0dc",
-      }}>
-      {
-        data.map((subtask, index) => {
-          return (
-            <tr key={index}>
-              <td>
-                {subtask.titleSubtask}
-              </td>
-              <td>
-                {subtask.numberSubtask}
-              </td>
-              <td>
-                {subtask.descriptionSubtask}
-              </td>
-              <td>
-                {subtask.prioritySubtask}
-              </td>
-              <td>
-                {subtask.statusSubtask}
-              </td>
-            </tr>
-          )
-        })
-      }
-      </tbody>
-    </table>
-  )
+  if (data.length !== 0) {
+    console.log(data);
+    return data.map((item) => {
+      return (
+        <div className={styles.container}>
+          <div>
+            <div>
+              <div>
+                <p>{item.titleSubtask} #{item.numberSubtask}</p>
+              </div>
+            </div>
+
+            <div>
+              <p>{item.descriptionSubtask}</p>
+            </div>
+          </div>
+
+
+          <div className={styles.container_buttons}>
+            <button className={styles.edit}>edit</button>
+            <button className={styles.delete}>delete</button>
+          </div>
+        </div>
+      )
+    })
+  }
 }
 
 export default ShowSubtasks;

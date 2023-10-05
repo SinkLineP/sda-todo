@@ -2,7 +2,7 @@
     --color-link: dodgerblue;
     --border-input: 1px solid lightgrey;
     --backgroung-color-input-container: #f6f6f6;
-    --box-shadow-for-container: 0 0 7px 1px rgba(0, 0, 0, 0.2);
+
 }
 
 .container-comment {
@@ -13,11 +13,7 @@
     background-color: var(--backgroung-color-input-container);
 }
 
-.shadow-box {
-    -webkit-box-shadow: var(--box-shadow-for-container);
-    -moz-box-shadow: var(--box-shadow-for-container);
-    box-shadow: var(--box-shadow-for-container);
-}
+
 
 .container-all-comments {
     padding-bottom: 1rem;
