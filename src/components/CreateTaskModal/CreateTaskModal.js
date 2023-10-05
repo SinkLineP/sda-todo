@@ -180,7 +180,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                           !showFormSubtask ? (
                             <ButtonShowOrHideSubtask title={"Добавить подзадачи"} func={() => setShowFormSubtask(true)} />
                           ) : (
-                            <ButtonShowOrHideSubtask title={"Скрыть подзадачи"} func={() => setShowFormSubtask(false)} />
+                            <ButtonShowOrHideSubtask title={"Скрыть форму"} func={() => setShowFormSubtask(false)} />
                           )
                         }
                       </div>
