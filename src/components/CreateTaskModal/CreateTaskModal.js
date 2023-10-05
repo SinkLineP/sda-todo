@@ -5,13 +5,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {addTask} from "../../store/Reducers/taskReducer";
 import ButtonSubmit from "./components/ButtonSubmit";
 import {v4 as uuid} from "uuid";
-import * as yup from "yup";
 import FormSubtask from "./components/FormSubtask";
 import ShowSubtasks from "./components/ShowSubtasks";
 import {getCurrentDate, iconWithStatus, onDropHandler, SliceSelectedFiles, uploadedFilesShow} from "./Functions";
 import styles from "./CreateTaskModal.module.css";
 import {initialValues} from "./InitialValues";
 import {validationSchema} from "./Schemas";
+import ButtonShowOrHideSubtask from "./components/ButtonShowOrHideSubtask";
 
 
 export default function CreateTaskModal({ show, onClose, project_id }) {
@@ -28,7 +28,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
       right: 'auto',
       bottom: 'auto',
       transform: 'translate(-50%, -50%)',
-      width: "80%",
+      width: "60%",
       maxHeight: "82vh",
       overflowY: "auto",
     }
@@ -47,8 +47,8 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
       overlayClassName={"overlay"}
       style={customStyles}
     >
-      <div className={"container-create-task"}>
-        <h1 className={"title-create-task"}>Создание задачи</h1>
+      <div className={styles.container}>
+        <h1 className={styles.title}>Создание задачи</h1>
           <Formik
             initialValues={initialValues}
             validateOnMount
@@ -81,10 +81,11 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
               return (
                 <>
                   {/* title */}
-                  <div className={"container-label-field"}>
-                    <label htmlFor="title">Введите заголовок задачи: <ErrorMessage className={"errors"} name="title" component="span" /></label>
+                  <div className={styles.container_field}>
+                    <label className={styles.label} htmlFor="title">Введите заголовок задачи: <ErrorMessage className={"errors"} name="title" component="span" /></label>
+
                     <Field
-                      className={"task-input"}
+                      className={styles.input}
                       type="text"
                       id="title"
                       name="title"
@@ -95,10 +96,11 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                   </div>
 
                   {/* numberTask */}
-                  <div className={"container-label-field"}>
-                    <label htmlFor="numberTask">Введите номер задачи: <ErrorMessage className={"errors"} name="numberTask" component="span" /></label>
+                  <div className={styles.container_field}>
+                    <label className={styles.label} htmlFor="numberTask">Введите номер задачи: <ErrorMessage className={"errors"} name="numberTask" component="span" /></label>
+
                     <Field
-                      className={"task-input"}
+                      className={styles.input}
                       type="text"
                       id="numberTask"
                       name="numberTask"
@@ -109,10 +111,11 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                   </div>
 
                   {/* description */}
-                  <div className={"container-label-field"}>
-                    <label htmlFor="description">Введите описание задачи: <ErrorMessage className={"errors"} name="description" component="span" /></label>
+                  <div className={styles.container_field}>
+                    <label className={styles.label} htmlFor="description">Введите описание задачи: <ErrorMessage className={"errors"} name="description" component="span" /></label>
+
                     <Field
-                      className={"task-input"}
+                      className={styles.input}
                       type="text"
                       id="description"
                       name="description"
@@ -123,10 +126,11 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                   </div>
 
                   {/* priority */}
-                  <div className={"container-label-field"}>
-                    <label htmlFor="priority">Выберите приоритет задачи: <ErrorMessage className={"errors"} name="priority" component="span" /></label>
+                  <div className={styles.container_field}>
+                    <label className={styles.label} htmlFor="priority">Выберите приоритет задачи: <ErrorMessage className={"errors"} name="priority" component="span" /></label>
+
                     <Field
-                      className={"task-input select"}
+                      className={styles.input}
                       as="select"
                       name="priority"
                       onChange={(e) => handleChange(e)}
@@ -139,10 +143,11 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                   </div>
 
                   {/* status */}
-                  <div className={"container-label-field"}>
-                    <label htmlFor="status">Выберите статус задачи: <ErrorMessage className={"errors"} name="status" component="span" /></label>
+                  <div className={styles.container_field}>
+                    <label className={styles.label} htmlFor="status">Выберите статус задачи: <ErrorMessage className={"errors"} name="status" component="span" /></label>
+
                     <Field
-                      className={"task-input"}
+                      className={styles.input}
                       as="select"
                       name="status"
                       onChange={(e) => handleChange(e)}
@@ -155,59 +160,57 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                   </div>
 
                   {/* subtask */}
-                  <div className={"container-label-field"}>
-                    <div>
-                      <div className={"container-subtask-header"}>
-                        <div>
-                          <p className={"title-subtask"}>Подзадачи: <ErrorMessage className={"errors"} name="status" component="span" /></p>
-                        </div>
-                        <div>
-                          {
-                            !showFormSubtask ? (
-                              <p className={`btn-subtask add-subtask`} onClick={() => setShowFormSubtask(true)}>Добавить подзадачи</p>
-                            ) : (
-                              <p className={`btn-subtask add-subtask`} onClick={() => setShowFormSubtask(false)}>Скрыть подзадачи</p>
-                            )
-                          }
-                        </div>
+                  <div className={styles.container_field}>
+                    <div className={styles.container_subtask_header}>
+                      <div>
+                        <p className={styles.title_subtask}>Подзадачи: <ErrorMessage className={"errors"} name="status" component="span" /></p>
                       </div>
-
-                      {showFormSubtask === true && (
-                        <FormSubtask author={currentUser.id} setSubtasks={(val) => {
-                          setSubtasks((prevState) => ([
-                            ...prevState,
-                            val,
-                          ]))
-                        }} />
-                      )}
-
-                      {subtasks.length !== 0 && (
-                        <>
-                          <p className={"title-subtask"}>Список подзадач: </p>
-                          <div className={"container-subtask-content"}>
-                            <ShowSubtasks data={subtasks} />
-                          </div>
-                        </>
-                      )}
+                      <div>
+                        {
+                          !showFormSubtask ? (
+                            <ButtonShowOrHideSubtask title={"Добавить подзадачи"} func={() => setShowFormSubtask(true)} />
+                          ) : (
+                            <ButtonShowOrHideSubtask title={"Скрыть подзадачи"} func={() => setShowFormSubtask(false)} />
+                          )
+                        }
+                      </div>
                     </div>
+
+                    {showFormSubtask === true && (
+                      <FormSubtask author={currentUser.id} setSubtasks={(val) => {
+                        setSubtasks((prevState) => ([
+                          ...prevState,
+                          val,
+                        ]))
+                      }} />
+                    )}
+
+                    {subtasks.length !== 0 && (
+                      <>
+                        <p className={styles.title_subtask}>Список подзадач: </p>
+                        <div className={styles.container_subtask_content}>
+                          <ShowSubtasks data={subtasks} />
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   {/* file */}
                   <div
-                    className={"container-drag-and-drop-upload-file"}
+                    className={styles.container_drag_and_drop_upload_file}
                     onDrop={e => onDropHandler(e, setFieldValue, setErrorFile, setUploadedFiles)}
                   >
                     {errorFile !== "" ? <p className={"errors"}>{errorFile}</p> : <p className={"errors"}>&nbsp;</p>}
-                    <div className={"drop-area"}>
-                      <p className={"title-drop-file"}>Выберите или перетащите файл в это окно</p>
+                    <div className={styles.drop_area}>
+                      <p className={styles.title_drop_file}>Выберите или перетащите файл в это окно</p>
                       <div>
-                        <label htmlFor="file" className="custom-file-input">Выбрать файл</label>
+                        <label htmlFor="file" className={styles.button_select_file}>Выбрать файл</label>
                         <input
                           type="file"
                           id="file"
                           name="file"
                           multiple
-                          style={{ display: "none" }}
+                          className={styles.hide_input_select_file}
                           onChange={(event) => {
                             const selectedFiles = Array.from(event.currentTarget.files);
                             const newSelectedFiles = selectedFiles.filter(item => item.size > 0);
@@ -216,8 +219,9 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                           }}
                         />
                       </div>
-
-                      <p className={styles.list_uploaded_files}>{uploadedFiles.length !== 0 ? uploadedFiles.map((files) => uploadedFilesShow(files, uploadedFiles)) : ("Тут будут названия загруженных файлов")}</p>
+                      <p className={styles.list_uploaded_files}>
+                        {uploadedFiles.length !== 0 ? uploadedFiles.map((files) => uploadedFilesShow(files, uploadedFiles)) : <p>Тут будут названия загруженных файлов</p>}
+                      </p>
                     </div>
                   </div>
 

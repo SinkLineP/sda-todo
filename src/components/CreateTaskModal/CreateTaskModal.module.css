@@ -2,135 +2,45 @@
     padding: 0.5rem;
 }
 
+.container {
 
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.title-create-task {
+.title {
     display: block;
     text-align: center;
     margin-bottom: 3rem;
 }
 
-.task-input {
-    border: 1px solid lightgrey;
-    width: 100%;
-    box-sizing: border-box;
-    height: 2.1rem;
-    padding-left: 10px;
-}
-
-.task-input > .select {
-    border: 1px solid lightgrey;
-    width: 100%;
-    box-sizing: border-box;
-    height: 2.1rem;
-    padding-left: 10px;
-}
-
-.container-label-field {
+.container_field {
     margin-bottom: 1rem;
 }
 
-.container-label-field label {
+.label {
     font-weight: bold;
     margin-bottom: 0.5rem;
 }
 
-.task-select {
-    width: 100%
+.input {
+    border: 1px solid lightgrey;
+    width: 100%;
+    box-sizing: border-box;
+    height: 2.1rem;
+    padding-left: 10px;
 }
 
-.container-drag-and-drop-upload-file {
-    margin-bottom: 10px;
-}
-
-.custom-file-input {
-    padding: 10px;
-    border-radius: 0.8rem;
-    background-color: #27aa80;
-    color: white;
-    font-weight: bold;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-}
-
-.custom-file-input:hover {
-    background-color: #22936f;
-    color: #e0e0e0;
-}
-
-.title-drop-file {
-    font-weight: bold;
-}
-
-.btn-subtask {
-    display: inline-block;
-    font-weight: bold;
-    font-size: 1rem;
-    padding: 6px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.add-subtask {
-    background-color: #27aa80;
-    color: white;
-}
-
-.remove-subtask {
-    background-color: #f36464;
-    color: white;
-}
-
-.title-subtask {
-    font-weight: bold;
-}
-
-.icon-subtask {
-    width: 20px;
-    height: auto
-}
-
-.drop-area {
-    padding-bottom: 10px;
-    border: 2px dashed #3f3f3f;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-
-.btn-show {
-    background-color: #27aa80;
-    color: white;
-    cursor: pointer;
-}
-
-.btn-show:hover {
-    background-color: #239671;
-}
-
-.container-subtask-header {
+.container_subtask_header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 }
 
+.title_subtask {
+    font-weight: bold;
+}
 
-.container-subtask-content {
+.container_subtask_content {
     width: 100%;
     max-height: 30vh;
     padding: 0.5rem 0.2rem;
@@ -141,4 +51,68 @@
     overflow: auto;
     border: 1px solid #cccccc;
     border-radius: 0.2rem;
+}
+
+.container_drag_and_drop_upload_file {
+    margin-bottom: 10px;
+}
+
+.drop_area {
+    padding-bottom: 10px;
+    border: 2px dashed #3f3f3f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.title_drop_file {
+    font-weight: bold;
+}
+
+.button_select_file {
+    padding: 10px;
+    border-radius: 0.8rem;
+    background-color: #27aa80;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.button_select_file:hover {
+    background-color: #22936f;
+    color: #e0e0e0;
+}
+
+.hide_input_select_file {
+    display: none;
+}
+
+
+
+
+
+
+
+.remove-subtask {
+    background-color: #f36464;
+    color: white;
+}
+
+
+
+.icon-subtask {
+    width: 20px;
+    height: auto
+}
+
+
+.btn-show {
+    background-color: #27aa80;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-show:hover {
+    background-color: #239671;
 }
