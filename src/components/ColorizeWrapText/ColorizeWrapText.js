@@ -1,5 +1,5 @@
 import React from "react";
-import {StatusesColors} from "../../Variables";
+import {StatusesColors} from "../../Functions";
 import "./ColorizeWrapText.css";
 
 

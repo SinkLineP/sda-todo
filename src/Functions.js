@@ -30,7 +30,7 @@ export const getUser = (user_id, users) => {
   })
 }
 
-export const CountSliceFilesTask = 40;
+
 
 
 export function formatFileSize(bytes) {
@@ -42,16 +42,7 @@ export function formatFileSize(bytes) {
   return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
 }
 
-export function convertTypeFileToObject(arrayFiles) {
-  return arrayFiles.map(file => ({
-    name: file.name,
-    lastModified: file.lastModified,
-    lastModifiedDate: new Date(file.lastModifiedDate),
-    webkitRelativePath: file.webkitRelativePath,
-    size: file.size,
-    type: file.type
-  }));
-}
+
 
 export function convertTypeObjectToFile(arrayFiles) {
   return arrayFiles.map(obj => {
@@ -61,14 +52,3 @@ export function convertTypeObjectToFile(arrayFiles) {
     return new File([blobData], name, {type});
   });
 }
-
-export const getCurrentDate = () => {
-  const currentDate = new Date();
-
-  const day = currentDate.getDate();
-  const month = currentDate.getMonth() + 1;
-  const year = currentDate.getFullYear();
-
-  return `${day}\\${month}\\${year}`;
-}
-

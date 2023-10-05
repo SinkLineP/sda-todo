@@ -1,15 +1,17 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import Modal from "react-modal";
 import {Field, Formik, ErrorMessage} from "formik";
 import {useDispatch, useSelector} from "react-redux";
 import {addTask} from "../../store/Reducers/taskReducer";
-import "./CreateTaskModal.css";
-import {convertTypeFileToObject, CountSliceFilesTask, getCurrentDate} from "../../Variables";
 import ButtonSubmit from "./components/ButtonSubmit";
 import {v4 as uuid} from "uuid";
 import * as yup from "yup";
 import FormSubtask from "./components/FormSubtask";
 import ShowSubtasks from "./components/ShowSubtasks";
+import {getCurrentDate, iconWithStatus, onDropHandler, SliceSelectedFiles, uploadedFilesShow} from "./Functions";
+import styles from "./CreateTaskModal.module.css";
+import {initialValues} from "./InitialValues";
+import {validationSchema} from "./Schemas";
 
 
 export default function CreateTaskModal({ show, onClose, project_id }) {
@@ -27,51 +29,9 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
       bottom: 'auto',
       transform: 'translate(-50%, -50%)',
       width: "80%",
-      height: "82vh",
       maxHeight: "82vh",
       overflowY: "auto",
     }
-  };
-
-
-
-  const iconWithStatus = (status) => {
-    if (status.toLowerCase() === "queue") {
-      return "⭕️";
-    } else if (status.toLowerCase() === "development") {
-      return "🔆️";
-    } else if (status.toLowerCase() === "done") {
-      return "✅";
-    }
-  }
-
-  const dragStartHandler = (e) => {
-    e.preventDefault();
-    console.log("drag start handler");
-  }
-
-  const dragLeaveHandler = (e) => {
-    e.preventDefault();
-    console.log("drag leave handler");
-  }
-
-  const SliceSelectedFiles = (files, setFieldValue, clear) => {
-    if (files.length <= CountSliceFilesTask) {
-      setFieldValue("file", convertTypeFileToObject(files));
-    } else {
-      setErrorFile(`Вы можете выбрать не более ${CountSliceFilesTask} файлов.`);
-      setTimeout(() => setErrorFile(""), 1500);
-      clear = null;
-    }
-  }
-
-  const onDropHandler = (e, setFieldValue) => {
-    e.preventDefault();
-    let files = [...e.dataTransfer.files]
-
-    setUploadedFiles(files);
-
-    SliceSelectedFiles(files, setFieldValue, e.dataTransfer.files);
   };
 
 
@@ -90,17 +50,10 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
       <div className={"container-create-task"}>
         <h1 className={"title-create-task"}>Создание задачи</h1>
           <Formik
-            initialValues={{
-              title: "",
-              file: null,
-              numberTask: '',
-              description: '',
-              priority: 'low',
-              status: 'queue',
-            }}
+            initialValues={initialValues}
             validateOnMount
             validateOnBlur
-            onSubmit={({ title, file, numberTask, description, priority, status  }) => {
+            onSubmit={({ title, file, numberTask, description, priority, status}, { resetForm }) => {
               dispatch(addTask({
                 id: uuid(),
                 projectId: project_id,
@@ -120,31 +73,11 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
 
               setUploadedFiles([]);
               setSubtasks([]);
+              resetForm();
             }}
-            validationSchema={yup.object().shape({
-              title: yup.string()
-                .min(5, "Заголовок должен быть больше 5 символов!")
-                .max(100, "Заголовок должен быть меньше 100 символов!")
-                .required("Введите заголовок"),
-              numberTask: yup
-                .number()
-                .typeError("Номер задачи должен быть числом")
-                .required('Введите номер задачи')
-                .test('is-number', 'Номер задачи должен быть числом', (value) => {
-                  if (!value) return true;
-                  return !isNaN(value);
-                })
-                .min(1, "Номер должен быть больше 1 символа!")
-                .max(99999999, "Номер должен быть меньше 8 символов!"),
-              description: yup.string()
-                .min(10, "Описание задачи должно быть больше 10 символов")
-                .max(2000, "Описание задачи должно быть меньше 2000 символов")
-                .required("Введите описание задачи"),
-              priority: yup.string().required('Выберите приоритет задачи'),
-              status: yup.string().required('Выберите статус задачи'),
-            })}
+            validationSchema={validationSchema}
           >
-            {({ values,validateForm, resetForm, errors, touched, handleChange, handleBlur, isValid, handleSubmit, dirty, setFieldValue }) => {
+            {({ values, handleChange, handleBlur, isValid, handleSubmit, setFieldValue }) => {
               return (
                 <>
                   {/* title */}
@@ -156,12 +89,8 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                       id="title"
                       name="title"
                       placeholder={"Введите заголовок задачи..."}
-                      onChange={(e) => {
-                        handleChange(e);
-                      }}
-                      onBlur={(e) => {
-                        handleBlur(e);
-                      }}
+                      onChange={(e) => handleChange(e)}
+                      onBlur={(e) => handleBlur(e)}
                     />
                   </div>
 
@@ -174,12 +103,8 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                       id="numberTask"
                       name="numberTask"
                       placeholder={"Введите номер задачи..."}
-                      onChange={(e) => {
-                        handleChange(e);
-                      }}
-                      onBlur={(e) => {
-                        handleBlur(e);
-                      }}
+                      onChange={(e) => handleChange(e)}
+                      onBlur={(e) => handleBlur(e)}
                     />
                   </div>
 
@@ -192,12 +117,8 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                       id="description"
                       name="description"
                       placeholder={"Введите описание задачи..."}
-                      onChange={(e) => {
-                        handleChange(e);
-                      }}
-                      onBlur={(e) => {
-                        handleBlur(e);
-                      }}
+                      onChange={(e) => handleChange(e)}
+                      onBlur={(e) => handleBlur(e)}
                     />
                   </div>
 
@@ -208,12 +129,8 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                       className={"task-input select"}
                       as="select"
                       name="priority"
-                      onChange={(e) => {
-                        handleChange(e);
-                      }}
-                      onBlur={(e) => {
-                        handleBlur(e);
-                      }}
+                      onChange={(e) => handleChange(e)}
+                      onBlur={(e) => handleBlur(e)}
                     >
                       <option value="low">Низкий</option>
                       <option value="medium">Средний</option>
@@ -228,12 +145,8 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                       className={"task-input"}
                       as="select"
                       name="status"
-                      onChange={(e) => {
-                        handleChange(e);
-                      }}
-                      onBlur={(e) => {
-                        handleBlur(e);
-                      }}
+                      onChange={(e) => handleChange(e)}
+                      onBlur={(e) => handleBlur(e)}
                     >
                       <option value="queue">Queue</option>
                       <option value="development">Development</option>
@@ -253,10 +166,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                             !showFormSubtask ? (
                               <p className={`btn-subtask add-subtask`} onClick={() => setShowFormSubtask(true)}>Добавить подзадачи</p>
                             ) : (
-                              <p className={`btn-subtask add-subtask`} onClick={() => {
-                                setShowFormSubtask(false)
-                                // resetForm()
-                              }}>Скрыть подзадачи</p>
+                              <p className={`btn-subtask add-subtask`} onClick={() => setShowFormSubtask(false)}>Скрыть подзадачи</p>
                             )
                           }
                         </div>
@@ -274,32 +184,24 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                       {subtasks.length !== 0 && (
                         <>
                           <p className={"title-subtask"}>Список подзадач: </p>
-
                           <div className={"container-subtask-content"}>
                             <ShowSubtasks data={subtasks} />
                           </div>
                         </>
                       )}
                     </div>
-
-
                   </div>
 
                   {/* file */}
                   <div
                     className={"container-drag-and-drop-upload-file"}
-                    onDragStart={e => dragStartHandler(e)}
-                    onDragLeave={e => dragLeaveHandler(e)}
-                    onDragOver={e => dragStartHandler(e)}
-                    onDrop={e => onDropHandler(e, setFieldValue)}
+                    onDrop={e => onDropHandler(e, setFieldValue, setErrorFile, setUploadedFiles)}
                   >
                     {errorFile !== "" ? <p className={"errors"}>{errorFile}</p> : <p className={"errors"}>&nbsp;</p>}
                     <div className={"drop-area"}>
                       <p className={"title-drop-file"}>Выберите или перетащите файл в это окно</p>
-
                       <div>
                         <label htmlFor="file" className="custom-file-input">Выбрать файл</label>
-
                         <input
                           type="file"
                           id="file"
@@ -308,27 +210,16 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                           style={{ display: "none" }}
                           onChange={(event) => {
                             const selectedFiles = Array.from(event.currentTarget.files);
-
                             const newSelectedFiles = selectedFiles.filter(item => item.size > 0);
-
                             setUploadedFiles(newSelectedFiles);
-
-                            SliceSelectedFiles(newSelectedFiles, setFieldValue, event.currentTarget.value);
+                            SliceSelectedFiles(newSelectedFiles, setFieldValue, event.currentTarget.value, setErrorFile);
                           }}
                         />
                       </div>
 
-                      <p style={{
-                        padding: "0.5rem"
-                      }}>{uploadedFiles.length !== 0 ? uploadedFiles.map((files) => {
-                        if (uploadedFiles.length === 1) {
-                          return `${files.name}`
-                        }
-                        return `${files.name} / `
-                      }) : ("Тут будет названия загруженных файлов")}</p>
+                      <p className={styles.list_uploaded_files}>{uploadedFiles.length !== 0 ? uploadedFiles.map((files) => uploadedFilesShow(files, uploadedFiles)) : ("Тут будут названия загруженных файлов")}</p>
                     </div>
                   </div>
-
 
                   <ButtonSubmit
                     onClose={onClose}

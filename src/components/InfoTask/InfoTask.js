@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import Modal from "react-modal";
-import {convertTypeObjectToFile, formatFileSize, getAuthorProject} from "../../Variables";
+import {convertTypeObjectToFile, formatFileSize, getAuthorProject} from "../../Functions";
 import {useDispatch, useSelector} from "react-redux";
 import ColorizeWrapText from "../ColorizeWrapText/ColorizeWrapText";
 import "./InfoTask.css";

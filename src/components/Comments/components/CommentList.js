@@ -4,7 +4,7 @@ import IsAuth from "../../../hooks/IsAuth";
 import moment from 'moment';
 import ShowButtons from "./ShowButtons";
 import ButtonCustom from "./ButtonCustom";
-import {getUser} from "../../../Variables";
+import {getUser} from "../../../Functions";
 import {
   AddReply,
   CheckActiveComments,

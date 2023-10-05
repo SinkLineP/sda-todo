@@ -1,7 +1,7 @@
 import React from "react";
 
 
-const ButtonSubmit = ({ isValid, handleSubmit, clearUploadedFiles, values, onClose, closeSubtasks, isShowFormSubtasks }) => {
+const ButtonSubmit = ({ isValid, handleSubmit, clearUploadedFiles, values, onClose, closeSubtasks }) => {
   return (
     <button
       className={`btn ${!isValid === false ? 'btn-success' : 'btn-disabled'} `}

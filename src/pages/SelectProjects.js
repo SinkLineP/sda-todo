@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {getAuthorProject } from "../Variables";
+import {getAuthorProject } from "../Functions";
 import {useSelector} from "react-redux";
 import ProjectModal from "../components/ProjectModal/ProjectModal";
 import IsAuth from "../hooks/IsAuth";
