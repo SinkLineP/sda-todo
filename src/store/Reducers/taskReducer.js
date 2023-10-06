@@ -8,7 +8,8 @@ const ActionTypes = {
   REMOVE_SUBTASK_FROM_TASK: 'REMOVE_SUBTASK_FROM_TASK',
   REMOVE_COMMENT_FROM_TASK: 'REMOVE_COMMENT_FROM_TASK',
   ADD_SUBTASK_TO_TASK: 'ADD_SUBTASK_TO_TASK',
-  START_TASK: 'START_TASK'
+  START_TASK: 'START_TASK',
+  END_TASK: 'END_TASK'
 };
 
 function TaskReducer(state = initialState, action) {
@@ -73,15 +74,30 @@ function TaskReducer(state = initialState, action) {
       });
 
     case ActionTypes.START_TASK:
-      const { status, startDate, Id_task, icon } = action.payload;
+      const { status_start, startDate, Id_task_start, icon_start } = action.payload;
 
       return state.map((task) => {
-        if (task.id === Id_task) {
+        if (task.id === Id_task_start) {
           return {
             ...task,
-            status: status,
+            status: status_start,
             startDate: startDate,
-            icon: icon
+            icon: icon_start
+          };
+        }
+        return task;
+      });
+
+    case ActionTypes.END_TASK:
+      const { status_end, endDate, Id_task_end, icon_end } = action.payload;
+
+      return state.map((task) => {
+        if (task.id === Id_task_end) {
+          return {
+            ...task,
+            status: status_end,
+            endDate: endDate,
+            icon: icon_end
           };
         }
         return task;
@@ -130,9 +146,14 @@ export const removeCommentFromTask = (commentId, task_id) => ({
   payload: { commentId, task_id },
 });
 
-export const startTask = (status, startDate, Id_task, icon) => ({
+export const startTask = (status_start, startDate, Id_task_start, icon_start) => ({
   type: ActionTypes.START_TASK,
-  payload: { status, startDate, Id_task, icon }
+  payload: { status_start, startDate, Id_task_start, icon_start }
+})
+
+export const endTask = (status_end, endDate, Id_task_end, icon_end) => ({
+  type: ActionTypes.END_TASK,
+  payload: { status_end, endDate, Id_task_end, icon_end }
 })
 
 

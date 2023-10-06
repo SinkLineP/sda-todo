@@ -1,13 +1,19 @@
 import React, {useState} from "react";
 import Modal from "react-modal";
-import {convertTypeObjectToFile, formatFileSize, getAuthorProject} from "../../Functions";
+import {
+  calculateTimeInWork,
+  convertTypeObjectToFile,
+  formatFileSize,
+  getAuthorProject,
+  getCurrentDate
+} from "../../Functions";
 import {useDispatch, useSelector} from "react-redux";
 import ColorizeWrapText from "../ColorizeWrapText/ColorizeWrapText";
 import "./InfoTask.css";
 import iconFile from "./icons/file.png";
 import iconDownload from "./icons/download.png";
 import ScrollableWrap from "../ScrollableWrap/ScrollableWrap";
-import {removeTask, startTask} from "../../store/Reducers/taskReducer";
+import {endTask, removeTask, startTask} from "../../store/Reducers/taskReducer";
 import IsAuth from "../../hooks/IsAuth";
 import {ReactComponent as IconDeleteCrossSVG} from "./icons/delete-cross.svg";
 import Comments from "../Comments/Comments";
@@ -85,7 +91,9 @@ export default function InfoTask({ show, onClose, item }) {
     } else if (status === "development") {
       return (
         <HoverButton
-          onClick={() => {}}
+          onClick={() => {
+            dispatch(endTask("done", new Date(), task_id, "✅️"));
+          }}
           IconButton={IconDeleteCrossSVG}
           titleButton={"Завершить"}
           backgroundBeforeClick={"#f35555"}
@@ -93,7 +101,7 @@ export default function InfoTask({ show, onClose, item }) {
         />
       )
     } else if (status === "done") {
-      console.log("done!")
+      // console.log("done!")
     }
   }
 
@@ -212,15 +220,24 @@ export default function InfoTask({ show, onClose, item }) {
 
         <div style={{
           display: "flex",
-          flexDirection: "row",
+          flexDirection: "column",
           marginTop: "2rem",
-          gap: "40px"
         }}>
-          <p>Дата создания задачи: {item.dateOfCreation}</p>
+          <p><b>Дата создания задачи: </b><i>{getCurrentDate(item.dateOfCreation, true)}</i></p>
 
-          {item.startDate !== null && (
-            <p>Дата начала задачи: {moment(item.startDate).fromNow()}</p>
+          {item.startDate !== null && item.status !== "queue" && (
+            <p><b>Дата начала задачи: </b><i>{getCurrentDate(item.startDate, true)}</i></p>
           )}
+
+          {item.endDate !== null && item.status === "done" && (
+            <p><b>Дата окончания задачи: </b><i>{getCurrentDate(item.endDate, true)}</i></p>
+          )}
+
+          {item.startDate !== null && item.endDate !== null && item.status === "done" && (
+            <p><b>Время в работе: </b><i>{calculateTimeInWork(item.startDate, item.endDate)}</i></p>
+          )}
+
+
           {/*{item.endDate !== null ? (*/}
           {/*  <p style={{*/}
           {/*  marginLeft: "30px"*/}

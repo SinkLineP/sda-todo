@@ -52,3 +52,63 @@ export function convertTypeObjectToFile(arrayFiles) {
     return new File([blobData], name, {type});
   });
 }
+
+
+export const getCurrentDate = (date, withTime) => {
+  const currentDate = new Date(date);
+
+  const day = currentDate.getDate();
+  const month = currentDate.getMonth() + 1;
+  const year = currentDate.getFullYear();
+
+  let time = '';
+
+  if (withTime) {
+    const hours = currentDate.getHours();
+    const minutes = currentDate.getMinutes();
+    const seconds = currentDate.getSeconds();
+
+    // Use template literals to format the time component
+    time = ` - ${hours}:${minutes}:${seconds}`;
+  }
+
+  // Use template literals to format the date component
+  return `${day}.${month}.${year}${time}`;
+}
+
+export function calculateTimeInWork(startDate, endDate) {
+  const startDateTime = new Date(startDate).getTime();
+  const endDateTime = new Date(endDate).getTime();
+
+  if (isNaN(startDateTime) || isNaN(endDateTime)) {
+    return "Invalid date input";
+  }
+
+  const timeDifference = endDateTime - startDateTime;
+  const millisecondsInSecond = 1000;
+  const millisecondsInMinute = millisecondsInSecond * 60;
+  const millisecondsInHour = millisecondsInMinute * 60;
+  const millisecondsInDay = millisecondsInHour * 24;
+
+  const days = Math.floor(timeDifference / millisecondsInDay);
+  const hours = Math.floor((timeDifference % millisecondsInDay) / millisecondsInHour);
+  const minutes = Math.floor((timeDifference % millisecondsInHour) / millisecondsInMinute);
+  const seconds = Math.floor((timeDifference % millisecondsInMinute) / millisecondsInSecond);
+
+  const timeParts = [];
+
+  if (days > 0) {
+    timeParts.push(`${days} days`);
+  }
+  if (hours > 0) {
+    timeParts.push(`${hours} hours`);
+  }
+  if (minutes > 0) {
+    timeParts.push(`${minutes} minutes`);
+  }
+  if (seconds > 0) {
+    timeParts.push(`${seconds} seconds`);
+  }
+
+  return timeParts.join(" ");
+}

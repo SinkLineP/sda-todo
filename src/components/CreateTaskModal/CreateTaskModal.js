@@ -7,13 +7,14 @@ import ButtonSubmit from "./components/ButtonSubmit";
 import {v4 as uuid} from "uuid";
 import FormSubtask from "../CreateAndShowSubtask/components/FormSubtask/FormSubtask";
 import ShowSubtasks from "../CreateAndShowSubtask/components/ShowSubtask/ShowSubtasks";
-import {getCurrentDate, iconWithStatus, onDropHandler, SliceSelectedFiles, uploadedFilesShow} from "./Functions";
+import {iconWithStatus, onDropHandler, SliceSelectedFiles, uploadedFilesShow} from "./Functions";
 import styles from "./CreateTaskModal.module.css";
 import {initialValues} from "./InitialValues";
 import {validationSchema} from "./Schema";
 import ButtonShowOrHideSubtask from "../CreateAndShowSubtask/components/ButtonShowOrHideSubtask/ButtonShowOrHideSubtask";
 import {addSubtask} from "../../store/Reducers/subtaskReducer";
 import CreateAndShowSubtask from "../CreateAndShowSubtask/CreateAndShowSubtask";
+import {getCurrentDate} from "../../Functions";
 
 
 export default function CreateTaskModal({ show, onClose, project_id }) {
@@ -68,7 +69,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                 numberTask: Number(numberTask),
                 title: title,
                 description: description,
-                dateOfCreation: getCurrentDate(),
+                dateOfCreation: new Date(),
                 timeInWork: null,
                 endDate: null,
                 priority: priority,
