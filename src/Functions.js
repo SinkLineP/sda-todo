@@ -116,3 +116,9 @@ export function calculateTimeInWork(startDate, endDate) {
     return "Слишком быстро)";
   }
 }
+
+export const checkProjectsAuthor = (projects_store, project_id, current_user) => {
+  return projects_store.some((project) => {
+    return project.id === project_id && project.user_id === current_user.id
+  });
+}

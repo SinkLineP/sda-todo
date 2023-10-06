@@ -8,6 +8,7 @@ import IsAuth from "../hooks/IsAuth";
 import CreateTaskModal from "../components/CreateTaskModal/CreateTaskModal";
 import styles from "./styles/Tasks.module.css";
 import {addTask, endTask, startTask} from "../store/Reducers/taskReducer";
+import {checkProjectsAuthor} from "../Functions";
 
 
 export default function Tasks() {
@@ -47,11 +48,7 @@ export default function Tasks() {
     });
   };
 
-  const checkProjectsAuthor = () => {
-    return projectsStore.some((project) => {
-      return project.id === project_id && project.user_id === currentUser.id
-    });
-  }
+
 
   const onOpen = () => setShow(true);
   const onClose = () => setShow(false);
@@ -65,7 +62,7 @@ export default function Tasks() {
         String(`${i.title}#${i.numberTask}`).toLowerCase().includes(search.split(" ").join("").toLowerCase()) ||
         String(`${i.title}${i.numberTask}`).toLowerCase().includes(search.split(" ").join("").toLowerCase())
       )
-      .map((i, idx) => <Item key={i.id} item={i} index={idx} moveItem={moveItem} status={s}/>);
+      .map((i, idx) => <Item key={i.id} item={i} index={idx} moveItem={moveItem} status={s} project_id={project_id} />);
   }
 
   return (
@@ -78,7 +75,7 @@ export default function Tasks() {
             </p>
           </NavLink>
         </div>
-        {IsAuth() && checkProjectsAuthor() ? (
+        {IsAuth() && checkProjectsAuthor(projectsStore, project_id, currentUser) ? (
           <div>
             <p
               className={styles.button_header}

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import Modal from "react-modal";
 import {
-  calculateTimeInWork,
+  calculateTimeInWork, checkProjectsAuthor,
   convertTypeObjectToFile,
   formatFileSize,
   getAuthorProject,
@@ -22,6 +22,7 @@ import {removeComment} from "../../store/Reducers/commentReducer";
 import CreateAndShowSubtask from "../CreateAndShowSubtask/CreateAndShowSubtask";
 import HoverButton from "../CreateTaskModal/components/HoverButton";
 import moment from "moment/moment";
+import {useParams} from "react-router-dom";
 
 
 Modal.setAppElement("#root");
@@ -32,7 +33,8 @@ export default function InfoTask({ show, onClose, item }) {
   const currentUser = useSelector(state => state.auth.currentUser);
   const subtasksStore = useSelector(state => state.subtasks);
   const [showFormSubtask, setShowFormSubtask] = useState(false);
-
+  const { project_id } = useParams();
+  const projectsStore = useSelector(state => state.projects);
 
 
 
@@ -91,7 +93,7 @@ export default function InfoTask({ show, onClose, item }) {
           backgroundAfterClick={"#70a138"}
         />
       )
-    } else if (status === "development") {
+    } else if (status === "development" && checkProjectsAuthor(projectsStore, project_id, currentUser)) {
       return (
         <HoverButton
           onClick={() => {

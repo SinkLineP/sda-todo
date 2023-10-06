@@ -4,15 +4,19 @@ import InfoTask from "../InfoTask/InfoTask";
 import ITEM_TYPE from "../../data/types";
 import {useDispatch, useSelector} from "react-redux";
 import {startTask, endTask, editTask} from "../../store/Reducers/taskReducer";
+import IsAuth from "../../hooks/IsAuth";
+import {checkProjectsAuthor} from "../../Functions";
 
-const Item = ({ item, index, moveItem, status }) => {
+const Item = ({ item, index, moveItem, status, project_id }) => {
   const ref = useRef(null);
   const dispatch = useDispatch();
   const tasksStore = useSelector(state => state.tasks);
+  const currentUser = useSelector(state => state.auth.currentUser);
+  const projectsStore = useSelector(state => state.projects);
 
 
   // Определение, разрешено ли перетаскивание
-  const isDraggable = item.status !== "done";
+  const isDraggable = item.status !== "done" && IsAuth();
 
   const [, drop] = useDrop({
     accept: ITEM_TYPE,
@@ -122,12 +126,12 @@ const Item = ({ item, index, moveItem, status }) => {
         </p>
         <p className={"item-status"}>{item.icon}</p>
         {/* Кнопка начала задачи */}
-        {item.status === "queue" && (
+        {item.status === "queue" && IsAuth() && checkProjectsAuthor(projectsStore, project_id, currentUser) && (
           <button onClick={(e) => handleStartTask(e)}>Начать задачу</button>
         )}
 
         {/* Кнопка завершения задачи */}
-        {item.status === "development" && (
+        {item.status === "development" && IsAuth() && checkProjectsAuthor(projectsStore, project_id, currentUser) && (
           <button onClick={(e) => handleEndTask(e)}>Завершить задачу</button>
         )}
       </div>
