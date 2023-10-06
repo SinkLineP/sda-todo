@@ -16,7 +16,10 @@
 }
 
 .container {
-    width: 100%
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.5rem;
+    border-radius: 1rem;
 }
 
 .container_title {

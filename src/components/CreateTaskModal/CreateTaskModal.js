@@ -5,14 +5,15 @@ import {useDispatch, useSelector} from "react-redux";
 import {addTask} from "../../store/Reducers/taskReducer";
 import ButtonSubmit from "./components/ButtonSubmit";
 import {v4 as uuid} from "uuid";
-import FormSubtask from "./components/FormSubtask/FormSubtask";
-import ShowSubtasks from "./components/ShowSubtask/ShowSubtasks";
+import FormSubtask from "../CreateAndShowSubtask/components/FormSubtask/FormSubtask";
+import ShowSubtasks from "../CreateAndShowSubtask/components/ShowSubtask/ShowSubtasks";
 import {getCurrentDate, iconWithStatus, onDropHandler, SliceSelectedFiles, uploadedFilesShow} from "./Functions";
 import styles from "./CreateTaskModal.module.css";
 import {initialValues} from "./InitialValues";
 import {validationSchema} from "./Schema";
-import ButtonShowOrHideSubtask from "./components/ButtonShowOrHideSubtask/ButtonShowOrHideSubtask";
+import ButtonShowOrHideSubtask from "../CreateAndShowSubtask/components/ButtonShowOrHideSubtask/ButtonShowOrHideSubtask";
 import {addSubtask} from "../../store/Reducers/subtaskReducer";
+import CreateAndShowSubtask from "../CreateAndShowSubtask/CreateAndShowSubtask";
 
 
 export default function CreateTaskModal({ show, onClose, project_id }) {
@@ -170,38 +171,13 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                   </div>
 
                   {/* subtask */}
-                  <div className={styles.container_field}>
-                    <div className={styles.container_subtask_header}>
-                      <div>
-                        <p className={styles.title_subtask}>Подзадачи: <ErrorMessage className={"errors"} name="status" component="span" /></p>
-                      </div>
-                      <div>
-                        {
-                          !showFormSubtask ? (
-                            <ButtonShowOrHideSubtask title={"Добавить подзадачи"} func={() => setShowFormSubtask(true)} />
-                          ) : (
-                            <ButtonShowOrHideSubtask title={"Скрыть форму"} func={() => setShowFormSubtask(false)} />
-                          )
-                        }
-                      </div>
-                    </div>
-
-                    {showFormSubtask === true && (
-                      <FormSubtask author={currentUser.id} setSubtasks={(val) => {
-                        setSubtasks((prevState) => ([
-                          ...prevState,
-                          val,
-                        ]))
-                      }} />
-                    )}
-
-                    {subtasks.length !== 0 && (
-                      <>
-                        <p className={styles.title_subtask}>Список подзадач: </p>
-                        <ShowSubtasks data={subtasks} setData={(val) => setSubtasks(val)} location={"create-task"} />
-                      </>
-                    )}
-                  </div>
+                  <CreateAndShowSubtask
+                    subtasks={subtasks}
+                    setSubtasks={(val) => setSubtasks(val)}
+                    location={"form"}
+                    showForm={showFormSubtask}
+                    setShowForm={(val) => setShowFormSubtask(val)}
+                  />
 
                   {/* file */}
                   <div

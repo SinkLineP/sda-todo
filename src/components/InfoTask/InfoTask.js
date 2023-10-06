@@ -12,9 +12,10 @@ import IsAuth from "../../hooks/IsAuth";
 import {ReactComponent as IconDeleteCrossSVG} from "./icons/delete-cross.svg";
 import {ReactComponent as IconApplyDeleteSVG} from "./icons/apply-delete.svg";
 import Comments from "../Comments/Comments";
-import ShowSubtasks from "../CreateTaskModal/components/ShowSubtask/ShowSubtasks";
-import {removeSubtask} from "../../store/Reducers/subtaskReducer";
+import ShowSubtasks from "../CreateAndShowSubtask/components/ShowSubtask/ShowSubtasks";
+import {addSubtask, removeSubtask} from "../../store/Reducers/subtaskReducer";
 import {removeComment} from "../../store/Reducers/commentReducer";
+import CreateAndShowSubtask from "../CreateAndShowSubtask/CreateAndShowSubtask";
 
 
 Modal.setAppElement("#root");
@@ -24,7 +25,7 @@ export default function InfoTask({ show, onClose, item }) {
   const dispatch = useDispatch();
   const currentUser = useSelector(state => state.auth.currentUser);
   const subtasksStore = useSelector(state => state.subtasks);
-  const commentsStore = useSelector(state => state.comments);
+  const [showFormSubtask, setShowFormSubtask] = useState(false);
 
   const handleDownloadClick = (file) => {
     if (file) {
@@ -66,6 +67,7 @@ export default function InfoTask({ show, onClose, item }) {
 
   const [isHovered, setIsHovered] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
+
 
   const getSubtask = (data) => {
     return subtasksStore.filter(item => data.includes(item.id));
@@ -130,7 +132,6 @@ export default function InfoTask({ show, onClose, item }) {
                 }
               </button>
             ) : ("")}
-            {/*<button>edit</button>*/}
           </div>
         </div>
         <div>
@@ -174,17 +175,30 @@ export default function InfoTask({ show, onClose, item }) {
             </>
           )}
 
-          {item.subtasks.length !== 0 ? (
-            <>
-              <h3>Подзадачи:</h3>
+          {/*{item.subtasks.length !== 0 ? (*/}
+          {/*  <>*/}
+          {/*    <h3>Подзадачи:</h3>*/}
 
-              <ShowSubtasks task_id={item.id} data={getSubtask(item.subtasks)} location={"info-task"} />
-            </>
-          ) : (
-            <>
-              <h3>Подзадач не найдено!</h3>
-            </>
-          )}
+          {/*    <ShowSubtasks task_id={item.id} data={getSubtask(item.subtasks)} location={"info-task"} />*/}
+          {/*  </>*/}
+          {/*) : (*/}
+          {/*  <>*/}
+          {/*    <h3>Подзадач не найдено!</h3>*/}
+          {/*  </>*/}
+          {/*)}*/}
+
+          <CreateAndShowSubtask
+            subtasks={getSubtask(item.subtasks)}
+            location={"info"}
+            showForm={showFormSubtask}
+            setShowForm={(val) => setShowFormSubtask(val)}
+            task_id={item.id}
+          />
+
+          {/*<CreateAndShowSubtask subtasks={getSubtask(item.subtasks)} task_id={item.id} setSubtasks={(val) => {*/}
+          {/*    dispatch(addSubtask(val));*/}
+          {/*    // return item.id;*/}
+          {/*}} location={"info"} setShowForm={(val) => setShowFormSubtask(val)} showForm={showFormSubtask} />*/}
         </div>
 
         <div style={{

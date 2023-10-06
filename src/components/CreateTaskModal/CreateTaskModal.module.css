@@ -29,16 +29,9 @@
     padding-left: 10px;
 }
 
-.container_subtask_header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
 
-.title_subtask {
-    font-weight: bold;
-}
+
+
 
 .container_drag_and_drop_upload_file {
     margin-bottom: 10px;

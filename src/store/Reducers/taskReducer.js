@@ -7,6 +7,7 @@ const ActionTypes = {
   ADD_COMMENT_TO_TASK: 'ADD_COMMENT_TO_TASK',
   REMOVE_SUBTASK_FROM_TASK: 'REMOVE_SUBTASK_FROM_TASK',
   REMOVE_COMMENT_FROM_TASK: 'REMOVE_COMMENT_FROM_TASK',
+  ADD_SUBTASK_TO_TASK: 'ADD_SUBTASK_TO_TASK'
 };
 
 function TaskReducer(state = initialState, action) {
@@ -21,6 +22,18 @@ function TaskReducer(state = initialState, action) {
           return {
             ...task,
             comments: [...task.comments, commentID]
+          }
+        }
+        return task;
+      });
+
+    case ActionTypes.ADD_SUBTASK_TO_TASK:
+      const { subtask_ID, ID_task } = action.payload;
+      return state.map((task) => {
+        if (task.id === ID_task) {
+          return {
+            ...task,
+            subtasks: [...task.subtasks, subtask_ID]
           }
         }
         return task;
@@ -81,6 +94,10 @@ export const addCommentToTask = (commentID, taskID) => ({
   payload: { commentID, taskID },
 });
 
+export const addSubtaskToTask = (subtask_ID, ID_task) => ({
+  type: ActionTypes.ADD_SUBTASK_TO_TASK,
+  payload: { subtask_ID, ID_task },
+});
 
 export const removeTask = (taskId) => ({
   type: ActionTypes.REMOVE_TASK,

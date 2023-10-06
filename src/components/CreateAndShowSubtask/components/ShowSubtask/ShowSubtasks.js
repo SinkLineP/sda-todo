@@ -11,7 +11,7 @@ const ShowSubtasks = ({ task_id, setData, data, location }) => {
   const dispatch = useDispatch();
 
   const deleteSubtask = (item) => {
-    if (location === "create-task") {
+    if (location === "form") {
       const updatedData = data.filter((subtask) => subtask.id !== item.id);
 
       return setData(updatedData);

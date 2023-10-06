@@ -1,0 +1,20 @@
+.container_field {
+    margin-bottom: 1rem;
+}
+
+.container_subtask_header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title_subtask {
+    font-weight: bold;
+}
+
+.container_show {
+    /*border-radius: 1rem;*/
+    padding: 0.2rem;
+    box-sizing: border-box;
+}
