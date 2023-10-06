@@ -175,30 +175,23 @@ export default function InfoTask({ show, onClose, item }) {
             </>
           )}
 
-          {/*{item.subtasks.length !== 0 ? (*/}
-          {/*  <>*/}
-          {/*    <h3>Подзадачи:</h3>*/}
+          {item.subtasks.length !== 0 ? (
+            <>
+              <h3>Подзадачи:</h3>
 
-          {/*    <ShowSubtasks task_id={item.id} data={getSubtask(item.subtasks)} location={"info-task"} />*/}
-          {/*  </>*/}
-          {/*) : (*/}
-          {/*  <>*/}
-          {/*    <h3>Подзадач не найдено!</h3>*/}
-          {/*  </>*/}
-          {/*)}*/}
-
-          <CreateAndShowSubtask
-            subtasks={getSubtask(item.subtasks)}
-            location={"info"}
-            showForm={showFormSubtask}
-            setShowForm={(val) => setShowFormSubtask(val)}
-            task_id={item.id}
-          />
-
-          {/*<CreateAndShowSubtask subtasks={getSubtask(item.subtasks)} task_id={item.id} setSubtasks={(val) => {*/}
-          {/*    dispatch(addSubtask(val));*/}
-          {/*    // return item.id;*/}
-          {/*}} location={"info"} setShowForm={(val) => setShowFormSubtask(val)} showForm={showFormSubtask} />*/}
+              <CreateAndShowSubtask
+                subtasks={getSubtask(item.subtasks)}
+                location={"info"}
+                showForm={showFormSubtask}
+                setShowForm={(val) => setShowFormSubtask(val)}
+                task_id={item.id}
+              />
+            </>
+          ) : (
+            <>
+              <h3>Подзадач не найдено!</h3>
+            </>
+          )}
         </div>
 
         <div style={{

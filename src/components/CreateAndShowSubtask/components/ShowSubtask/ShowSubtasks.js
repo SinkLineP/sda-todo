@@ -35,7 +35,7 @@ const ShowSubtasks = ({ task_id, setData, data, location }) => {
     if (data.length !== 0) {
       return data.map((item, index) => {
         return (
-          <div key={index} className={styles.container}>
+          <div key={index} className={`${styles.container} shadow-box`}>
             <div>
               <div>
                 <div>
@@ -63,7 +63,7 @@ const ShowSubtasks = ({ task_id, setData, data, location }) => {
   }
 
   return (
-    <div className={styles.list}>
+    <div className={`${styles.list} shadow-box`}>
       <Subtasks data={data} />
     </div>
   )

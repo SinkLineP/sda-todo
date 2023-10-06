@@ -44,7 +44,10 @@ const CreateAndShowSubtask = ({ subtasks, setSubtasks, location, showForm, setSh
       {subtasks.length !== 0 && (
         <>
           <p className={styles.title_subtask}>Список подзадач: </p>
-          <ShowSubtasks task_id={task_id} data={subtasks} setData={(val) => setSubtasks(val)} location={location} />
+
+          <div className={styles.container_show}>
+            <ShowSubtasks task_id={task_id} data={subtasks} setData={(val) => setSubtasks(val)} location={location} />
+          </div>
         </>
       )}
     </div>
