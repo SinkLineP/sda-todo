@@ -7,7 +7,6 @@ const ActionTypes = {
   ADD_COMMENT_TO_TASK: 'ADD_COMMENT_TO_TASK',
   REMOVE_SUBTASK_FROM_TASK: 'REMOVE_SUBTASK_FROM_TASK',
   REMOVE_COMMENT_FROM_TASK: 'REMOVE_COMMENT_FROM_TASK',
-  FILTERED_TASK: 'FILTERED_TASK'
 };
 
 function TaskReducer(state = initialState, action) {
@@ -26,9 +25,6 @@ function TaskReducer(state = initialState, action) {
         }
         return task;
       });
-
-    case ActionTypes.FILTERED_TASK:
-      return action.payload;
 
     case ActionTypes.REMOVE_SUBTASK_FROM_TASK:
       const { subtaskID, task_ID } = action.payload;
@@ -59,7 +55,6 @@ function TaskReducer(state = initialState, action) {
     case ActionTypes.EDIT_TASK:
       const { taskId, updatedTask } = action.payload;
       return state.map((task) => {
-        console.log(task.id === taskId ? {...task, ...updatedTask} : task);
         return task.id === taskId ? {...task, ...updatedTask} : task
       });
 
@@ -100,11 +95,6 @@ export const removeSubtaskFromTask = (subtaskID, task_ID) => ({
 export const removeCommentFromTask = (commentId, task_id) => ({
   type: ActionTypes.REMOVE_COMMENT_FROM_TASK,
   payload: { commentId, task_id },
-});
-
-export const filteredTask = (formData) => ({
-  type: ActionTypes.FILTERED_TASK,
-  payload: formData,
 });
 
 

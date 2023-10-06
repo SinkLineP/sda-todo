@@ -7,7 +7,6 @@ import {NavLink, useParams} from "react-router-dom";
 import IsAuth from "../hooks/IsAuth";
 import CreateTaskModal from "../components/CreateTaskModal/CreateTaskModal";
 import styles from "./styles/Tasks.module.css";
-import {filteredTask} from "../store/Reducers/taskReducer";
 
 
 export default function Tasks() {
@@ -20,7 +19,6 @@ export default function Tasks() {
   const [show, setShow] = useState(false);
   const [search, setSearch] = useState("");
   const [searchItems, setSearchItems] = useState([]);
-  const dispatch = useDispatch();
 
 
   useEffect(() => {
@@ -63,14 +61,6 @@ export default function Tasks() {
       .map((i, idx) => <Item key={i.id} item={i} index={idx} moveItem={moveItem} status={s}/>);
   }
 
-  // const liveSearch = (items, value) => {
-  //   const filteredItems = items.filter(item => String(item.numberTask).includes(value) || String(item.title).includes(value));
-  //
-  //   setSearchItems(filteredItems);
-  //   dispatch(filteredTask(filteredItems));
-  // }
-
-
   return (
     <div className={styles.container}>
       <div className={styles.container_header}>
@@ -101,8 +91,6 @@ export default function Tasks() {
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
-
-              // liveSearch(items, e.target.value);
             }}
           />
         </div>
