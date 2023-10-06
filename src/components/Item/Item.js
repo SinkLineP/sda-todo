@@ -5,14 +5,12 @@ import ITEM_TYPE from "../../data/types";
 import {useDispatch, useSelector} from "react-redux";
 import {startTask, endTask, editTask} from "../../store/Reducers/taskReducer";
 import IsAuth from "../../hooks/IsAuth";
-import {checkProjectsAuthor} from "../../Functions";
+import styles from "./Item.module.css";
 
-const Item = ({ item, index, moveItem, status, project_id }) => {
+const Item = ({ item, index, moveItem, status }) => {
   const ref = useRef(null);
   const dispatch = useDispatch();
   const tasksStore = useSelector(state => state.tasks);
-  const currentUser = useSelector(state => state.auth.currentUser);
-  const projectsStore = useSelector(state => state.projects);
 
 
   // Определение, разрешено ли перетаскивание
@@ -117,22 +115,22 @@ const Item = ({ item, index, moveItem, status, project_id }) => {
       <div
         ref={ref}
         style={{ opacity: isDragging ? 0 : 1 }}
-        className={"item"}
+        className={"item shadow-box"}
         onClick={onOpen}
       >
-        <div className={"color-bar"} style={{ backgroundColor: status.color }} />
+        <div className={"color-bar shadow-box"} style={{ backgroundColor: status.color }} />
         <p className={"item-title"}>
           {item.title} #{item.numberTask}
         </p>
         <p className={"item-status"}>{item.icon}</p>
         {/* Кнопка начала задачи */}
-        {item.status === "queue" && IsAuth() && checkProjectsAuthor(projectsStore, project_id, currentUser) && (
-          <button onClick={(e) => handleStartTask(e)}>Начать задачу</button>
+        {item.status === "queue" && IsAuth() && (
+          <button className={`${styles.btn_item} ${styles.btn_start} shadow-box`} onClick={(e) => handleStartTask(e)}>Начать задачу</button>
         )}
 
         {/* Кнопка завершения задачи */}
-        {item.status === "development" && IsAuth() && checkProjectsAuthor(projectsStore, project_id, currentUser) && (
-          <button onClick={(e) => handleEndTask(e)}>Завершить задачу</button>
+        {item.status === "development" && IsAuth() && (
+          <button className={`${styles.btn_item} ${styles.btn_stop} shadow-box`} onClick={(e) => handleEndTask(e)}>Завершить задачу</button>
         )}
       </div>
 

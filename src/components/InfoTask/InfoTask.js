@@ -93,7 +93,7 @@ export default function InfoTask({ show, onClose, item }) {
           backgroundAfterClick={"#70a138"}
         />
       )
-    } else if (status === "development" && checkProjectsAuthor(projectsStore, project_id, currentUser)) {
+    } else if (status === "development") {
       return (
         <HoverButton
           onClick={() => {

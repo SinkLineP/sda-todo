@@ -102,6 +102,7 @@ const CommentList = ({ task_id, commentsStore }) => {
 
                     <div className={"container-reply-comment content"}>
                       <input
+                        type={"search"}
                         className={"input-create-comment"}
                         value={inputReplyValues[comment.id] || ""}
                         onChange={(e) => {
