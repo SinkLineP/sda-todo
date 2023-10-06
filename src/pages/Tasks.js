@@ -7,7 +7,7 @@ import {NavLink, useParams} from "react-router-dom";
 import IsAuth from "../hooks/IsAuth";
 import CreateTaskModal from "../components/CreateTaskModal/CreateTaskModal";
 import styles from "./styles/Tasks.module.css";
-import {endTask, startTask} from "../store/Reducers/taskReducer";
+import {addTask, endTask, startTask} from "../store/Reducers/taskReducer";
 
 
 export default function Tasks() {
@@ -19,6 +19,7 @@ export default function Tasks() {
   const projectsStore = useSelector(state => state.projects);
   const [show, setShow] = useState(false);
   const [search, setSearch] = useState("");
+  const dispatch = useDispatch();
 
 
   useEffect(() => {
@@ -32,6 +33,7 @@ export default function Tasks() {
       const newItems = prevState
         .filter(i => i.id !== item.id)
         .concat({ ...item, status, icon: mapping.icon });
+
       return [ ...newItems ];
     });
   };

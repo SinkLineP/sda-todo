@@ -2,12 +2,14 @@ import React, {Fragment, useState, useRef, useEffect} from "react";
 import { useDrag, useDrop } from "react-dnd";
 import InfoTask from "../InfoTask/InfoTask";
 import ITEM_TYPE from "../../data/types";
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {startTask, endTask, editTask} from "../../store/Reducers/taskReducer";
 
 const Item = ({ item, index, moveItem, status }) => {
   const ref = useRef(null);
   const dispatch = useDispatch();
+  const tasksStore = useSelector(state => state.tasks);
+
 
   // Определение, разрешено ли перетаскивание
   const isDraggable = item.status !== "done";
@@ -77,11 +79,33 @@ const Item = ({ item, index, moveItem, status }) => {
 
   drag(drop(ref));
 
+  const startDate = new Date();
+  const endDate = new Date();
+
   useEffect(() => {
     if (!isDragging) {
-      dispatch(editTask(item.id, item));
+      if (item.status === "development" && tasksStore.find(task => task.id === item.id).startDate === null) {
+        dispatch(editTask(item.id, {
+          ...item,
+          startDate: startDate
+        }));
+      } else if (item.status === "queue" && tasksStore.find(task => task.id === item.id).startDate !== null) {
+        dispatch(editTask(item.id, {
+          ...item,
+          startDate: null,
+          endDate: null
+        }));
+      } else if (item.status === "done" && tasksStore.find(task => task.id === item.id).startDate !== null && tasksStore.find(task => task.id === item.id).endDate === null) {
+        dispatch(editTask(item.id, {
+          ...item,
+          startDate: tasksStore.find(task => task.id === item.id).startDate,
+          endDate: endDate
+        }));
+      } else {
+        dispatch(editTask(item.id, item));
+      }
     }
-  }, [dispatch, isDragging]);
+  }, [dispatch, isDragging, item.status]);
 
   return (
     <Fragment>

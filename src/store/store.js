@@ -1,10 +1,15 @@
-import { legacy_createStore as createStore } from 'redux';
+import {applyMiddleware, compose, createStore} from 'redux';
 import persistedReducer from "./Reducers/combineReducer";
 import {persistStore} from "redux-persist";
+import thunk from 'redux-thunk';
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export const store = createStore(
   persistedReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  composeEnhancers(
+    applyMiddleware(thunk),
+  )
 );
 
 export const persistor = persistStore(store, null, () => {
