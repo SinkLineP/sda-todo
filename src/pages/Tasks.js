@@ -2,11 +2,12 @@ import React, {useEffect, useState} from "react";
 import Item from "../components/Item/Item";
 import DropWrapper from "../components/DropWrapper/DropWrapper";
 import Col from "../components/Col/Col";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {NavLink, useParams} from "react-router-dom";
 import IsAuth from "../hooks/IsAuth";
 import CreateTaskModal from "../components/CreateTaskModal/CreateTaskModal";
 import styles from "./styles/Tasks.module.css";
+import {filteredTask} from "../store/Reducers/taskReducer";
 
 
 export default function Tasks() {
@@ -17,6 +18,10 @@ export default function Tasks() {
   const currentUser = useSelector(state => state.auth.currentUser);
   const projectsStore = useSelector(state => state.projects);
   const [show, setShow] = useState(false);
+  const [search, setSearch] = useState("");
+  const [searchItems, setSearchItems] = useState([]);
+  const dispatch = useDispatch();
+
 
   useEffect(() => {
     setItems(taskData);
@@ -54,8 +59,16 @@ export default function Tasks() {
   const showTask = (items, s) => {
     return items
       .filter(i => i.status === s.status && i.projectId === project_id)
+      .filter(i => String(i.numberTask).toLowerCase().includes(search.toLowerCase()) || String(i.title.toLowerCase()).includes(search.toLowerCase()))
       .map((i, idx) => <Item key={i.id} item={i} index={idx} moveItem={moveItem} status={s}/>);
   }
+
+  // const liveSearch = (items, value) => {
+  //   const filteredItems = items.filter(item => String(item.numberTask).includes(value) || String(item.title).includes(value));
+  //
+  //   setSearchItems(filteredItems);
+  //   dispatch(filteredTask(filteredItems));
+  // }
 
 
   return (
@@ -80,6 +93,21 @@ export default function Tasks() {
         ) : ("")}
       </div>
 
+      <div className={styles.container_search}>
+        <div className={styles.search_input}>
+          <input
+            type={"search"}
+            placeholder={"Введите номер или название задачи..."}
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+
+              // liveSearch(items, e.target.value);
+            }}
+          />
+        </div>
+      </div>
+
       <div className={styles.container_card}>
         {statuses.map((s, index) => {
           return (
@@ -87,7 +115,7 @@ export default function Tasks() {
               <h2 className={`${styles.title}`}>{s.status.toUpperCase()}</h2>
               <DropWrapper onDrop={onDrop} status={s.status}>
                 <Col>
-                  {showTask(items, s)}
+                  {showTask(searchItems.length !== 0 ? searchItems : items, s)}
                 </Col>
               </DropWrapper>
             </div>

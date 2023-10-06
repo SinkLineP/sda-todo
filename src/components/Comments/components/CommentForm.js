@@ -47,6 +47,12 @@ const CommentForm = ({ task_id }) => {
     }
   };
 
+  const handleSearch = (event) => {
+    if (event.target.value === '') {
+      alert('Крестик был нажат и поле поиска очищено.');
+    }
+  };
+
 
   return (
     <form className={"container-comment-form"} onSubmit={formik.handleSubmit}>
@@ -57,7 +63,7 @@ const CommentForm = ({ task_id }) => {
       <div className={"comment-form"}>
         <input
           className={"input-create-comment"}
-          type={"text"}
+          type={"search"}
           placeholder={"Введите комментарий..."}
           name="value"
           value={formik.values.value}
