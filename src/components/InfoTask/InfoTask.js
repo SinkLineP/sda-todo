@@ -7,15 +7,15 @@ import "./InfoTask.css";
 import iconFile from "./icons/file.png";
 import iconDownload from "./icons/download.png";
 import ScrollableWrap from "../ScrollableWrap/ScrollableWrap";
-import {removeTask} from "../../store/Reducers/taskReducer";
+import {removeTask, startTask} from "../../store/Reducers/taskReducer";
 import IsAuth from "../../hooks/IsAuth";
 import {ReactComponent as IconDeleteCrossSVG} from "./icons/delete-cross.svg";
 import Comments from "../Comments/Comments";
-import ShowSubtasks from "../CreateAndShowSubtask/components/ShowSubtask/ShowSubtasks";
-import {addSubtask, removeSubtask} from "../../store/Reducers/subtaskReducer";
+import {removeSubtask} from "../../store/Reducers/subtaskReducer";
 import {removeComment} from "../../store/Reducers/commentReducer";
 import CreateAndShowSubtask from "../CreateAndShowSubtask/CreateAndShowSubtask";
 import HoverButton from "../CreateTaskModal/components/HoverButton";
+import moment from "moment/moment";
 
 
 Modal.setAppElement("#root");
@@ -65,12 +65,36 @@ export default function InfoTask({ show, onClose, item }) {
     }
   };
 
-  const [isHovered, setIsHovered] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
-
-
   const getSubtask = (data) => {
     return subtasksStore.filter(item => data.includes(item.id));
+  }
+
+  const ShowButtonWithStatus = (status, task_id) => {
+    if (status === "queue") {
+      return (
+        <HoverButton
+          onClick={() => {
+            dispatch(startTask("development", new Date(), task_id, "🔆️"));
+          }}
+          IconButton={IconDeleteCrossSVG}
+          titleButton={"Начать"}
+          backgroundBeforeClick={"#27aa80"}
+          backgroundAfterClick={"#70a138"}
+        />
+      )
+    } else if (status === "development") {
+      return (
+        <HoverButton
+          onClick={() => {}}
+          IconButton={IconDeleteCrossSVG}
+          titleButton={"Завершить"}
+          backgroundBeforeClick={"#f35555"}
+          backgroundAfterClick={"#70a138"}
+        />
+      )
+    } else if (status === "done") {
+      console.log("done!")
+    }
   }
 
   return (
@@ -116,24 +140,9 @@ export default function InfoTask({ show, onClose, item }) {
                   backgroundBeforeClick={"#2681c4"}
                   backgroundAfterClick={"#70a138"}
                 />
-
-                <HoverButton
-                  onClick={() => {}}
-                  IconButton={IconDeleteCrossSVG}
-                  titleButton={"Начать"}
-                  backgroundBeforeClick={"#27aa80"}
-                  backgroundAfterClick={"#70a138"}
-                />
-
-                <HoverButton
-                  onClick={() => {}}
-                  IconButton={IconDeleteCrossSVG}
-                  titleButton={"Завершить"}
-                  backgroundBeforeClick={"#f35555"}
-                  backgroundAfterClick={"#70a138"}
-                />
               </>
             ) : ("")}
+            {IsAuth() && ShowButtonWithStatus(item.status, item.id)}
           </div>
         </div>
         <div>
@@ -204,21 +213,25 @@ export default function InfoTask({ show, onClose, item }) {
         <div style={{
           display: "flex",
           flexDirection: "row",
-          marginTop: "2rem"
+          marginTop: "2rem",
+          gap: "40px"
         }}>
           <p>Дата создания задачи: {item.dateOfCreation}</p>
 
-          {item.endDate !== null ? (
-            <p style={{
-            marginLeft: "30px"
-          }}>Дата окончания задачи: {item.endDate}</p>
-          ) : ("")}
+          {item.startDate !== null && (
+            <p>Дата начала задачи: {moment(item.startDate).fromNow()}</p>
+          )}
+          {/*{item.endDate !== null ? (*/}
+          {/*  <p style={{*/}
+          {/*  marginLeft: "30px"*/}
+          {/*}}>Дата окончания задачи: {item.endDate}</p>*/}
+          {/*) : ("")}*/}
 
-          {item.timeInWork !== null ? (
-            <p style={{
-              marginLeft: "30px"
-            }}>Время в работе: {item.timeInWork}</p>
-          ) : ("")}
+          {/*{item.timeInWork !== null ? (*/}
+          {/*  <p style={{*/}
+          {/*    marginLeft: "30px"*/}
+          {/*  }}>Время в работе: {item.timeInWork}</p>*/}
+          {/*) : ("")}*/}
         </div>
       </div>
     </Modal>

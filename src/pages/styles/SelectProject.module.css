@@ -14,12 +14,11 @@
 
 .tbody {
     background-color: #f5eaea;
+    max-height: 400px; /* Установите желаемую максимальную высоту для tbody */
+    overflow-y: auto;
 }
 
-.th {
-    border: 1px solid black;
-    padding: 10px;
-}
+
 
 .td {
     border: 1px solid black;
@@ -30,6 +29,11 @@
 .tbody > .tr:hover {
     background-color: var(--background-color-hover);
     cursor: pointer;
+}
+
+.th {
+    border: 1px solid black;
+    padding: 10px;
 }
 
 .btn_create_project {

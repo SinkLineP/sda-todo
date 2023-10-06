@@ -53,7 +53,8 @@ export default function ProjectModal({ onClose, show }) {
               id: uuid(),
               title: values.projectName,
               status: "queue",
-              user_id: currentUser.id
+              user_id: currentUser.id,
+              created_at: new Date(),
             }));
 
             resetForm();

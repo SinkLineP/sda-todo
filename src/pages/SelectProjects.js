@@ -18,49 +18,75 @@ export default function SelectProjects() {
       <div className={styles.container}>
         {IsAuth() && (
           <div className={styles.container_create_project}>
-            <button className={styles.btn_create_project} onClick={() => setShow(true)}>Добавить проект</button>
+            <button
+              className={styles.btn_create_project}
+              onClick={() => setShow(true)}
+            >
+              Добавить проект
+            </button>
           </div>
         )}
         <table className={styles.table}>
           <thead className={styles.thead}>
           <tr className={styles.tr}>
-            <th className={`${styles.number_project} ${styles.th} no-select-text`}>Номер проекта</th>
-            <th className={`${styles.title_project} ${styles.th} no-select-text`}>Название проекта</th>
-            <th className={`${styles.author_project} ${styles.th} no-select-text`}>Владец проекта</th>
+            <th
+              className={`${styles.number_project} ${styles.th} no-select-text`}
+            >
+              Номер проекта
+            </th>
+            <th
+              className={`${styles.title_project} ${styles.th} no-select-text`}
+            >
+              Название проекта
+            </th>
+            <th
+              className={`${styles.author_project} ${styles.th} no-select-text`}
+            >
+              Владелец проекта
+            </th>
           </tr>
           </thead>
           <tbody className={styles.tbody}>
-          {projectsStore.length !== 0 ? projectsStore.map((item, index) => {
-            index += 1;
+            {projectsStore.length !== 0 ? (
+              projectsStore
+                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                .map((item, index) => {
+                  index += 1;
 
-            return (
-              <tr className={styles.tr} key={item.id} onClick={() => {
-                navigate(`${item.id}`);
-              }}>
-                <td className={styles.td}>{index}</td>
-                <td className={styles.td}>
-                  <p>{item.title}</p>
+                  return (
+                    <tr
+                      className={styles.tr}
+                      key={item.id}
+                      onClick={() => {
+                        navigate(`${item.id}`);
+                      }}
+                    >
+                      <td className={styles.td}>{index}</td>
+                      <td className={styles.td}>
+                        {item.title}
+                      </td>
+                      <td className={styles.td}>
+                        {getAuthorProject(item.user_id, usersStore)}
+                      </td>
+                    </tr>
+                  );
+                })
+            ) : (
+              <tr className={styles.tr} id={styles.project_not_found}>
+                <td className={styles.td} colSpan={3}>
+                  <p className={styles.project_not_found_title}>
+                    Проектов не найдено
+                  </p>
                 </td>
-                <td className={styles.td}>{getAuthorProject(item.user_id, usersStore)}</td>
               </tr>
-            )
-          }) : (
-            <tr className={styles.tr} id={styles.project_not_found}>
-              <td className={styles.td} colSpan={3}>
-                <p className={styles.project_not_found_title}>Проектов не найдено</p>
-              </td>
-            </tr>
-          )}
+            )}
           </tbody>
         </table>
       </div>
 
       <div>
-        <ProjectModal
-          onClose={() => setShow(false)}
-          show={show}
-        />
+        <ProjectModal onClose={() => setShow(false)} show={show} />
       </div>
     </>
-  )
+  );
 }

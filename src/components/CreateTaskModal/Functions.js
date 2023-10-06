@@ -1,7 +1,11 @@
 import {CountSliceFilesTask} from "./Variables";
 
 
-export const getCurrentDate = () => {
+export const getCurrentDate = (withTime) => {
+  if (withTime !== undefined) {
+
+  }
+
   const currentDate = new Date();
 
   const day = currentDate.getDate();

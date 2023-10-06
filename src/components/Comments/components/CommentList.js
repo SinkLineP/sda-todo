@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import IsAuth from "../../../hooks/IsAuth";
 import moment from 'moment';
@@ -7,7 +7,6 @@ import ButtonCustom from "./ButtonCustom";
 import {getUser} from "../../../Functions";
 import {
   AddReply,
-  CheckActiveComments,
   CheckActiveReplyComments,
   CheckStatusReplyComments,
   setActiveReplyComments

@@ -78,6 +78,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                 status: status,
                 icon: iconWithStatus(status),
                 author: currentUser.id,
+                startDate: null
               }));
 
 

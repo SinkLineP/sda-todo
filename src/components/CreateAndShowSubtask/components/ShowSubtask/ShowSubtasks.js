@@ -49,6 +49,10 @@ const ShowSubtasks = ({ task_id, setData, data, location }) => {
               </div>
             </div>
 
+            <div>
+              <div>Статус: {item.statusSubtask}</div>
+              <div>Приоритет: {item.prioritySubtask}</div>
+            </div>
 
             {isAuth && currentUser.id === item.author && (
               <div className={styles.container_buttons}>

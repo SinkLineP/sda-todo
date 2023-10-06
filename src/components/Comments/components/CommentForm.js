@@ -47,12 +47,6 @@ const CommentForm = ({ task_id }) => {
     }
   };
 
-  const handleSearch = (event) => {
-    if (event.target.value === '') {
-      alert('Крестик был нажат и поле поиска очищено.');
-    }
-  };
-
 
   return (
     <form className={"container-comment-form"} onSubmit={formik.handleSubmit}>
