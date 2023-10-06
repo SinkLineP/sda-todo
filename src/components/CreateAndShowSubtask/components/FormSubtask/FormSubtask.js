@@ -51,8 +51,9 @@ const FormSubtask = ({ author, setSubtasks, location, task_id, setShowForm }) =>
 
               dispatch(addSubtaskToTask(subtaskID, task_id))
 
-              setShowForm(false);
+
             }
+            setShowForm(false);
 
             resetForm()
           }}

@@ -5,26 +5,41 @@ import ButtonShowOrHideSubtask from "./components/ButtonShowOrHideSubtask/Button
 import FormSubtask from "./components/FormSubtask/FormSubtask";
 import ShowSubtasks from "./components/ShowSubtask/ShowSubtasks";
 import {useSelector} from "react-redux";
+import IsAuth from "../../hooks/IsAuth";
 
 
-const CreateAndShowSubtask = ({ subtasks, setSubtasks, location, showForm, setShowForm, task_id }) => {
+const CreateAndShowSubtask = ({ subtasks, setSubtasks, location, showForm, setShowForm, task_id, task_author }) => {
   const currentUser = useSelector(state => state.auth.currentUser);
+  const isAuth = IsAuth();
+
+  const IsShowCreateSubtask = ({showForm, setShowForm}) => {
+    if (!showForm) {
+      return <ButtonShowOrHideSubtask title={"Добавить подзадачи"} func={() => setShowForm(true)} />;
+    } else {
+      return <ButtonShowOrHideSubtask title={"Скрыть форму"} func={() => setShowForm(false)} />;
+    }
+  }
+
+  const CheckModify = ({ location, setShowForm, showForm, isAuth }) => {
+    if (isAuth) {
+      if (location === "info") {
+        if (task_author === currentUser.id) {
+            return <IsShowCreateSubtask setShowForm={setShowForm} showForm={showForm} />
+        }
+      } else if (location === "form") {
+        return <IsShowCreateSubtask setShowForm={setShowForm} showForm={showForm} />
+      }
+    }
+  }
+
 
   return (
     <div className={styles.container_field}>
-      <div className={styles.container_subtask_header}>
+      <div>
         <div>
           {location === "form" && (<p className={styles.title_subtask}>Подзадачи: <ErrorMessage className={"errors"} name="status" component="span" /></p>)}
         </div>
-        <div>
-          {
-            !showForm ? (
-              <ButtonShowOrHideSubtask title={"Добавить подзадачи"} func={() => setShowForm(true)} />
-            ) : (
-              <ButtonShowOrHideSubtask title={"Скрыть форму"} func={() => setShowForm(false)} />
-            )
-          }
-        </div>
+        <CheckModify setShowForm={setShowForm} location={location} isAuth={isAuth} showForm={showForm} />
       </div>
 
       {showForm === true && (

@@ -175,23 +175,16 @@ export default function InfoTask({ show, onClose, item }) {
             </>
           )}
 
-          {item.subtasks.length !== 0 ? (
-            <>
-              <h3>Подзадачи:</h3>
+          <h3>{getSubtask(item.subtasks).length === 0 && (<p>Подзадач не найденно!</p>)}</h3>
 
-              <CreateAndShowSubtask
-                subtasks={getSubtask(item.subtasks)}
-                location={"info"}
-                showForm={showFormSubtask}
-                setShowForm={(val) => setShowFormSubtask(val)}
-                task_id={item.id}
-              />
-            </>
-          ) : (
-            <>
-              <h3>Подзадач не найдено!</h3>
-            </>
-          )}
+          <CreateAndShowSubtask
+            subtasks={getSubtask(item.subtasks)}
+            location={"info"}
+            showForm={showFormSubtask}
+            setShowForm={(val) => setShowFormSubtask(val)}
+            task_id={item.id}
+            task_author={item.author}
+          />
         </div>
 
         <div style={{
