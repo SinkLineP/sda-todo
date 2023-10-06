@@ -154,21 +154,21 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                   </div>
 
                   {/* status */}
-                  <div className={styles.container_field}>
-                    <label className={styles.label} htmlFor="status">Выберите статус задачи: <ErrorMessage className={"errors"} name="status" component="span" /></label>
+                  {/*<div className={styles.container_field}>*/}
+                  {/*  <label className={styles.label} htmlFor="status">Выберите статус задачи: <ErrorMessage className={"errors"} name="status" component="span" /></label>*/}
 
-                    <Field
-                      className={styles.input}
-                      as="select"
-                      name="status"
-                      onChange={(e) => handleChange(e)}
-                      onBlur={(e) => handleBlur(e)}
-                    >
-                      <option value="queue">Queue</option>
-                      <option value="development">Development</option>
-                      <option value="done">Done</option>
-                    </Field>
-                  </div>
+                  {/*  <Field*/}
+                  {/*    className={styles.input}*/}
+                  {/*    as="select"*/}
+                  {/*    name="status"*/}
+                  {/*    onChange={(e) => handleChange(e)}*/}
+                  {/*    onBlur={(e) => handleBlur(e)}*/}
+                  {/*  >*/}
+                  {/*    <option value="queue">Queue</option>*/}
+                  {/*    <option value="development">Development</option>*/}
+                  {/*    <option value="done">Done</option>*/}
+                  {/*  </Field>*/}
+                  {/*</div>*/}
 
                   {/* subtask */}
                   <CreateAndShowSubtask

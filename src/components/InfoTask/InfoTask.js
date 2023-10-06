@@ -10,12 +10,12 @@ import ScrollableWrap from "../ScrollableWrap/ScrollableWrap";
 import {removeTask} from "../../store/Reducers/taskReducer";
 import IsAuth from "../../hooks/IsAuth";
 import {ReactComponent as IconDeleteCrossSVG} from "./icons/delete-cross.svg";
-import {ReactComponent as IconApplyDeleteSVG} from "./icons/apply-delete.svg";
 import Comments from "../Comments/Comments";
 import ShowSubtasks from "../CreateAndShowSubtask/components/ShowSubtask/ShowSubtasks";
 import {addSubtask, removeSubtask} from "../../store/Reducers/subtaskReducer";
 import {removeComment} from "../../store/Reducers/commentReducer";
 import CreateAndShowSubtask from "../CreateAndShowSubtask/CreateAndShowSubtask";
+import HoverButton from "../CreateTaskModal/components/HoverButton";
 
 
 Modal.setAppElement("#root");
@@ -88,21 +88,11 @@ export default function InfoTask({ show, onClose, item }) {
             <p>Автор: {getAuthorProject(item.author, usersStore)}</p>
           </div>
 
-          <div style={{
-            display: "flex",
-            flexDirection: "column"
-          }}>
+          <div className={"container-buttons-info"}>
             {IsAuth() && currentUser.id === item.author ? (
-              <button
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => {
-                  setIsHovered(false)
-                  setIsClicked(false)
-                }}
-                className={isClicked ? `btn-remove remove-task-clicked` : `btn-remove remove-task no-select-text ${isHovered ? "hovered" : ""}`}
-                onClick={() => {
-                  setIsClicked(true);
-                  setTimeout(() => {
+              <>
+                <HoverButton
+                  onClick={() => {
                     item.subtasks.map((id) => {
                       dispatch(removeSubtask(id));
                     })
@@ -112,25 +102,37 @@ export default function InfoTask({ show, onClose, item }) {
                     })
 
                     dispatch(removeTask(item.id));
-                    setIsClicked(false);
-                  }, 500);
-                }}
-              >
-                <div className={`container-title-remove-task ${isHovered ? "slide-out-left-title" : ""}`}>
-                  <span>Удалить</span>
-                </div>
-                {
-                  isClicked ? (
-                    <div className={`container-icon-remove-task ${isHovered ? "slide-out-left-icon" : ""}`}>
-                      <IconApplyDeleteSVG className={"icon-apply-remove-task"} />
-                    </div>
-                  ) : (
-                    <div className={`container-icon-remove-task ${isHovered ? "slide-out-left-icon" : ""}`}>
-                      <IconDeleteCrossSVG className={"icon-remove-task"} />
-                    </div>
-                  )
-                }
-              </button>
+                  }}
+                  IconButton={IconDeleteCrossSVG}
+                  titleButton={"Удалить"}
+                  backgroundBeforeClick={"#d00000"}
+                  backgroundAfterClick={"#70a138"}
+                />
+
+                <HoverButton
+                  onClick={() => {}}
+                  IconButton={IconDeleteCrossSVG}
+                  titleButton={"Редактировать"}
+                  backgroundBeforeClick={"#2681c4"}
+                  backgroundAfterClick={"#70a138"}
+                />
+
+                <HoverButton
+                  onClick={() => {}}
+                  IconButton={IconDeleteCrossSVG}
+                  titleButton={"Начать"}
+                  backgroundBeforeClick={"#27aa80"}
+                  backgroundAfterClick={"#70a138"}
+                />
+
+                <HoverButton
+                  onClick={() => {}}
+                  IconButton={IconDeleteCrossSVG}
+                  titleButton={"Завершить"}
+                  backgroundBeforeClick={"#f35555"}
+                  backgroundAfterClick={"#70a138"}
+                />
+              </>
             ) : ("")}
           </div>
         </div>

@@ -1,0 +1,85 @@
+.container {
+    background-color: #0a69a4;
+    width: 150%;
+}
+
+.btn {
+    width: 10rem;
+    height: 2.5rem;
+    border: none;
+    border-radius: 0.2rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-family: "Calibri", serif;
+    font-size: 100%;
+    text-align: left;
+    /*padding-left: 10%;*/
+    /*padding-right: 10%;*/
+    align-items: center;
+    cursor: pointer;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    /*background-color: #27aa80;*/
+    box-sizing: border-box;
+}
+
+.icon {
+    width: 1.3rem;
+    height: auto;
+    padding-top: 0.35rem;
+    /*background-color: #e38c0c;*/
+}
+
+.container_title_remove_task > p {
+    white-space: nowrap;
+    /*background-color: #d00000;*/
+}
+
+.container_icon_remove_task {
+    width: auto;
+    box-sizing: border-box;
+    /*background-color: #0a69a4;*/
+}
+
+
+/* slide-out-left-title */
+
+.slide_out_left_title {
+    animation-name: slide_out_left_title_anim;
+    animation-duration: 0.7s;
+    animation-fill-mode: forwards;
+    transform-origin: left; /* Добавьте это */
+}
+
+/* slide-out-left-icon */
+
+.slide_out_left_icon {
+    animation-name: slide_out_left_icon_anim;
+    animation-duration: 0.7s;
+    animation-fill-mode: forwards;
+    transform-origin: left; /* Добавьте это */
+}
+
+@keyframes slide_out_left_title_anim {
+    from {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        visibility: hidden;
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+    }
+}
+
+@keyframes slide_out_left_icon_anim {
+    from {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        -webkit-transform: translate3d(-300%, 0, 0);
+        transform: translate3d(-300%, 0, 0);
+    }
+}

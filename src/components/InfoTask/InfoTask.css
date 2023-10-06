@@ -1,13 +1,16 @@
 .container-info-task {
     overflow-y: hidden;
+    /*background-color: #c06969;*/
 }
 
 .container-title {
-    width: 100%
+    width: 100%;
+    height: 10rem;
+    /*background-color: #0a69a4;*/
 }
 
 .task-description {
-    margin-top: 6rem;
+    /*background-color: #27aa80;*/
 }
 
 .icon-file {
@@ -43,94 +46,47 @@
     font-style: italic;
 }
 
-.container-title-remove-task {
-    float: left;
-    border-right: 3px solid #a90000;
-    padding-right: 15%;
-    padding-top: 0.05rem;
+
+
+
+
+
+
+
+
+
+.container-buttons-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
-.container-icon-remove-task {
-    float: right;
-}
+/*.container-buttons-info > .other-buttons {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    gap: 3px;*/
+/*    margin-top: 3px;*/
+/*}*/
 
-.container-icon-apply-remove-task {
-    float: right;
-}
+/*.container-buttons-info > .other-buttons > button {*/
+/*    height: 2.5rem;*/
+/*    color: white;*/
+/*    font-weight: bold;*/
+/*    font-size: 1rem;*/
+/*    border: none;*/
+/*    border-radius: 0.3rem;*/
+/*    cursor: pointer;*/
+/*}*/
 
-.btn-remove {
-    width: 9rem;
-    height: 2.5rem;
-    border: none;
-    border-radius: 0.2rem;
-    text-transform: uppercase;
-    font-weight: bold;
-    font-family: "Calibri", serif;
-    font-size: 100%;
-    text-align: left;
-    padding-left: 10%;
-    padding-right: 10%;
-    align-items: center;
-    cursor: pointer;
-    overflow: hidden;
-}
+/*.container-buttons-info > .other-buttons > .btn-edit {*/
+/*    background-color: ;*/
+/*}*/
 
-.remove-task {
-    color: white;
-    background-color: #d00000;
-}
+/*.container-buttons-info > .other-buttons > .btn-start {*/
+/*    background-color: ;*/
+/*}*/
 
-.remove-task-clicked {
-    color: white;
-    background-color: #70a138;
-}
+/*.container-buttons-info > .other-buttons > .btn-stop {*/
+/*    background-color: ;*/
+/*}*/
 
-.icon-remove-task {
-    width: 1.1rem;
-    height: auto;
-    padding-top: 0.1rem;
-}
-
-.icon-apply-remove-task {
-    width: 1.1rem;
-    height: auto;
-    padding-top: 0.1rem;
-    /*margin-right: 1rem;*/
-}
-
-
-
-
-/* slide-out-left-title */
-
-.slide-out-left-title {
-    animation-name: slide-out-left-title-anim;
-    animation-duration: 0.7s;
-    animation-fill-mode: forwards;
-}
-
-/* slide-out-left-icon */
-
-.slide-out-left-icon {
-    animation-name: slide-out-left-icon-anim;
-    animation-duration: 0.7s;
-    animation-fill-mode: forwards;
-}
-
-@keyframes slide-out-left-title-anim {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(-120%);
-    }
-}
-
-@keyframes slide-out-left-icon-anim {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(-250%);
-    }
-}
