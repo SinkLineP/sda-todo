@@ -110,5 +110,9 @@ export function calculateTimeInWork(startDate, endDate) {
     timeParts.push(`${seconds} seconds`);
   }
 
-  return timeParts.join(" ");
+  if (timeParts.length !== 0) {
+    return timeParts.join(" ");
+  } else {
+    return "Слишком быстро)";
+  }
 }

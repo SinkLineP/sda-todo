@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Modal from "react-modal";
 import {
   calculateTimeInWork,
@@ -32,6 +32,9 @@ export default function InfoTask({ show, onClose, item }) {
   const currentUser = useSelector(state => state.auth.currentUser);
   const subtasksStore = useSelector(state => state.subtasks);
   const [showFormSubtask, setShowFormSubtask] = useState(false);
+
+
+
 
   const handleDownloadClick = (file) => {
     if (file) {
@@ -100,8 +103,6 @@ export default function InfoTask({ show, onClose, item }) {
           backgroundAfterClick={"#70a138"}
         />
       )
-    } else if (status === "done") {
-      // console.log("done!")
     }
   }
 
@@ -141,13 +142,15 @@ export default function InfoTask({ show, onClose, item }) {
                   backgroundAfterClick={"#70a138"}
                 />
 
-                <HoverButton
-                  onClick={() => {}}
-                  IconButton={IconDeleteCrossSVG}
-                  titleButton={"Редактировать"}
-                  backgroundBeforeClick={"#2681c4"}
-                  backgroundAfterClick={"#70a138"}
-                />
+                {item.status !== "done" && (
+                  <HoverButton
+                    onClick={() => {}}
+                    IconButton={IconDeleteCrossSVG}
+                    titleButton={"Редактировать"}
+                    backgroundBeforeClick={"#2681c4"}
+                    backgroundAfterClick={"#70a138"}
+                  />
+                )}
               </>
             ) : ("")}
             {IsAuth() && ShowButtonWithStatus(item.status, item.id)}
@@ -196,14 +199,16 @@ export default function InfoTask({ show, onClose, item }) {
 
           <h3>{getSubtask(item.subtasks).length === 0 && (<p>Подзадач не найденно!</p>)}</h3>
 
-          <CreateAndShowSubtask
-            subtasks={getSubtask(item.subtasks)}
-            location={"info"}
-            showForm={showFormSubtask}
-            setShowForm={(val) => setShowFormSubtask(val)}
-            task_id={item.id}
-            task_author={item.author}
-          />
+          {item.status !== "done" && (
+            <CreateAndShowSubtask
+              subtasks={getSubtask(item.subtasks)}
+              location={"info"}
+              showForm={showFormSubtask}
+              setShowForm={(val) => setShowFormSubtask(val)}
+              task_id={item.id}
+              task_author={item.author}
+            />
+          )}
         </div>
 
         <div style={{
@@ -236,19 +241,6 @@ export default function InfoTask({ show, onClose, item }) {
           {item.startDate !== null && item.endDate !== null && item.status === "done" && (
             <p><b>Время в работе: </b><i>{calculateTimeInWork(item.startDate, item.endDate)}</i></p>
           )}
-
-
-          {/*{item.endDate !== null ? (*/}
-          {/*  <p style={{*/}
-          {/*  marginLeft: "30px"*/}
-          {/*}}>Дата окончания задачи: {item.endDate}</p>*/}
-          {/*) : ("")}*/}
-
-          {/*{item.timeInWork !== null ? (*/}
-          {/*  <p style={{*/}
-          {/*    marginLeft: "30px"*/}
-          {/*  }}>Время в работе: {item.timeInWork}</p>*/}
-          {/*) : ("")}*/}
         </div>
       </div>
     </Modal>

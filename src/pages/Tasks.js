@@ -7,6 +7,7 @@ import {NavLink, useParams} from "react-router-dom";
 import IsAuth from "../hooks/IsAuth";
 import CreateTaskModal from "../components/CreateTaskModal/CreateTaskModal";
 import styles from "./styles/Tasks.module.css";
+import {endTask, startTask} from "../store/Reducers/taskReducer";
 
 
 export default function Tasks() {

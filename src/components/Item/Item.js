@@ -1,22 +1,24 @@
 import React, {Fragment, useState, useRef, useEffect} from "react";
 import { useDrag, useDrop } from "react-dnd";
-import InfoTask from "../InfoTask/InfoTask"
+import InfoTask from "../InfoTask/InfoTask";
 import ITEM_TYPE from "../../data/types";
-import {editTask} from "../../store/Reducers/taskReducer";
-import {useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
+import {startTask, endTask, editTask} from "../../store/Reducers/taskReducer";
 
 const Item = ({ item, index, moveItem, status }) => {
   const ref = useRef(null);
   const dispatch = useDispatch();
 
+  // Определение, разрешено ли перетаскивание
+  const isDraggable = item.status !== "done";
 
   const [, drop] = useDrop({
     accept: ITEM_TYPE,
-    hover(item, monitor) {
+    hover(draggedItem, monitor) {
       if (!ref.current) {
-        return
+        return;
       }
-      const dragIndex = item.index;
+      const dragIndex = draggedItem.index;
       const hoverIndex = index;
 
       if (dragIndex === hoverIndex) {
@@ -37,22 +39,41 @@ const Item = ({ item, index, moveItem, status }) => {
       }
 
       moveItem(dragIndex, hoverIndex);
-      item.index = hoverIndex;
+
+      // Обновите объект draggedItem с правильным индексом и передайте его в editTask
+      const updatedItem = { ...draggedItem, index: hoverIndex };
+      dispatch(editTask(updatedItem.id, updatedItem));
     },
   });
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: ITEM_TYPE,
     item: { ...item, index },
-    collect: monitor => ({
-      isDragging: monitor.isDragging()
-    })
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+    canDrag: isDraggable, // Условие разрешения перетаскивания
   }));
-
 
   const [show, setShow] = useState(false);
   const onOpen = () => setShow(true);
   const onClose = () => setShow(false);
+
+  // Обработка начала задачи
+  const handleStartTask = (e) => {
+    e.stopPropagation();
+    if (item.status === "queue") {
+      dispatch(startTask("development", new Date(), item.id, "🔆️"));
+    }
+  };
+
+  // Обработка завершения задачи
+  const handleEndTask = (e) => {
+    e.stopPropagation();
+    if (item.status === "development") {
+      dispatch(endTask("done", new Date(), item.id, "✅️"));
+    }
+  };
 
   drag(drop(ref));
 
@@ -64,24 +85,33 @@ const Item = ({ item, index, moveItem, status }) => {
 
   return (
     <Fragment>
-      {/*card task*/}
+      {/* Карточка задачи */}
       <div
         ref={ref}
         style={{ opacity: isDragging ? 0 : 1 }}
         className={"item"}
         onClick={onOpen}
       >
-        <div className={"color-bar"} style={{ backgroundColor: status.color }}/>
-        <p className={"item-title"}>{item.title} #{item.numberTask}</p>
+        <div className={"color-bar"} style={{ backgroundColor: status.color }} />
+        <p className={"item-title"}>
+          {item.title} #{item.numberTask}
+        </p>
         <p className={"item-status"}>{item.icon}</p>
+        {/* Кнопка начала задачи */}
+        {item.status === "queue" && (
+          <button onClick={(e) => handleStartTask(e)}>Начать задачу</button>
+        )}
+
+        {/* Кнопка завершения задачи */}
+        {item.status === "development" && (
+          <button onClick={(e) => handleEndTask(e)}>Завершить задачу</button>
+        )}
       </div>
 
-      {/*modal window*/}
-      <InfoTask
-        item={item}
-        onClose={onClose}
-        show={show}
-      />
+      {/* Модальное окно с информацией о задаче */}
+      <InfoTask item={item} onClose={onClose} show={show} />
+
+
     </Fragment>
   );
 };
