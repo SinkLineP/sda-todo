@@ -18,7 +18,6 @@ export default function Tasks() {
   const projectsStore = useSelector(state => state.projects);
   const [show, setShow] = useState(false);
   const [search, setSearch] = useState("");
-  const [searchItems, setSearchItems] = useState([]);
 
 
   useEffect(() => {
@@ -57,7 +56,12 @@ export default function Tasks() {
   const showTask = (items, s) => {
     return items
       .filter(i => i.status === s.status && i.projectId === project_id)
-      .filter(i => String(i.numberTask).toLowerCase().includes(search.toLowerCase()) || String(i.title.toLowerCase()).includes(search.toLowerCase()))
+      .filter(i =>
+        String(i.numberTask).toLowerCase().includes(search.toLowerCase()) ||
+        String(i.title.toLowerCase()).includes(search.toLowerCase()) ||
+        String(`${i.title}#${i.numberTask}`).toLowerCase().includes(search.split(" ").join("").toLowerCase()) ||
+        String(`${i.title}${i.numberTask}`).toLowerCase().includes(search.split(" ").join("").toLowerCase())
+      )
       .map((i, idx) => <Item key={i.id} item={i} index={idx} moveItem={moveItem} status={s}/>);
   }
 
@@ -103,7 +107,7 @@ export default function Tasks() {
               <h2 className={`${styles.title}`}>{s.status.toUpperCase()}</h2>
               <DropWrapper onDrop={onDrop} status={s.status}>
                 <Col>
-                  {showTask(searchItems.length !== 0 ? searchItems : items, s)}
+                  {showTask(items, s)}
                 </Col>
               </DropWrapper>
             </div>
