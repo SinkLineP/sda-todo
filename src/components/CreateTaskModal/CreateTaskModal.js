@@ -264,29 +264,41 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                   {/* file */}
                   <div
                     className={styles.container_drag_and_drop_upload_file}
-                    onDrop={e => handleFileChange(e, e.dataTransfer.files, setFieldValue)}
+                    onDrop={e => {
+                      if (selectedFiles.length === 0) {
+                        return handleFileChange(e, e.dataTransfer.files, setFieldValue);
+                      }
+                    }}
                     style={{ boxSizing: "border-box" }}
                   >
                     {errorFile !== "" ? <p className={"errors"}>{errorFile}</p> : <p className={"errors"}>&nbsp;</p>}
-                    <div className={styles.drop_area}>
-                      <p className={styles.title_drop_file}>Выберите или перетащите файл в это окно</p>
+                    <div className={styles.drop_area} style={
+                      selectedFiles.length !== 0 ? {
+                        borderStyle: "solid",
+                        borderColor: "#cccccc"
+                      } : {}
+                    }>
+                      {selectedFiles.length === 0 && <p className={styles.title_drop_file}>Выберите или перетащите файл в это окно</p>}
 
                       <div style={{
                         display: "flex",
                         flexDirection: "row",
-                        gap: "10px"
+                        gap: "10px",
+                        marginTop: "20px"
                       }}>
-                        <div>
-                          <label htmlFor="file" className={styles.button_select_file}>Выбрать файлы</label>
-                          <input
-                            type="file"
-                            id={"file"}
-                            name={"file"}
-                            multiple
-                            className={styles.hide_input_select_file}
-                            onChange={(e) => handleFileChange(e, e.target.files, setFieldValue)}
-                          />
-                        </div>
+                        {selectedFiles.length === 0 && (
+                          <div>
+                            <label htmlFor="file" className={styles.button_select_file}>Выбрать файлы</label>
+                            <input
+                              type="file"
+                              id={"file"}
+                              name={"file"}
+                              multiple
+                              className={styles.hide_input_select_file}
+                              onChange={(e) => handleFileChange(e, e.target.files, setFieldValue)}
+                            />
+                          </div>
+                        )}
 
                         {selectedFiles.length !== 0 && (
                           <div className={styles.button_clear_files} onClick={() => setSelectedFiles([])}>
