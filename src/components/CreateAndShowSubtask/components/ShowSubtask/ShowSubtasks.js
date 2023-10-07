@@ -4,6 +4,7 @@ import IsAuth from "../../../../hooks/IsAuth";
 import {useDispatch, useSelector} from "react-redux";
 import {removeSubtask} from "../../../../store/Reducers/subtaskReducer";
 import {removeSubtaskFromTask} from "../../../../store/Reducers/taskReducer";
+import {StatusesColors} from "../../../../Functions";
 
 const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
   const isAuth = IsAuth();
@@ -33,29 +34,35 @@ const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
     if (type === "status") {
       if (value === "queue") {
         return {
-          value: 0
+          value: 0,
+          color: StatusesColors.Queue,
         };
       } else if (value === "development") {
         return {
-          value: 1
+          value: 1,
+          color: StatusesColors.Development,
         };
       } else if (value === "done") {
         return {
-          value: 2
+          value: 2,
+          color: StatusesColors.Done,
         };
       }
     } else if (type === "priority") {
       if (value === "low") {
         return {
-          value: 0
+          value: 0,
+          color: StatusesColors.Queue,
         };
       } else if (value === "medium") {
         return {
-          value: 1
+          value: 1,
+          color: StatusesColors.Development,
         };
       } else if (value === "height") {
         return {
-          value: 2
+          value: 2,
+          color: StatusesColors.Height,
         };
       }
     }
@@ -86,22 +93,31 @@ const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
           flexDirection: "column",
           justifyContent: "space-around"
         }}>
-          <div>
-            <div>Статус: {item.statusSubtask.toUpperCase()}</div>
-            <input type={"range"} min="0" max="2" step="1"
-                   value={rangeStatus}
-                   onChange={(e) => setRangeStatus(parseInt(e.target.value))}
-                   style={{cursor: "pointer"}}
-            />
-          </div>
+
+              <div>
+                <div>Статус: <span style={{
+                  fontWeight: "bold",
+                  color: setRangeValue(item.statusSubtask, "status").color
+                }}>{item.statusSubtask.toUpperCase()}</span></div>
+                {location === "info" && (<input type={"range"} min="0" max="2" step="1"
+                       value={rangeStatus}
+                       onChange={(e) => setRangeStatus(parseInt(e.target.value))}
+                       style={{cursor: "pointer"}}
+                />)}
+              </div>
+
+
 
           <div>
-            <div>Приоритет: {item.prioritySubtask.toUpperCase()}</div>
-            <input type={"range"} min="0" max="2" step="1"
+            <div>Приоритет: <span style={{
+              fontWeight: "bold",
+              color: setRangeValue(item.prioritySubtask, "priority").color
+            }}>{item.prioritySubtask.toUpperCase()}</span></div>
+            {location === "info" && (<input type={"range"} min="0" max="2" step="1"
                    value={rangePriority}
                    onChange={(e) => setRangePriority(parseInt(e.target.value))}
                    style={{cursor: "pointer"}}
-            />
+            />)}
           </div>
         </div>
 
