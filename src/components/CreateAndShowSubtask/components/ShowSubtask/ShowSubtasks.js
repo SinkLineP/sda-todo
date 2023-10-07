@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import styles from "./ShowSubtasks.module.css";
 import IsAuth from "../../../../hooks/IsAuth";
 import {useDispatch, useSelector} from "react-redux";
@@ -81,6 +81,8 @@ const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
 
   const [rangeStatus, setRangeStatus] = useState(setRangeValue(item.statusSubtask, "status").value);
   const [rangePriority, setRangePriority] = useState(setRangeValue(item.prioritySubtask, "priority").value);
+  const inputStatusRef = useRef(null);
+  const inputPriorityRef = useRef(null);
 
   return (
     <div key={item.id} className={`${styles.list} shadow-box`}>
@@ -105,7 +107,7 @@ const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
           flexDirection: "column",
           justifyContent: "space-around",
           width: "100%",
-          paddingLeft: "5%"
+          paddingLeft: "30%",
         }}>
           <div>
             <div className={"no-select-text"} style={{
@@ -116,13 +118,14 @@ const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
             }}>{item.statusSubtask.toUpperCase()}</span></div>
             {location === "info" && (
               <input
+                ref={inputStatusRef}
                 className={`${styles.input} ${rangeStatus === "2" && styles.input_disabled} ${changeClassName(
                   rangeStatus,
                   styles.status_range_1,
                   styles.status_range_2,
                   styles.status_range_3
                 )}`}
-                disabled={rangeStatus === "2"}
+                disabled={setRangeValue(item.statusSubtask, "status").value === 2}
                 type={"range"}
                 min="0"
                 max="2"
@@ -147,13 +150,26 @@ const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
               fontWeight: "bold",
               color: setRangeValue(item.prioritySubtask, "priority").color
             }}>{item.prioritySubtask.toUpperCase()}</span></div>
-            {location === "info" && (<input className={changeClassName(rangePriority, styles.priority_range_1, styles.priority_range_2, styles.priority_range_3)} type={"range"} min="0" max="2" step="1"
-                   value={rangePriority}
-                   onChange={(e) => {
-                     dispatch(editPriority(item.id, parseInt(e.target.value)));
-                     setRangePriority(parseInt(e.target.value))
-                   }}
-                   style={{cursor: "pointer"}}
+            {location === "info" && (
+              <input
+                ref={inputPriorityRef}
+                className={`${inputStatusRef.current !== null && inputStatusRef.current.disabled && styles.input_disabled} ${changeClassName(
+                  rangePriority,
+                  styles.priority_range_1,
+                  styles.priority_range_2,
+                  styles.priority_range_3
+                )}`}
+                type={"range"}
+                min="0"
+                max="2"
+                step="1"
+                disabled={setRangeValue(item.statusSubtask, "status").value === 2}
+                value={rangePriority}
+                onChange={(e) => {
+                  dispatch(editPriority(item.id, parseInt(e.target.value)));
+                  setRangePriority(parseInt(e.target.value))
+                }}
+                style={{cursor: "pointer"}}
             />)}
           </div>
         </div>
