@@ -108,26 +108,40 @@ const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
           paddingLeft: "5%"
         }}>
           <div>
-            <div style={{
+            <div className={"no-select-text"} style={{
               fontWeight: "bold"
             }}>Статус: <span style={{
               fontWeight: "bold",
               color: setRangeValue(item.statusSubtask, "status").color
             }}>{item.statusSubtask.toUpperCase()}</span></div>
-            {location === "info" && (<input className={changeClassName(rangeStatus, styles.status_range_1, styles.status_range_2, styles.status_range_3)} type={"range"} min="0" max="2" step="1"
-             value={rangeStatus}
-             onChange={(e) => {
-               dispatch(editStatus(item.id, parseInt(e.target.value)));
-               setRangeStatus(e.target.value)
-             }}
-             style={{cursor: "pointer"}}
+            {location === "info" && (
+              <input
+                className={`${styles.input} ${rangeStatus === "2" && styles.input_disabled} ${changeClassName(
+                  rangeStatus,
+                  styles.status_range_1,
+                  styles.status_range_2,
+                  styles.status_range_3
+                )}`}
+                disabled={rangeStatus === "2"}
+                type={"range"}
+                min="0"
+                max="2"
+                step="1"
+                value={rangeStatus}
+                onChange={(e) => {
+                  dispatch(editStatus(item.id, parseInt(e.target.value)));
+                  setRangeStatus(e.target.value)
+                }}
+                style={{
+
+                }}
             />)}
           </div>
 
 
 
           <div>
-            <div style={{
+            <div className={"no-select-text"} style={{
               fontWeight: "bold"
             }}>Приоритет: <span style={{
               fontWeight: "bold",
