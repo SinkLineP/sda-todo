@@ -133,7 +133,7 @@ const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
               fontWeight: "bold",
               color: setRangeValue(item.prioritySubtask, "priority").color
             }}>{item.prioritySubtask.toUpperCase()}</span></div>
-            {location === "info" && (<input type={"range"} min="0" max="2" step="1"
+            {location === "info" && (<input className={changeClassName(rangePriority, styles.priority_range_1, styles.priority_range_2, styles.priority_range_3)} type={"range"} min="0" max="2" step="1"
                    value={rangePriority}
                    onChange={(e) => {
                      dispatch(editPriority(item.id, parseInt(e.target.value)));
