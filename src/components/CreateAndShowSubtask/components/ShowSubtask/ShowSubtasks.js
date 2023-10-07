@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import styles from "./ShowSubtasks.module.css";
 import IsAuth from "../../../../hooks/IsAuth";
 import {useDispatch, useSelector} from "react-redux";
-import {removeSubtask} from "../../../../store/Reducers/subtaskReducer";
+import {editStatus, removeSubtask} from "../../../../store/Reducers/subtaskReducer";
 import {removeSubtaskFromTask} from "../../../../store/Reducers/taskReducer";
 import {StatusesColors} from "../../../../Functions";
 
@@ -72,8 +72,8 @@ const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
   const [rangePriority, setRangePriority] = useState(setRangeValue(item.prioritySubtask, "priority").value);
 
   return (
-    <div className={`${styles.list} shadow-box`}>
-      <div key={item.id} className={`${styles.container} shadow-box`}>
+    <div key={item.id} className={`${styles.list} shadow-box`}>
+      <div className={`${styles.container} shadow-box`}>
         <div style={{
         }}>
           <div>
@@ -96,7 +96,6 @@ const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
           width: "100%",
           paddingLeft: "5%"
         }}>
-
               <div>
                 <div style={{
                   fontWeight: "bold"
@@ -106,7 +105,10 @@ const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
                 }}>{item.statusSubtask.toUpperCase()}</span></div>
                 {location === "info" && (<input type={"range"} min="0" max="2" step="1"
                        value={rangeStatus}
-                       onChange={(e) => setRangeStatus(parseInt(e.target.value))}
+                       onChange={(e) => {
+                         dispatch(editStatus(item.id, parseInt(e.target.value)));
+                         setRangeStatus(e.target.value)
+                       }}
                        style={{cursor: "pointer"}}
                 />)}
               </div>
