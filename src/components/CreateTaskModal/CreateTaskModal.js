@@ -33,11 +33,10 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
   };
   const [selectedFiles, setSelectedFiles] = useState([]);
 
+
   const handleFileChange = async (e, setFieldValue) => {
     e.preventDefault();
-
     setErrorFile("");
-
     const ArrayTargetFiles = Array.from(e.target.files);
 
     ArrayTargetFiles.map((f) => {
@@ -61,7 +60,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
       }
     })
 
-    const filteredFilesSize = Array.from(e.target.files).filter(f => f.size > 0 && f.size <= maxSizeFileUpload);
+    const filteredFilesSize = ArrayTargetFiles.filter(f => f.size > 0 && f.size <= maxSizeFileUpload);
     const base64Array = [];
 
     filteredFilesSize.map(async (file) => {
@@ -77,8 +76,8 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
         })
     })
 
+    setSelectedFiles(selectedFiles.length !== 0 ? selectedFiles.concat(filteredFilesSize) : filteredFilesSize);
     setFieldValue("file", base64Array);
-    setSelectedFiles(filteredFilesSize);
   };
 
   const PreviewFiles = () => {
@@ -295,10 +294,18 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                         )}
                       </div>
 
+
+
                       {selectedFiles.length !== 0 ? (
-                        <div className={styles.list_uploaded_files} style={{ boxSizing: "border-box", width: "100%" }}>
-                          <PreviewFiles />
-                        </div>
+                        <>
+                          <div>
+                            <p>Колличество загруженных файлов: {selectedFiles.length}</p>
+                          </div>
+
+                          <div className={styles.list_uploaded_files} style={{ boxSizing: "border-box", width: "100%" }}>
+                            <PreviewFiles />
+                          </div>
+                        </>
                       ) : <p>(максимальный размер файла не больше <b>{formatFileSize(maxSizeFileUpload)}</b>)</p>}
 
                     </div>
