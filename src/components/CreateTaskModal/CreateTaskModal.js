@@ -37,18 +37,23 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
   const handleFileChange = async (e, setFieldValue) => {
     e.preventDefault();
 
+    setErrorFile("");
+
     Array.from(e.target.files).map((f) => {
-      if (f.size <= 0) {
+      if (Array.from(e.target.files).length > 1) {
+        setErrorFile(`Файл с именем: ${f.name}, и еще (${Array.from(e.target.files).length - 1}) имеют не допустимый размер! `);
+        setTimeout(() => setErrorFile(""), 5000);
+      } else if (f.size <= 0) {
         setErrorFile(`Файл с именем: ${f.name} имеет не допустимый размер`);
-        console.log(`Файл с именем: ${f.name} имеет не допустимый размер! поэтому не был добавлен!`);
-        setTimeout(() => setErrorFile(""), 3000);
-        selectedFiles.filter()
+        setTimeout(() => setErrorFile(""), 5000);
       }
 
-      if (f.size > maxSizeFileUpload) {
-        setErrorFile(`Файл ${f.name} слишком велик! поэтому не был добавлен!`);
-        console.log(`Файл ${f.name} слишком велик!`);
-        setTimeout(() => setErrorFile(""), 3000);
+      if (Array.from(e.target.files).length > 1) {
+        setErrorFile(`Файл ${f.name}, и еще (${Array.from(e.target.files).length - 1}) слишком велеки!`);
+        setTimeout(() => setErrorFile(""), 5000);
+      } else if (f.size > maxSizeFileUpload) {
+        setErrorFile(`Файл ${f.name} слишком велик!`);
+        setTimeout(() => setErrorFile(""), 5000);
       }
     })
 
@@ -290,7 +295,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                         <div className={styles.list_uploaded_files} style={{ boxSizing: "border-box", width: "100%" }}>
                           <PreviewFiles />
                         </div>
-                      ) : <p>(максимальный размер файла не больше <b>100MB</b>)</p>}
+                      ) : <p>(максимальный размер файла не больше <b>{formatFileSize(maxSizeFileUpload)}</b>)</p>}
 
                     </div>
                   </div>
