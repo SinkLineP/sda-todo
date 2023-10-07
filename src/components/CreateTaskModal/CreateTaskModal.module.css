@@ -57,10 +57,27 @@
     color: white;
     font-weight: bold;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
 }
 
 .button_select_file:hover {
     background-color: #22936f;
+    color: #e0e0e0;
+}
+
+.button_clear_files {
+    width: auto;
+    padding: 0 10px 0 10px;
+    border-radius: 0.8rem;
+    background-color: #f36464;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+.button_clear_files:hover {
+    background-color: #c95454;
     color: #e0e0e0;
 }
 

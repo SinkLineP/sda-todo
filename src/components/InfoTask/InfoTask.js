@@ -5,7 +5,7 @@ import {
   convertTypeObjectToFile,
   formatFileSize,
   getAuthorProject,
-  getCurrentDate
+  getCurrentDate, showShortNameFile
 } from "../../Functions";
 import {useDispatch, useSelector} from "react-redux";
 import ColorizeWrapText from "../ColorizeWrapText/ColorizeWrapText";
@@ -38,30 +38,31 @@ export default function InfoTask({ show, onClose, item }) {
 
 
 
-  const handleDownloadClick = (file) => {
-    if (file) {
-      const url = URL.createObjectURL(file);
+  // const handleDownloadClick = (file) => {
+  //   if (file) {
+  //     const url = URL.createObjectURL(file);
+  //     const a = document.createElement('a');
+  //     a.href = url;
+  //     a.download = file.name;
+  //     document.body.appendChild(a);
+  //     a.click();
+  //     document.body.removeChild(a);
+  //   } else {
+  //     alert('Выберите файл для скачивания.');
+  //   }
+  // };
+
+  const handleDownloadClick = (fileData) => {
+    if (fileData) {
+      // Создаем ссылку для скачивания файла
       const a = document.createElement('a');
-      a.href = url;
-      a.download = file.name;
-      document.body.appendChild(a);
+      a.href = fileData;
+      a.download = 'decoded_file'; // Задаем имя файла для скачивания
       a.click();
-      document.body.removeChild(a);
-    } else {
-      alert('Выберите файл для скачивания.');
     }
   };
 
-  const showShortNameFile = (fileName, maxShowSymbols) => {
-    const lastIndex = fileName.lastIndexOf(".");
 
-    if (lastIndex !== -1) {
-      const fileExtension = fileName.substring(lastIndex, fileName.length);
-      return `${fileName.substring(0, maxShowSymbols)}...${fileExtension}`;
-    }
-
-    return fileName.substring(0, maxShowSymbols);
-  }
 
   const customStyles = {
     content: {
@@ -107,6 +108,37 @@ export default function InfoTask({ show, onClose, item }) {
       )
     }
   }
+
+  const isValidBase64 = (str) => {
+    try {
+      return btoa(atob(str)) === str;
+    } catch (error) {
+      return false;
+    }
+  };
+
+  const decodeBase64ToFile = (base64String, fileName, fileType) => {
+    const base64 = new TextDecoder().decode(base64String);
+    const byteCharacters = atob(base64);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+      const slice = byteCharacters.slice(offset, offset + 512);
+
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+
+    const blob = new Blob(byteArrays, { type: fileType });
+
+    // Создаем объект File из Blob
+    return new File([blob], fileName, { type: fileType });
+  };
 
   return (
     <Modal
@@ -171,23 +203,23 @@ export default function InfoTask({ show, onClose, item }) {
             <>
               <h3>Вложеные файлы: ({item.files.length})</h3>
               <ScrollableWrap>
-                {convertTypeObjectToFile(item.files).map((file, index) => {
+                {item.files.map((file, index) => {
                   const filesArrayLength = item.files.length;
                   const currentIndex = index + 1;
 
                   return (
                     <div key={file.id || index} className={`container-file ${filesArrayLength !== currentIndex ? "space-between-elements" : ""}`}
                          onClick={() => {
-                           handleDownloadClick(file)
+                           handleDownloadClick(file.data)
                          }}>
                       <img className={"icon-file"} src={iconFile} alt={"icon file"}/>
                       <img className={"icon-file download-icon"} src={iconDownload} alt={"icon download file"}/>
                       {
-                        file.name !== undefined && (
-                          <p className={"no-select-text file-title"}>{file.name.length > 10 ? `${showShortNameFile(file.name, 8)}` : file.name}</p>
+                        file.fileName !== undefined && (
+                          <p className={"no-select-text file-title"}>{file.fileName.length > 10 ? `${showShortNameFile(file.fileName, 8)}` : file.fileName}</p>
                         )
                       }
-                      <p className={"no-select-text file-size"}>({formatFileSize(file.size)})</p>
+                      <p className={"no-select-text file-size"}>({formatFileSize(file.fileSize)})</p>
                     </div>
                   )
                 })}

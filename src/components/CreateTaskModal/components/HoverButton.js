@@ -25,7 +25,7 @@ const HoverButton = ({ IconButton, onClick, titleButton, backgroundBeforeClick, 
           setIsHovered(false)
           setIsClicked(false)
         }}
-        className={`${styles.btn} no-select-text ${isHovered ? "hovered" : ""}`}
+        className={`${styles.btn} no-select-text ${isHovered ? "hovered" : ""} shadow-box`}
         style={customStyles}
         onClick={() => {
           setIsClicked(true);

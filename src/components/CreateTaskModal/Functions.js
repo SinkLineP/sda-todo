@@ -30,13 +30,12 @@ export const SliceSelectedFiles = (files, setFieldValue, clear, setErrorFile) =>
   }
 }
 
-export const onDropHandler = (e, setFieldValue, setErrorFile, setUploadedFiles) => {
+export const onDropHandler = (e, setFieldValue, setErrorFile, setSelectedFiles) => {
   e.preventDefault();
   let files = [...e.dataTransfer.files]
-
-  setUploadedFiles(files);
-
-  SliceSelectedFiles(files, setFieldValue, e.dataTransfer.files, setErrorFile);
+  setSelectedFiles(files);
+  // setFieldValue("file", files);
+  // SliceSelectedFiles(files, setFieldValue, e.dataTransfer.files, setErrorFile);
 };
 
 export const uploadedFilesShow = (files, uploadedFiles) => {

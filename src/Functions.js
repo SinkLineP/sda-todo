@@ -122,3 +122,14 @@ export const checkProjectsAuthor = (projects_store, project_id, current_user) =>
     return project.id === project_id && project.user_id === current_user.id
   });
 }
+
+export const showShortNameFile = (fileName, maxShowSymbols) => {
+  const lastIndex = fileName.lastIndexOf(".");
+
+  if (lastIndex !== -1) {
+    const fileExtension = fileName.substring(lastIndex, fileName.length);
+    return `${fileName.substring(0, maxShowSymbols)}...${fileExtension}`;
+  }
+
+  return fileName.substring(0, maxShowSymbols);
+}

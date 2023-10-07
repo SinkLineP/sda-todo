@@ -1,21 +1,17 @@
 import React, {useState} from "react";
 import Modal from "react-modal";
-import {Field, Formik, ErrorMessage} from "formik";
+import {ErrorMessage, Field, Formik} from "formik";
 import {useDispatch, useSelector} from "react-redux";
 import {addTask} from "../../store/Reducers/taskReducer";
 import ButtonSubmit from "./components/ButtonSubmit";
 import {v4 as uuid} from "uuid";
-import FormSubtask from "../CreateAndShowSubtask/components/FormSubtask/FormSubtask";
-import ShowSubtasks from "../CreateAndShowSubtask/components/ShowSubtask/ShowSubtasks";
-import {iconWithStatus, onDropHandler, SliceSelectedFiles, uploadedFilesShow} from "./Functions";
+import {iconWithStatus,} from "./Functions";
 import styles from "./CreateTaskModal.module.css";
 import {initialValues} from "./InitialValues";
 import {validationSchema} from "./Schema";
-import ButtonShowOrHideSubtask from "../CreateAndShowSubtask/components/ButtonShowOrHideSubtask/ButtonShowOrHideSubtask";
 import {addSubtask} from "../../store/Reducers/subtaskReducer";
 import CreateAndShowSubtask from "../CreateAndShowSubtask/CreateAndShowSubtask";
-import {getCurrentDate} from "../../Functions";
-
+import {formatFileSize, showShortNameFile} from "../../Functions";
 
 export default function CreateTaskModal({ show, onClose, project_id }) {
   const currentUser = useSelector(state => state.auth.currentUser);
@@ -36,17 +32,92 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
       overflowY: "auto",
     }
   };
+  const [selectedFiles, setSelectedFiles] = useState([]);
 
+  const handleFileChange = async (e, setFieldValue) => {
+    e.preventDefault();
+
+    const filteredFilesSize = Array.from(e.target.files).filter(f => f.size > 0);
+    const base64Array = [];
+
+    filteredFilesSize.map(async (file) => {
+        const base64 = await convertBase64(file);
+        const fileID = uuid();
+
+        base64Array.push({
+          id: fileID,
+          fileName: file.name,
+          fileType: file.type,
+          fileSize: file.size,
+          data: base64,
+        })
+    })
+
+    setFieldValue("file", base64Array);
+    setSelectedFiles(filteredFilesSize);
+  };
+
+  const PreviewFiles = () => {
+    const SelectedFilesChild = () => {
+      return selectedFiles.map((f, index) => {
+          return (
+            <div className={"shadow-box"} style={{
+              borderWidth: "1px",
+              borderColor: "lightgray",
+              borderStyle: "solid",
+              borderRadius: "1rem",
+              padding: "0 1rem",
+              width: "auto"
+            }} key={index}>
+              <p style={{color: "red", fontWeight: "bold", fontSize: "1.5rem", textAlign: "right", cursor: "pointer"}} className={"no-select-text"} onClick={() => {
+                console.log(f);
+              }}>X</p>
+              <p style={{ whiteSpace: "nowrap" }}>Name: {showShortNameFile(f.name, 8)}</p>
+              <p style={{ whiteSpace: "nowrap" }}>Size: {formatFileSize(f.size)}</p>
+              <p style={{ whiteSpace: "nowrap" }}>Date: {f.lastModifiedDate.toLocaleDateString()}</p>
+            </div>
+          )
+
+      })
+    }
+
+    return (
+      <div style={{
+        display: "flex",
+        flexDirection: "row",
+        overflowX: "scroll",
+        gap: "10px",
+        paddingBottom: "5px",
+      }}>
+        <SelectedFilesChild />
+      </div>
+    )
+  }
+
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader()
+      fileReader.readAsDataURL(file);
+
+      fileReader.onload = () => {
+        resolve(fileReader.result)
+      }
+
+      fileReader.onerror = (error) => {
+        reject(error)
+      }
+    })
+  }
 
   return (
     <Modal
       isOpen={show}
-      onRequestClose={() => {
-        setShowFormSubtask(false);
-        onClose();
-        setUploadedFiles([]);
-        setSubtasks([]);
-      }}
+        onRequestClose={() => {
+          setShowFormSubtask(false);
+          onClose();
+          setUploadedFiles([]);
+          setSubtasks([]);
+        }}
       overlayClassName={"overlay"}
       style={customStyles}
     >
@@ -57,6 +128,8 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
             validateOnMount
             validateOnBlur
             onSubmit={({ title, file, numberTask, description, priority, status}, { resetForm }) => {
+
+
               const subtaskIDs = subtasks.map((item) => {
                 dispatch(addSubtask(item));
                 return item.id;
@@ -155,23 +228,6 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                     </Field>
                   </div>
 
-                  {/* status */}
-                  {/*<div className={styles.container_field}>*/}
-                  {/*  <label className={styles.label} htmlFor="status">Выберите статус задачи: <ErrorMessage className={"errors"} name="status" component="span" /></label>*/}
-
-                  {/*  <Field*/}
-                  {/*    className={styles.input}*/}
-                  {/*    as="select"*/}
-                  {/*    name="status"*/}
-                  {/*    onChange={(e) => handleChange(e)}*/}
-                  {/*    onBlur={(e) => handleBlur(e)}*/}
-                  {/*  >*/}
-                  {/*    <option value="queue">Queue</option>*/}
-                  {/*    <option value="development">Development</option>*/}
-                  {/*    <option value="done">Done</option>*/}
-                  {/*  </Field>*/}
-                  {/*</div>*/}
-
                   {/* subtask */}
                   <CreateAndShowSubtask
                     subtasks={subtasks}
@@ -184,30 +240,43 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                   {/* file */}
                   <div
                     className={styles.container_drag_and_drop_upload_file}
-                    onDrop={e => onDropHandler(e, setFieldValue, setErrorFile, setUploadedFiles)}
+                    onDrop={e => handleFileChange(e, setFieldValue)}
+                    style={{ boxSizing: "border-box" }}
                   >
                     {errorFile !== "" ? <p className={"errors"}>{errorFile}</p> : <p className={"errors"}>&nbsp;</p>}
                     <div className={styles.drop_area}>
                       <p className={styles.title_drop_file}>Выберите или перетащите файл в это окно</p>
-                      <div>
-                        <label htmlFor="file" className={styles.button_select_file}>Выбрать файл</label>
-                        <input
-                          type="file"
-                          id="file"
-                          name="file"
-                          multiple
-                          className={styles.hide_input_select_file}
-                          onChange={(event) => {
-                            const selectedFiles = Array.from(event.currentTarget.files);
-                            const newSelectedFiles = selectedFiles.filter(item => item.size > 0);
-                            setUploadedFiles(newSelectedFiles);
-                            SliceSelectedFiles(newSelectedFiles, setFieldValue, event.currentTarget.value, setErrorFile);
-                          }}
-                        />
+
+                      <div style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: "10px"
+                      }}>
+                        <div>
+                          <label htmlFor="file" className={styles.button_select_file}>Выбрать файлы</label>
+                          <input
+                            type="file"
+                            id={"file"}
+                            name={"file"}
+                            multiple
+                            className={styles.hide_input_select_file}
+                            onChange={(e) => handleFileChange(e, setFieldValue)}
+                          />
+                        </div>
+
+                        {selectedFiles.length !== 0 && (
+                          <div className={styles.button_clear_files} onClick={() => setSelectedFiles([])}>
+                            <p>Очистить файлы</p>
+                          </div>
+                        )}
                       </div>
-                      <p className={styles.list_uploaded_files}>
-                        {uploadedFiles.length !== 0 ? uploadedFiles.map((files) => uploadedFilesShow(files, uploadedFiles)) : <p>Тут будут названия загруженных файлов</p>}
-                      </p>
+
+                      {selectedFiles.length !== 0 ? (
+                        <div className={styles.list_uploaded_files} style={{ boxSizing: "border-box", width: "100%" }}>
+                          <PreviewFiles />
+                        </div>
+                      ) : <p>Здесь будет список ваших файлов</p>}
+
                     </div>
                   </div>
 
