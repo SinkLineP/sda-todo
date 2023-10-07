@@ -11,7 +11,7 @@ import {initialValues} from "./InitialValues";
 import {validationSchema} from "./Schema";
 import {addSubtask} from "../../store/Reducers/subtaskReducer";
 import CreateAndShowSubtask from "../CreateAndShowSubtask/CreateAndShowSubtask";
-import {formatFileSize, showShortNameFile} from "../../Functions";
+import {formatFileSize, maxSizeFileUpload, showShortNameFile} from "../../Functions";
 
 export default function CreateTaskModal({ show, onClose, project_id }) {
   const currentUser = useSelector(state => state.auth.currentUser);
@@ -37,7 +37,22 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
   const handleFileChange = async (e, setFieldValue) => {
     e.preventDefault();
 
-    const filteredFilesSize = Array.from(e.target.files).filter(f => f.size > 0);
+    Array.from(e.target.files).map((f) => {
+      if (f.size <= 0) {
+        setErrorFile(`Файл с именем: ${f.name} имеет не допустимый размер`);
+        console.log(`Файл с именем: ${f.name} имеет не допустимый размер! поэтому не был добавлен!`);
+        setTimeout(() => setErrorFile(""), 3000);
+        selectedFiles.filter()
+      }
+
+      if (f.size > maxSizeFileUpload) {
+        setErrorFile(`Файл ${f.name} слишком велик! поэтому не был добавлен!`);
+        console.log(`Файл ${f.name} слишком велик!`);
+        setTimeout(() => setErrorFile(""), 3000);
+      }
+    })
+
+    const filteredFilesSize = Array.from(e.target.files).filter(f => f.size > 0 && f.size <= maxSizeFileUpload);
     const base64Array = [];
 
     filteredFilesSize.map(async (file) => {
@@ -275,7 +290,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                         <div className={styles.list_uploaded_files} style={{ boxSizing: "border-box", width: "100%" }}>
                           <PreviewFiles />
                         </div>
-                      ) : <p>Здесь будет список ваших файлов</p>}
+                      ) : <p>(максимальный размер файла не больше <b>100MB</b>)</p>}
 
                     </div>
                   </div>

@@ -133,3 +133,5 @@ export const showShortNameFile = (fileName, maxShowSymbols) => {
 
   return fileName.substring(0, maxShowSymbols);
 }
+
+export const maxSizeFileUpload = 104857600;
