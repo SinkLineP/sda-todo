@@ -18,7 +18,6 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
   const [errorFile, setErrorFile] = useState("");
   const [showFormSubtask, setShowFormSubtask] = useState(false);
   const dispatch = useDispatch();
-  const [uploadedFiles, setUploadedFiles] = useState([]);
   const [subtasks, setSubtasks] = useState([]);
   const customStyles = {
     content: {
@@ -39,17 +38,22 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
 
     setErrorFile("");
 
-    Array.from(e.target.files).map((f) => {
-      if (Array.from(e.target.files).length > 1) {
-        setErrorFile(`Файл с именем: ${f.name}, и еще (${Array.from(e.target.files).length - 1}) имеют не допустимый размер! `);
+    const ArrayTargetFiles = Array.from(e.target.files);
+
+    ArrayTargetFiles.map((f) => {
+      const filesLowZero = ArrayTargetFiles.filter(file => file.size <= 0);
+      const filesMaxSize = ArrayTargetFiles.filter(file => file.size > maxSizeFileUpload);
+
+      if (filesLowZero.length > 1 && f.size <= 0) {
+        setErrorFile(`Файл с именем: ${f.name}, и еще (${filesLowZero.length - 1}) имеют не допустимый размер! `);
         setTimeout(() => setErrorFile(""), 5000);
       } else if (f.size <= 0) {
         setErrorFile(`Файл с именем: ${f.name} имеет не допустимый размер`);
         setTimeout(() => setErrorFile(""), 5000);
       }
 
-      if (Array.from(e.target.files).length > 1) {
-        setErrorFile(`Файл ${f.name}, и еще (${Array.from(e.target.files).length - 1}) слишком велеки!`);
+      if (filesMaxSize.length > 1 && f.size > maxSizeFileUpload) {
+        setErrorFile(`Файл ${f.name}, и еще (${filesMaxSize.length - 1}) слишком велеки!`);
         setTimeout(() => setErrorFile(""), 5000);
       } else if (f.size > maxSizeFileUpload) {
         setErrorFile(`Файл ${f.name} слишком велик!`);
@@ -135,7 +139,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
         onRequestClose={() => {
           setShowFormSubtask(false);
           onClose();
-          setUploadedFiles([]);
+          setSelectedFiles([]);
           setSubtasks([]);
         }}
       overlayClassName={"overlay"}
@@ -177,7 +181,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
 
 
 
-              setUploadedFiles([]);
+              setSelectedFiles([]);
               setSubtasks([]);
               resetForm();
             }}
@@ -306,7 +310,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                     values={values}
                     handleSubmit={handleSubmit}
                     closeSubtasks={() => setShowFormSubtask(false)}
-                    clearUploadedFiles={setUploadedFiles}
+                    clearUploadedFiles={setSelectedFiles}
                   />
                 </>
               );
