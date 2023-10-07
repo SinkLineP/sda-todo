@@ -4,13 +4,20 @@ const SubtaskActionTypes = {
   ADD_SUBTASK: 'ADD_SUBTASK',
   REMOVE_SUBTASK: 'REMOVE_SUBTASK',
   EDIT_SUBTASK: 'EDIT_SUBTASK',
-  EDIT_STATUS: 'EDIT_STATUS'
+  EDIT_STATUS: 'EDIT_STATUS',
+  EDIT_PRIORITY: 'EDIT_PRIORITY'
 };
 
 const statuses = {
   0: "queue",
   1: "development",
   2: "done",
+}
+
+const priorities = {
+  0: "low",
+  1: "medium",
+  2: "height",
 }
 
 function SubtaskReducer(state = initialState, action) {
@@ -25,18 +32,27 @@ function SubtaskReducer(state = initialState, action) {
       );
 
     case SubtaskActionTypes.EDIT_STATUS:
-      const { id, status } = action.payload;
-      // console.log(`ID: ${id}, Status: ${status}`);
-      console.log(status);
-      // Используем map для создания нового массива с обновленными значениями
+      const { id_status, status } = action.payload;
       return state.map((subtask) => {
-        if (subtask.id === id) {
+        if (subtask.id === id_status) {
           return {
             ...subtask,
             statusSubtask: statuses[status],
           };
         }
-        return subtask; // Возвращаем неизмененный объект для остальных подзадач
+        return subtask;
+      });
+
+    case SubtaskActionTypes.EDIT_PRIORITY:
+      const { id_priority, priority } = action.payload;
+      return state.map((subtask) => {
+        if (subtask.id === id_priority) {
+          return {
+            ...subtask,
+            prioritySubtask: priorities[priority],
+          };
+        }
+        return subtask;
       });
 
     case SubtaskActionTypes.REMOVE_SUBTASK:
@@ -52,10 +68,16 @@ export const editSubtask = (subtaskId, updatedSubtask) => ({
   payload: { subtaskId, updatedSubtask },
 });
 
-export const editStatus = (id, status) => ({
+export const editStatus = (id_status, status) => ({
   type: SubtaskActionTypes.EDIT_STATUS,
-  payload: { id, status },
+  payload: { id_status, status },
 });
+
+export const editPriority = (id_priority, priority) => ({
+  type: SubtaskActionTypes.EDIT_PRIORITY,
+  payload: { id_priority, priority },
+});
+
 
 export const addSubtask = (formData) => ({
   type: SubtaskActionTypes.ADD_SUBTASK,

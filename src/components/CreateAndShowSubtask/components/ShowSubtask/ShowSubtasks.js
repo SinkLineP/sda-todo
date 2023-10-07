@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import styles from "./ShowSubtasks.module.css";
 import IsAuth from "../../../../hooks/IsAuth";
 import {useDispatch, useSelector} from "react-redux";
-import {editStatus, removeSubtask} from "../../../../store/Reducers/subtaskReducer";
+import {editPriority, editStatus, removeSubtask} from "../../../../store/Reducers/subtaskReducer";
 import {removeSubtaskFromTask} from "../../../../store/Reducers/taskReducer";
 import {StatusesColors} from "../../../../Functions";
 
@@ -68,6 +68,17 @@ const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
     }
   }
 
+  const changeClassName = (value, class1, class2, class3) => {
+    const nValue = Number(value);
+    if (nValue === 0) {
+      return class1;
+    } else if (nValue === 1) {
+      return class2;
+    } else if (nValue === 2) {
+      return class3;
+    }
+  }
+
   const [rangeStatus, setRangeStatus] = useState(setRangeValue(item.statusSubtask, "status").value);
   const [rangePriority, setRangePriority] = useState(setRangeValue(item.prioritySubtask, "priority").value);
 
@@ -96,22 +107,22 @@ const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
           width: "100%",
           paddingLeft: "5%"
         }}>
-              <div>
-                <div style={{
-                  fontWeight: "bold"
-                }}>Статус: <span style={{
-                  fontWeight: "bold",
-                  color: setRangeValue(item.statusSubtask, "status").color
-                }}>{item.statusSubtask.toUpperCase()}</span></div>
-                {location === "info" && (<input type={"range"} min="0" max="2" step="1"
-                       value={rangeStatus}
-                       onChange={(e) => {
-                         dispatch(editStatus(item.id, parseInt(e.target.value)));
-                         setRangeStatus(e.target.value)
-                       }}
-                       style={{cursor: "pointer"}}
-                />)}
-              </div>
+          <div>
+            <div style={{
+              fontWeight: "bold"
+            }}>Статус: <span style={{
+              fontWeight: "bold",
+              color: setRangeValue(item.statusSubtask, "status").color
+            }}>{item.statusSubtask.toUpperCase()}</span></div>
+            {location === "info" && (<input className={changeClassName(rangeStatus, styles.status_range_1, styles.status_range_2, styles.status_range_3)} type={"range"} min="0" max="2" step="1"
+             value={rangeStatus}
+             onChange={(e) => {
+               dispatch(editStatus(item.id, parseInt(e.target.value)));
+               setRangeStatus(e.target.value)
+             }}
+             style={{cursor: "pointer"}}
+            />)}
+          </div>
 
 
 
@@ -124,7 +135,10 @@ const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
             }}>{item.prioritySubtask.toUpperCase()}</span></div>
             {location === "info" && (<input type={"range"} min="0" max="2" step="1"
                    value={rangePriority}
-                   onChange={(e) => setRangePriority(parseInt(e.target.value))}
+                   onChange={(e) => {
+                     dispatch(editPriority(item.id, parseInt(e.target.value)));
+                     setRangePriority(parseInt(e.target.value))
+                   }}
                    style={{cursor: "pointer"}}
             />)}
           </div>

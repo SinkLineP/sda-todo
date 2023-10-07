@@ -1,3 +1,12 @@
+:root {
+    --queue: #ff3400;
+    --development: #0059ff;
+    --done: #67af27;
+    --height: #f36464;
+    --default: #a1a1a1;
+}
+
+
 .container {
     padding: 0.5rem;
     display: flex;
@@ -73,13 +82,19 @@
     white-space: nowrap;
 }
 
-.list {
-    /*width: 100%;*/
-    /*padding: 0.5rem 0.2rem;*/
-    /*box-sizing: border-box;*/
-    /*display: flex;*/
-    /*flex-direction: column-reverse;*/
-    /*gap: 10px;*/
-    /*overflow: auto;*/
-    /*border-radius: 0.2rem;*/
+
+
+.status_range_1 {
+    accent-color: var(--queue);
+    width: 200px;
+}
+
+.status_range_2 {
+    accent-color: var(--development);
+    width: 200px;
+}
+
+.status_range_3 {
+    accent-color: var(--done);
+    width: 200px;
 }
