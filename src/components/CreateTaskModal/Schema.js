@@ -3,7 +3,7 @@ import * as yup from "yup";
 export const validationSchema = yup.object().shape({
   title: yup.string()
     .min(5, "Заголовок должен быть больше 5 символов!")
-    .max(100, "Заголовок должен быть меньше 100 символов!")
+    .max(30, "Заголовок должен быть меньше 30 символов!")
     .required("Введите заголовок"),
   numberTask: yup
     .number()

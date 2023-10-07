@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import styles from "./CreateAndShowSubtask.module.css";
 import {ErrorMessage} from "formik";
 import ButtonShowOrHideSubtask from "./components/ButtonShowOrHideSubtask/ButtonShowOrHideSubtask";
@@ -43,7 +43,7 @@ const CreateAndShowSubtask = ({ subtasks, setSubtasks, location, showForm, setSh
       </div>
 
       {showForm === true && (
-        <div className={styles.container_show}>
+        <div className={styles.container_form}>
           <FormSubtask setShowForm={setShowForm} task_id={task_id} location={location} author={currentUser.id} setSubtasks={(val) => {
             console.log(location === "form")
             if (location === "form") {
@@ -60,9 +60,7 @@ const CreateAndShowSubtask = ({ subtasks, setSubtasks, location, showForm, setSh
         <>
           <p className={styles.title_subtask}>Список подзадач: </p>
 
-          <div className={styles.container_show} style={{
-            // height: "10px"
-          }}>
+          <div className={styles.container_show}>
             {subtasks.map((item) => {
               return (
                 <ShowSubtasks item={item} task_id={task_id} data={subtasks} setData={(val) => setSubtasks(val)} location={location} />
