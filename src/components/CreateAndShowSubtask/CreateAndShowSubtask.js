@@ -60,7 +60,9 @@ const CreateAndShowSubtask = ({ subtasks, setSubtasks, location, showForm, setSh
         <>
           <p className={styles.title_subtask}>Список подзадач: </p>
 
-          <div className={styles.container_show}>
+          <div className={styles.container_show} style={{
+            // height: "10px"
+          }}>
             {subtasks.map((item) => {
               return (
                 <ShowSubtasks item={item} task_id={task_id} data={subtasks} setData={(val) => setSubtasks(val)} location={location} />

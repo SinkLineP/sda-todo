@@ -4,7 +4,7 @@ export const validationChildSchema = yup.object().shape({
   titleSubtask: yup
     .string()
     .min(5, "Заголовок должен быть больше 5 символов!")
-    .max(100, "Заголовок должен быть меньше 100 символов!")
+    .max(30, "Заголовок должен быть меньше 30 символов!")
     .required("Поле не должно быть пустым!"),
   numberSubtask: yup
     .number()

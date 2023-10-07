@@ -74,7 +74,8 @@ const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
   return (
     <div className={`${styles.list} shadow-box`}>
       <div key={item.id} className={`${styles.container} shadow-box`}>
-        <div>
+        <div style={{
+        }}>
           <div>
             <div>
               <p className={styles.title}>{item.titleSubtask} #{item.numberSubtask}</p>
@@ -91,11 +92,15 @@ const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
         <div style={{
           display: "flex",
           flexDirection: "column",
-          justifyContent: "space-around"
+          justifyContent: "space-around",
+          width: "100%",
+          paddingLeft: "5%"
         }}>
 
               <div>
-                <div>Статус: <span style={{
+                <div style={{
+                  fontWeight: "bold"
+                }}>Статус: <span style={{
                   fontWeight: "bold",
                   color: setRangeValue(item.statusSubtask, "status").color
                 }}>{item.statusSubtask.toUpperCase()}</span></div>
@@ -109,7 +114,9 @@ const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
 
 
           <div>
-            <div>Приоритет: <span style={{
+            <div style={{
+              fontWeight: "bold"
+            }}>Приоритет: <span style={{
               fontWeight: "bold",
               color: setRangeValue(item.prioritySubtask, "priority").color
             }}>{item.prioritySubtask.toUpperCase()}</span></div>
@@ -122,9 +129,10 @@ const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
         </div>
 
         {isAuth && currentUser.id === item.author && (
-          <div className={styles.container_buttons}>
-            <button className={styles.edit} onClick={() => editSubtask(item.id)}>edit</button>
-            <button className={styles.delete} onClick={() => deleteSubtask(item)}>delete</button>
+          <div className={styles.container_buttons} style={{
+          }}>
+            <button className={styles.edit} onClick={() => editSubtask(item.id)}>Редактировать</button>
+            <button className={styles.delete} onClick={() => deleteSubtask(item)}>Удалить</button>
           </div>
         )}
       </div>
