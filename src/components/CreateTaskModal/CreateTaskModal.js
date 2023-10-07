@@ -34,10 +34,10 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
   const [selectedFiles, setSelectedFiles] = useState([]);
 
 
-  const handleFileChange = async (e, setFieldValue) => {
+  const handleFileChange = async (e, files, setFieldValue) => {
     e.preventDefault();
     setErrorFile("");
-    const ArrayTargetFiles = Array.from(e.target.files);
+    const ArrayTargetFiles = Array.from(files);
 
     ArrayTargetFiles.map((f) => {
       const filesLowZero = ArrayTargetFiles.filter(file => file.size <= 0);
@@ -80,6 +80,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
     setFieldValue("file", base64Array);
   };
 
+  // [...e.dataTransfer.files]
   const PreviewFiles = () => {
     const SelectedFilesChild = () => {
       return selectedFiles.map((f, index) => {
@@ -263,7 +264,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                   {/* file */}
                   <div
                     className={styles.container_drag_and_drop_upload_file}
-                    onDrop={e => handleFileChange(e, setFieldValue)}
+                    onDrop={e => handleFileChange(e, e.dataTransfer.files, setFieldValue)}
                     style={{ boxSizing: "border-box" }}
                   >
                     {errorFile !== "" ? <p className={"errors"}>{errorFile}</p> : <p className={"errors"}>&nbsp;</p>}
@@ -283,7 +284,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                             name={"file"}
                             multiple
                             className={styles.hide_input_select_file}
-                            onChange={(e) => handleFileChange(e, setFieldValue)}
+                            onChange={(e) => handleFileChange(e, e.target.files, setFieldValue)}
                           />
                         </div>
 
