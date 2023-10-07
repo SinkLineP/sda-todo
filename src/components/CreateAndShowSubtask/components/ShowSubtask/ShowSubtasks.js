@@ -1,11 +1,11 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styles from "./ShowSubtasks.module.css";
 import IsAuth from "../../../../hooks/IsAuth";
 import {useDispatch, useSelector} from "react-redux";
 import {removeSubtask} from "../../../../store/Reducers/subtaskReducer";
 import {removeSubtaskFromTask} from "../../../../store/Reducers/taskReducer";
 
-const ShowSubtasks = ({ task_id, setData, data, location }) => {
+const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
   const isAuth = IsAuth();
   const currentUser = useSelector(state => state.auth.currentUser);
   const dispatch = useDispatch();
@@ -29,46 +29,89 @@ const ShowSubtasks = ({ task_id, setData, data, location }) => {
     }
   };
 
-
-
-  const Subtasks = ({data}) => {
-    if (data.length !== 0) {
-      return data.map((item, index) => {
-        return (
-          <div key={index} className={`${styles.container} shadow-box`}>
-            <div>
-              <div>
-                <div>
-                  <p className={styles.title}>{item.titleSubtask} #{item.numberSubtask}</p>
-                </div>
-              </div>
-
-              <div className={styles.container_desc}>
-                <p className={styles.title}>Описание подзадачи: </p>
-                <p className={styles.desc}>{item.descriptionSubtask}</p>
-              </div>
-            </div>
-
-            <div>
-              <div>Статус: {item.statusSubtask}</div>
-              <div>Приоритет: {item.prioritySubtask}</div>
-            </div>
-
-            {isAuth && currentUser.id === item.author && (
-              <div className={styles.container_buttons}>
-                <button className={styles.edit} onClick={() => editSubtask(item.id)}>edit</button>
-                <button className={styles.delete} onClick={() => deleteSubtask(item)}>delete</button>
-              </div>
-            )}
-          </div>
-        )
-      })
+  const setRangeValue = (value, type) => {
+    if (type === "status") {
+      if (value === "queue") {
+        return {
+          value: 0
+        };
+      } else if (value === "development") {
+        return {
+          value: 1
+        };
+      } else if (value === "done") {
+        return {
+          value: 2
+        };
+      }
+    } else if (type === "priority") {
+      if (value === "low") {
+        return {
+          value: 0
+        };
+      } else if (value === "medium") {
+        return {
+          value: 1
+        };
+      } else if (value === "height") {
+        return {
+          value: 2
+        };
+      }
     }
   }
 
+  const [rangeStatus, setRangeStatus] = useState(setRangeValue(item.statusSubtask, "status").value);
+  const [rangePriority, setRangePriority] = useState(setRangeValue(item.prioritySubtask, "priority").value);
+
   return (
     <div className={`${styles.list} shadow-box`}>
-      <Subtasks data={data} />
+      <div key={item.id} className={`${styles.container} shadow-box`}>
+        <div>
+          <div>
+            <div>
+              <p className={styles.title}>{item.titleSubtask} #{item.numberSubtask}</p>
+            </div>
+          </div>
+
+          <div className={styles.container_desc}>
+
+            <p className={styles.title}>Описание подзадачи: </p>
+            <p className={styles.desc}>{item.descriptionSubtask}</p>
+          </div>
+        </div>
+
+        <div style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-around"
+        }}>
+          <div>
+            <div>Статус: {item.statusSubtask.toUpperCase()}</div>
+            <input type={"range"} min="0" max="2" step="1"
+                   value={rangeStatus}
+                   onChange={(e) => setRangeStatus(parseInt(e.target.value))}
+                   style={{cursor: "pointer"}}
+            />
+          </div>
+
+          <div>
+            <div>Приоритет: {item.prioritySubtask.toUpperCase()}</div>
+            <input type={"range"} min="0" max="2" step="1"
+                   value={rangePriority}
+                   onChange={(e) => setRangePriority(parseInt(e.target.value))}
+                   style={{cursor: "pointer"}}
+            />
+          </div>
+        </div>
+
+        {isAuth && currentUser.id === item.author && (
+          <div className={styles.container_buttons}>
+            <button className={styles.edit} onClick={() => editSubtask(item.id)}>edit</button>
+            <button className={styles.delete} onClick={() => deleteSubtask(item)}>delete</button>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

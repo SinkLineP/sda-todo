@@ -100,19 +100,6 @@ const FormSubtask = ({ author, setSubtasks, location, task_id, setShowForm }) =>
                 </Field>
               </div>
 
-              <div className={styles.container_field}>
-                <label className={styles.label}>Статус подзадачи: </label>
-                <Field
-                  as="select"
-                  name="statusSubtask"
-                  className={styles.input}
-                >
-                  <option value="queue">Queue</option>
-                  <option value="development">Development</option>
-                  <option value="done">Done</option>
-                </Field>
-              </div>
-
               <button type="submit" className={styles.submit} >
                 Сохранить подзадачу
               </button>

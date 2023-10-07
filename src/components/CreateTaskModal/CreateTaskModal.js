@@ -93,9 +93,6 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
               padding: "0 1rem",
               width: "auto"
             }} key={index}>
-              <p style={{color: "red", fontWeight: "bold", fontSize: "1.5rem", textAlign: "right", cursor: "pointer"}} className={"no-select-text"} onClick={() => {
-                console.log(f);
-              }}>X</p>
               <p style={{ whiteSpace: "nowrap" }}>Name: {showShortNameFile(f.name, 8)}</p>
               <p style={{ whiteSpace: "nowrap" }}>Size: {formatFileSize(f.size)}</p>
               <p style={{ whiteSpace: "nowrap" }}>Date: {f.lastModifiedDate.toLocaleDateString()}</p>
