@@ -37,7 +37,7 @@ const CreateAndShowSubtask = ({ subtasks, setSubtasks, location, showForm, setSh
         <div>
           <p className={styles.title_subtask}>Подзадачи: </p>
         </div>
-        {location === "form" && <CheckModify setShowForm={setShowForm} location={location} isAuth={isAuth} showForm={showForm} />}
+        {location === "form" || (location === "info" && currentItem.status === "queue") && <CheckModify setShowForm={setShowForm} location={location} isAuth={isAuth} showForm={showForm} />}
       </div>
 
       {showForm === true && (
