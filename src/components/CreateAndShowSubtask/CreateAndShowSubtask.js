@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import styles from "./CreateAndShowSubtask.module.css";
 import ButtonShowOrHideSubtask from "./components/ButtonShowOrHideSubtask/ButtonShowOrHideSubtask";
 import FormSubtask from "./components/FormSubtask/FormSubtask";
@@ -10,7 +10,6 @@ import IsAuth from "../../hooks/IsAuth";
 const CreateAndShowSubtask = ({ subtasks, setSubtasks, location, showForm, setShowForm, task_id, task_author, currentItem }) => {
   const currentUser = useSelector(state => state.auth.currentUser);
   const isAuth = IsAuth();
-
 
   const IsShowCreateSubtask = ({showForm, setShowForm}) => {
       return <ButtonShowOrHideSubtask title={!showForm ? "Добавить подзадачи" : "Скрыть форму"} func={() => setShowForm(!showForm)} />;
