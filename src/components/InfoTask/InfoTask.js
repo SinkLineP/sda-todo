@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Modal from "react-modal";
 import {
   calculateTimeInWork,
@@ -31,9 +31,15 @@ export default function InfoTask({ show, onClose, item }) {
   const currentUser = useSelector(state => state.auth.currentUser);
   const subtasksStore = useSelector(state => state.subtasks);
   const [showFormSubtask, setShowFormSubtask] = useState(false);
+  const [isDone, setIsDone] = useState(null);
+  const taskData = useSelector(state => state.tasks);
 
 
-
+  useEffect(() => {
+    if (isDone !== null) {
+      if (isDone === false) setTimeout(() => setIsDone(null), 3000);
+    }
+  }, [isDone])
 
   const handleDownloadClick = (fileData) => {
     if (fileData) {
@@ -76,7 +82,16 @@ export default function InfoTask({ show, onClose, item }) {
       return (
         <HoverButton
           onClick={() => {
-            dispatch(endTask("done", new Date(), task_id, "✅️"));
+              // Проверка выполненных подзадач
+            const subtasks = getSubtask(taskData.find(i => i.id === item.id).subtasks, subtasksStore);
+            const allSubtasksDone = subtasks.every(obj => obj.statusSubtask === "done");
+
+            if (!allSubtasksDone) {
+              setIsDone(allSubtasksDone);
+            } else {
+              setIsDone(allSubtasksDone);
+              dispatch(endTask("done", new Date(), item.id, "✅️"));
+            }
           }}
           IconButton={IconDeleteCrossSVG}
           titleButton={"Завершить"}
@@ -177,6 +192,19 @@ export default function InfoTask({ show, onClose, item }) {
           )}
 
           <h3>{getSubtask(item.subtasks, subtasksStore).length === 0 && (<p>Подзадач не найденно!</p>)}</h3>
+
+          {isDone !== null && isDone === false && (
+            <div>
+              <p style={{
+                fontWeight: "bolder",
+                color: "#6c4407",
+                textAlign: "center",
+                backgroundColor: "#fddda7",
+                padding: '1%',
+                borderRadius: '0.4rem',
+              }}>У вас остались еще не выполненые подзадачи!</p>
+            </div>
+          )}
 
           <CreateAndShowSubtask
             currentItem={item}

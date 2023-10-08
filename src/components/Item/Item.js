@@ -138,7 +138,8 @@ const Item = ({ item, index, moveItem, status, setIsDone }) => {
         <p className={"item-title"}>
           {item.title} #{item.numberTask}
         </p>
-        <p>Колличество подзадач: {item.subtasks.length}</p>
+        {item.subtasks.length > 0 ? (<p>Колличество подзадач: {item.subtasks.length}</p>) : (<p>Подзадач не найденно!</p>)}
+
         <p className={"item-status"}>{item.icon}</p>
         {/* Кнопка начала задачи */}
         {item.status === "queue" && IsAuth() && (
