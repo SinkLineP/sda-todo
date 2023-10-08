@@ -180,7 +180,6 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
               </>
             ) : (
               <>
-                <button className={styles.edit} onClick={() => editSubtask(item.id)}>Редактировать</button>
                 <button className={styles.delete} onClick={() => deleteSubtask(item)}>Удалить</button>
               </>
             )}
