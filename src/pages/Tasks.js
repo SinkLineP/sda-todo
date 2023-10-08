@@ -34,8 +34,15 @@ export default function Tasks() {
     // Проверка выполненных подзадач
     if (status === "done" && item.status !== "done") {
       const subtasks = getSubtask(item.subtasks, subtasksStore);
+
+      console.log(subtasks);
+
       const allSubtasksDone = subtasks.every(obj => obj.statusSubtask === "done");
+
+      console.log(allSubtasksDone);
+
       if (!allSubtasksDone) {
+        console.log(allSubtasksDone);
         // Если не все подзадачи выполнены, то не разрешаем перемещение в "done"
         return;
       }

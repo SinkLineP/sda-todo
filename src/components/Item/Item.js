@@ -13,10 +13,9 @@ const Item = ({ item, index, moveItem, status }) => {
   const dispatch = useDispatch();
   const tasksStore = useSelector(state => state.tasks);
   const subtasksStore = useSelector(state => state.subtasks);
-  const [isDone, setIsDone] = useState(false);
 
   // Определение, разрешено ли перетаскивание
-  const isDraggable = item.status !== "done" && IsAuth();
+  const isDraggable = IsAuth();
 
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: ITEM_TYPE,
@@ -50,10 +49,6 @@ const Item = ({ item, index, moveItem, status }) => {
       const updatedItem = { ...draggedItem, index: hoverIndex };
       dispatch(editTask(updatedItem.id, updatedItem));
     },
-    canDrop: (item, monitor) => {
-      // const canDrop = status.status !== "done";
-      return false;
-    },
     collect: monitor => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
@@ -66,7 +61,8 @@ const Item = ({ item, index, moveItem, status }) => {
     collect: monitor => ({
       isDragging: monitor.isDragging(),
     }),
-    canDrag: isDraggable && item.status !== "done", // Добавьте эту проверку
+    // canDrag: isDraggable && item.status !== "done", // Добавьте эту проверку
+    canDrag: isDraggable, // Добавьте эту проверку
   }));
 
   const [show, setShow] = useState(false);
@@ -159,8 +155,6 @@ const Item = ({ item, index, moveItem, status }) => {
 
       {/* Модальное окно с информацией о задаче */}
       <InfoTask item={item} onClose={onClose} show={show} />
-
-
     </Fragment>
   );
 };
