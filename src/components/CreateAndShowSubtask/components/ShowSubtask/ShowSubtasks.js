@@ -23,7 +23,7 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
     }
   };
   const editSubtask = () => {
-    if (location === "create-task") {
+    if (location === "form") {
       console.log("local-subtask");
     } else {
       console.log("with dispatch!");
@@ -134,9 +134,6 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
                 onChange={(e) => {
                   dispatch(editStatus(item.id, parseInt(e.target.value)));
                   setRangeStatus(e.target.value)
-                }}
-                style={{
-
                 }}
             />)}
           </div>

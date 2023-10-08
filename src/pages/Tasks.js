@@ -85,6 +85,7 @@ export default function Tasks() {
       )
       .map((i, idx) => (
         <Item
+          key={idx}
           setIsDone={(val) => setIsDone(val)}
           item={i}
           index={idx}
@@ -143,6 +144,7 @@ export default function Tasks() {
           <input
             type={"search"}
             placeholder={"Введите номер или название задачи..."}
+            name={"search"}
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);

@@ -234,9 +234,12 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
 
                   {/* priority */}
                   <div className={styles.container_field}>
-                    <label className={styles.label} htmlFor="priority">Выберите приоритет задачи: <ErrorMessage className={"errors"} name="priority" component="span" /></label>
+                    <label className={styles.label} htmlFor="priority">
+                      Выберите приоритет задачи: <ErrorMessage className={"errors"} name="priority" component="span" />
+                    </label>
 
                     <Field
+                      id="priority" // Add an id attribute here
                       className={styles.input}
                       as="select"
                       name="priority"

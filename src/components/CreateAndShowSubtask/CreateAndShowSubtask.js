@@ -52,9 +52,9 @@ const CreateAndShowSubtask = ({ subtasks, setSubtasks, location, showForm, setSh
       {subtasks.length !== 0 && (
         <>
           <div className={styles.container_show}>
-            {subtasks.map((item) => {
+            {subtasks.map((item, index) => {
               return (
-                <ShowSubtasks currentItem={currentItem} item={item} task_id={task_id} data={subtasks} setData={(val) => setSubtasks(val)} location={location} />
+                <ShowSubtasks key={index} currentItem={currentItem} item={item} task_id={task_id} data={subtasks} setData={(val) => setSubtasks(val)} location={location} />
               )
             })}
           </div>
