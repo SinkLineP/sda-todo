@@ -9,7 +9,9 @@ const ActionTypes = {
   REMOVE_COMMENT_FROM_TASK: 'REMOVE_COMMENT_FROM_TASK',
   ADD_SUBTASK_TO_TASK: 'ADD_SUBTASK_TO_TASK',
   START_TASK: 'START_TASK',
-  END_TASK: 'END_TASK'
+  END_TASK: 'END_TASK',
+  EDIT_STATUS_TASK: 'EDIT_STATUS_TASK',
+  EDIT_PRIORITY_TASK: 'EDIT_PRIORITY_TASK',
 };
 
 function TaskReducer(state = initialState, action) {
@@ -106,6 +108,18 @@ function TaskReducer(state = initialState, action) {
     case ActionTypes.REMOVE_TASK:
       return state.filter((task) => task.id !== action.payload);
 
+    case ActionTypes.EDIT_STATUS_TASK:
+      const { id_status, status } = action.payload;
+      return state.map((task) => {
+        if (task.id === id_status) {
+          return {
+            ...task,
+            status: status,
+          };
+        }
+        return task;
+      });
+
     default:
       return state;
   }
@@ -154,6 +168,11 @@ export const startTask = (status_start, startDate, Id_task_start, icon_start) =>
 export const endTask = (status_end, endDate, Id_task_end, icon_end) => ({
   type: ActionTypes.END_TASK,
   payload: { status_end, endDate, Id_task_end, icon_end }
+})
+
+export const editStatusTask = (id_status, status) => ({
+  type: ActionTypes.EDIT_STATUS_TASK,
+  payload: { id_status, status }
 })
 
 

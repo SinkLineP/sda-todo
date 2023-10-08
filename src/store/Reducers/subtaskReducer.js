@@ -4,8 +4,8 @@ const SubtaskActionTypes = {
   ADD_SUBTASK: 'ADD_SUBTASK',
   REMOVE_SUBTASK: 'REMOVE_SUBTASK',
   EDIT_SUBTASK: 'EDIT_SUBTASK',
-  EDIT_STATUS: 'EDIT_STATUS',
-  EDIT_PRIORITY: 'EDIT_PRIORITY'
+  EDIT_STATUS_SUBTASK: 'EDIT_STATUS_SUBTASK',
+  EDIT_PRIORITY_SUBTASK: 'EDIT_PRIORITY_SUBTASK'
 };
 
 const statuses = {
@@ -31,7 +31,7 @@ function SubtaskReducer(state = initialState, action) {
         subtask.id === subtaskId ? { ...subtask, ...updatedSubtask } : subtask
       );
 
-    case SubtaskActionTypes.EDIT_STATUS:
+    case SubtaskActionTypes.EDIT_STATUS_SUBTASK:
       const { id_status, status } = action.payload;
       return state.map((subtask) => {
         if (subtask.id === id_status) {
@@ -43,7 +43,7 @@ function SubtaskReducer(state = initialState, action) {
         return subtask;
       });
 
-    case SubtaskActionTypes.EDIT_PRIORITY:
+    case SubtaskActionTypes.EDIT_PRIORITY_SUBTASK:
       const { id_priority, priority } = action.payload;
       return state.map((subtask) => {
         if (subtask.id === id_priority) {
@@ -69,12 +69,12 @@ export const editSubtask = (subtaskId, updatedSubtask) => ({
 });
 
 export const editStatus = (id_status, status) => ({
-  type: SubtaskActionTypes.EDIT_STATUS,
+  type: SubtaskActionTypes.EDIT_STATUS_SUBTASK,
   payload: { id_status, status },
 });
 
 export const editPriority = (id_priority, priority) => ({
-  type: SubtaskActionTypes.EDIT_PRIORITY,
+  type: SubtaskActionTypes.EDIT_PRIORITY_SUBTASK,
   payload: { id_priority, priority },
 });
 

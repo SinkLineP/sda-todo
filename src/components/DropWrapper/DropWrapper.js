@@ -1,7 +1,8 @@
-import React from "react";
+import React, {useEffect} from "react";
 import  { useDrop } from "react-dnd";
 import ITEM_TYPE from "../../data/types";
 import {useSelector} from "react-redux";
+import {getSubtask} from "../../Functions";
 
 
 const DropWrapper = ({ onDrop, children, status }) => {

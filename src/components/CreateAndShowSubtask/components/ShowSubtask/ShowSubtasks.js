@@ -6,7 +6,7 @@ import {editPriority, editStatus, removeSubtask} from "../../../../store/Reducer
 import {removeSubtaskFromTask} from "../../../../store/Reducers/taskReducer";
 import {StatusesColors} from "../../../../Functions";
 
-const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
+const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) => {
   const isAuth = IsAuth();
   const currentUser = useSelector(state => state.auth.currentUser);
   const dispatch = useDispatch();
@@ -107,7 +107,7 @@ const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
           flexDirection: "column",
           justifyContent: "space-around",
           width: "100%",
-          paddingLeft: "30%",
+          paddingLeft: "10%",
         }}>
           <div>
             <div className={"no-select-text"} style={{
@@ -119,13 +119,13 @@ const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
             {location === "info" && (
               <input
                 ref={inputStatusRef}
-                className={`${styles.input} ${rangeStatus === "2" && styles.input_disabled} ${changeClassName(
+                className={`${styles.input} ${changeClassName(
                   rangeStatus,
                   styles.status_range_1,
                   styles.status_range_2,
                   styles.status_range_3
                 )}`}
-                disabled={setRangeValue(item.statusSubtask, "status").value === 2}
+                disabled={setRangeValue(item.statusSubtask, "status").value === 2 || currentItem.status === "queue"}
                 type={"range"}
                 min="0"
                 max="2"
@@ -153,7 +153,7 @@ const ShowSubtasks = ({ task_id, setData, data, location, item }) => {
             {location === "info" && (
               <input
                 ref={inputPriorityRef}
-                className={`${inputStatusRef.current !== null && inputStatusRef.current.disabled && styles.input_disabled} ${changeClassName(
+                className={`${styles.input} ${changeClassName(
                   rangePriority,
                   styles.priority_range_1,
                   styles.priority_range_2,

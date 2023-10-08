@@ -8,7 +8,7 @@ import IsAuth from "../hooks/IsAuth";
 import CreateTaskModal from "../components/CreateTaskModal/CreateTaskModal";
 import styles from "./styles/Tasks.module.css";
 import {addTask, endTask, startTask} from "../store/Reducers/taskReducer";
-import {checkProjectsAuthor} from "../Functions";
+import {checkProjectsAuthor, getSubtask} from "../Functions";
 
 
 export default function Tasks() {
@@ -21,6 +21,7 @@ export default function Tasks() {
   const [show, setShow] = useState(false);
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
+  const subtasksStore = useSelector(state => state.subtasks);
 
 
   useEffect(() => {
@@ -30,12 +31,22 @@ export default function Tasks() {
   const onDrop = (item, monitor, status) => {
     const mapping = statuses.find(si => si.status === status);
 
+    // Проверка выполненных подзадач
+    if (status === "done" && item.status !== "done") {
+      const subtasks = getSubtask(item.subtasks, subtasksStore);
+      const allSubtasksDone = subtasks.every(obj => obj.statusSubtask === "done");
+      if (!allSubtasksDone) {
+        // Если не все подзадачи выполнены, то не разрешаем перемещение в "done"
+        return;
+      }
+    }
+
     setItems(prevState => {
       const newItems = prevState
         .filter(i => i.id !== item.id)
         .concat({ ...item, status, icon: mapping.icon });
 
-      return [ ...newItems ];
+      return [...newItems];
     });
   };
 
@@ -62,7 +73,7 @@ export default function Tasks() {
         String(`${i.title}#${i.numberTask}`).toLowerCase().includes(search.split(" ").join("").toLowerCase()) ||
         String(`${i.title}${i.numberTask}`).toLowerCase().includes(search.split(" ").join("").toLowerCase())
       )
-      .map((i, idx) => <Item key={i.id} item={i} index={idx} moveItem={moveItem} status={s} project_id={project_id} />);
+      .map((i, idx) => <Item key={i.id} item={i} index={idx} moveItem={moveItem} status={s} project_id={project_id} isOver={s.status === "done" && i.status === s.status} />);
   }
 
   return (

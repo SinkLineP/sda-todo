@@ -8,7 +8,7 @@ import {useSelector} from "react-redux";
 import IsAuth from "../../hooks/IsAuth";
 
 
-const CreateAndShowSubtask = ({ subtasks, setSubtasks, location, showForm, setShowForm, task_id, task_author }) => {
+const CreateAndShowSubtask = ({ subtasks, setSubtasks, location, showForm, setShowForm, task_id, task_author, currentItem }) => {
   const currentUser = useSelector(state => state.auth.currentUser);
   const isAuth = IsAuth();
 
@@ -45,7 +45,6 @@ const CreateAndShowSubtask = ({ subtasks, setSubtasks, location, showForm, setSh
       {showForm === true && (
         <div className={styles.container_form}>
           <FormSubtask setShowForm={setShowForm} task_id={task_id} location={location} author={currentUser.id} setSubtasks={(val) => {
-            console.log(location === "form")
             if (location === "form") {
               setSubtasks((prevState) => ([
                 ...prevState,
@@ -63,7 +62,7 @@ const CreateAndShowSubtask = ({ subtasks, setSubtasks, location, showForm, setSh
           <div className={styles.container_show}>
             {subtasks.map((item) => {
               return (
-                <ShowSubtasks item={item} task_id={task_id} data={subtasks} setData={(val) => setSubtasks(val)} location={location} />
+                <ShowSubtasks currentItem={currentItem} item={item} task_id={task_id} data={subtasks} setData={(val) => setSubtasks(val)} location={location} />
               )
             })}
           </div>

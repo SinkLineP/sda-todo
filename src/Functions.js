@@ -135,3 +135,8 @@ export const showShortNameFile = (fileName, maxShowSymbols) => {
 }
 
 export const maxSizeFileUpload = 104857600;
+
+
+export const getSubtask = (data, subtasksStore) => {
+  return subtasksStore.filter(item => data.includes(item.id));
+}

@@ -3,20 +3,22 @@ import { useDrag, useDrop } from "react-dnd";
 import InfoTask from "../InfoTask/InfoTask";
 import ITEM_TYPE from "../../data/types";
 import {useDispatch, useSelector} from "react-redux";
-import {startTask, endTask, editTask} from "../../store/Reducers/taskReducer";
+import {startTask, endTask, editTask, editStatusTask} from "../../store/Reducers/taskReducer";
 import IsAuth from "../../hooks/IsAuth";
 import styles from "./Item.module.css";
+import {getSubtask} from "../../Functions";
 
 const Item = ({ item, index, moveItem, status }) => {
   const ref = useRef(null);
   const dispatch = useDispatch();
   const tasksStore = useSelector(state => state.tasks);
-
+  const subtasksStore = useSelector(state => state.subtasks);
+  const [isDone, setIsDone] = useState(false);
 
   // Определение, разрешено ли перетаскивание
   const isDraggable = item.status !== "done" && IsAuth();
 
-  const [, drop] = useDrop({
+  const [{ isOver, canDrop }, drop] = useDrop({
     accept: ITEM_TYPE,
     hover(draggedItem, monitor) {
       if (!ref.current) {
@@ -48,15 +50,23 @@ const Item = ({ item, index, moveItem, status }) => {
       const updatedItem = { ...draggedItem, index: hoverIndex };
       dispatch(editTask(updatedItem.id, updatedItem));
     },
+    canDrop: (item, monitor) => {
+      // const canDrop = status.status !== "done";
+      return false;
+    },
+    collect: monitor => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    })
   });
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: ITEM_TYPE,
     item: { ...item, index },
-    collect: (monitor) => ({
+    collect: monitor => ({
       isDragging: monitor.isDragging(),
     }),
-    canDrag: isDraggable, // Условие разрешения перетаскивания
+    canDrag: isDraggable && item.status !== "done", // Добавьте эту проверку
   }));
 
   const [show, setShow] = useState(false);
@@ -106,8 +116,21 @@ const Item = ({ item, index, moveItem, status }) => {
       } else {
         dispatch(editTask(item.id, item));
       }
+
+      if (isOver) {
+        if (item.status !== "done") {
+          const subtasks = getSubtask(item.subtasks, subtasksStore);
+          const allSubtasksDone = subtasks.every((obj) => obj.statusSubtask === "done");
+
+          if (allSubtasksDone) {
+            console.log("all subtask done");
+          } else {
+            console.log("all subtask failed");
+          }
+        }
+      }
     }
-  }, [dispatch, isDragging, item.status]);
+  }, [dispatch, isDragging, item.status, isOver]);
 
   return (
     <Fragment>

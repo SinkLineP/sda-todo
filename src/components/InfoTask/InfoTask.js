@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import Modal from "react-modal";
 import {
-  calculateTimeInWork, checkProjectsAuthor,
-  convertTypeObjectToFile,
+  calculateTimeInWork,
   formatFileSize,
   getAuthorProject,
-  getCurrentDate, showShortNameFile
+  getCurrentDate, getSubtask, showShortNameFile
 } from "../../Functions";
 import {useDispatch, useSelector} from "react-redux";
 import ColorizeWrapText from "../ColorizeWrapText/ColorizeWrapText";
@@ -21,8 +20,7 @@ import {removeSubtask} from "../../store/Reducers/subtaskReducer";
 import {removeComment} from "../../store/Reducers/commentReducer";
 import CreateAndShowSubtask from "../CreateAndShowSubtask/CreateAndShowSubtask";
 import HoverButton from "../CreateTaskModal/components/HoverButton";
-import moment from "moment/moment";
-import {useParams} from "react-router-dom";
+
 
 
 Modal.setAppElement("#root");
@@ -33,6 +31,8 @@ export default function InfoTask({ show, onClose, item }) {
   const currentUser = useSelector(state => state.auth.currentUser);
   const subtasksStore = useSelector(state => state.subtasks);
   const [showFormSubtask, setShowFormSubtask] = useState(false);
+
+
 
 
   const handleDownloadClick = (fileData) => {
@@ -57,9 +57,7 @@ export default function InfoTask({ show, onClose, item }) {
     }
   };
 
-  const getSubtask = (data) => {
-    return subtasksStore.filter(item => data.includes(item.id));
-  }
+
 
   const ShowButtonWithStatus = (status, task_id) => {
     if (status === "queue") {
@@ -180,11 +178,12 @@ export default function InfoTask({ show, onClose, item }) {
             </>
           )}
 
-          <h3>{getSubtask(item.subtasks).length === 0 && (<p>Подзадач не найденно!</p>)}</h3>
+          <h3>{getSubtask(item.subtasks, subtasksStore).length === 0 && (<p>Подзадач не найденно!</p>)}</h3>
 
           {item.status !== "done" && (
             <CreateAndShowSubtask
-              subtasks={getSubtask(item.subtasks)}
+              currentItem={item}
+              subtasks={getSubtask(item.subtasks, subtasksStore)}
               location={"info"}
               showForm={showFormSubtask}
               setShowForm={(val) => setShowFormSubtask(val)}
