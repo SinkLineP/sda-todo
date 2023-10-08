@@ -22,7 +22,7 @@ const CreateAndShowSubtask = ({ subtasks, setSubtasks, location, showForm, setSh
   const CheckModify = ({ location, setShowForm, showForm, isAuth }) => {
     if (isAuth) {
       if (location === "info") {
-        if (task_author === currentUser.id && currentItem.status !== "development") {
+        if (task_author === currentUser.id && currentItem.status === "queue") {
             return <IsShowCreateSubtask setShowForm={setShowForm} showForm={showForm} />
         }
       } else if (location === "form") {
@@ -37,7 +37,7 @@ const CreateAndShowSubtask = ({ subtasks, setSubtasks, location, showForm, setSh
         <div>
           <p className={styles.title_subtask}>Подзадачи: </p>
         </div>
-        {location === "form" || (location === "info" && currentItem.status === "queue") && <CheckModify setShowForm={setShowForm} location={location} isAuth={isAuth} showForm={showForm} />}
+        <CheckModify setShowForm={setShowForm} location={location} isAuth={isAuth} showForm={showForm} />
       </div>
 
       {showForm === true && (

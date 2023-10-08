@@ -11,7 +11,6 @@ import {checkProjectsAuthor, getSubtask} from "../Functions";
 
 
 export default function Tasks() {
-  const taskData = useSelector(state => state.tasks);
   const statuses = useSelector(state => state.categories);
   const [items, setItems] = useState([]);
   const { project_id } = useParams();
@@ -19,6 +18,7 @@ export default function Tasks() {
   const projectsStore = useSelector(state => state.projects);
   const [show, setShow] = useState(false);
   const [search, setSearch] = useState("");
+  const taskData = useSelector(state => state.tasks);
   const subtasksStore = useSelector(state => state.subtasks);
   const [isDone, setIsDone] = useState(null);
 
@@ -83,7 +83,15 @@ export default function Tasks() {
         String(`${i.title}#${i.numberTask}`).toLowerCase().includes(search.split(" ").join("").toLowerCase()) ||
         String(`${i.title}${i.numberTask}`).toLowerCase().includes(search.split(" ").join("").toLowerCase())
       )
-      .map((i, idx) => <Item key={i.id} item={i} index={idx} moveItem={moveItem} status={s} project_id={project_id} isOver={s.status === "done" && i.status === s.status} />);
+      .map((i, idx) => (
+        <Item
+          setIsDone={(val) => setIsDone(val)}
+          item={i}
+          index={idx}
+          moveItem={moveItem}
+          status={s}
+        />
+      ));
   }
 
   return (

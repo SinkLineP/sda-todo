@@ -12,11 +12,15 @@ import {
 } from "../../store/Reducers/taskReducer";
 import IsAuth from "../../hooks/IsAuth";
 import styles from "./Item.module.css";
+import {getSubtask} from "../../Functions";
 
-const Item = ({ item, index, moveItem, status }) => {
+const Item = ({ item, index, moveItem, status, setIsDone }) => {
   const ref = useRef(null);
   const dispatch = useDispatch();
   const tasksStore = useSelector(state => state.tasks);
+  const taskData = useSelector(state => state.tasks);
+  const subtasksStore = useSelector(state => state.subtasks);
+
 
   // Определение, разрешено ли перетаскивание
   const isDraggable = IsAuth();
@@ -84,7 +88,16 @@ const Item = ({ item, index, moveItem, status }) => {
   const handleEndTask = (e) => {
     e.stopPropagation();
     if (item.status === "development") {
-      dispatch(endTask("done", new Date(), item.id, "✅️"));
+      // Проверка выполненных подзадач
+      const subtasks = getSubtask(taskData.find(i => i.id === item.id).subtasks, subtasksStore);
+      const allSubtasksDone = subtasks.every(obj => obj.statusSubtask === "done");
+
+      if (!allSubtasksDone) {
+        setIsDone(allSubtasksDone);
+      } else {
+        setIsDone(allSubtasksDone);
+        dispatch(endTask("done", new Date(), item.id, "✅️"));
+      }
     }
   };
 
