@@ -61,7 +61,8 @@ const Item = ({ item, index, moveItem, status }) => {
     collect: monitor => ({
       isDragging: monitor.isDragging(),
     }),
-    canDrag: isDraggable && item.status !== "done", // Добавьте эту проверку
+    // canDrag: isDraggable && item.status !== "done", // Добавьте эту проверку
+    canDrag: isDraggable, // Добавьте эту проверку
   }));
 
   const [show, setShow] = useState(false);
@@ -112,18 +113,18 @@ const Item = ({ item, index, moveItem, status }) => {
         dispatch(editTask(item.id, item));
       }
 
-      if (isOver) {
-        if (item.status !== "done") {
-          const subtasks = getSubtask(item.subtasks, subtasksStore);
-          const allSubtasksDone = subtasks.every((obj) => obj.statusSubtask === "done");
-
-          if (allSubtasksDone) {
-            console.log("all subtask done");
-          } else {
-            console.log("all subtask failed");
-          }
-        }
-      }
+      // if (isOver) {
+      //   if (item.status !== "done") {
+      //     const subtasks = getSubtask(item.subtasks, subtasksStore);
+      //     const allSubtasksDone = subtasks.every((obj) => obj.statusSubtask === "done");
+      //
+      //     if (allSubtasksDone) {
+      //       console.log("all subtask done");
+      //     } else {
+      //       console.log("all subtask failed");
+      //     }
+      //   }
+      // }
     }
   }, [dispatch, isDragging, item.status, isOver]);
 

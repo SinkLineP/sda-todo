@@ -7,7 +7,7 @@ import {NavLink, useParams} from "react-router-dom";
 import IsAuth from "../hooks/IsAuth";
 import CreateTaskModal from "../components/CreateTaskModal/CreateTaskModal";
 import styles from "./styles/Tasks.module.css";
-import {addTask, endTask, startTask} from "../store/Reducers/taskReducer";
+import {addTask, editTask, endTask, startTask} from "../store/Reducers/taskReducer";
 import {checkProjectsAuthor, getSubtask} from "../Functions";
 
 
@@ -20,22 +20,24 @@ export default function Tasks() {
   const projectsStore = useSelector(state => state.projects);
   const [show, setShow] = useState(false);
   const [search, setSearch] = useState("");
-  const subtasksStore = useSelector(state => state.subtasks);
   const [isDone, setIsDone] = useState(null);
+  const subtasksStore = useSelector(state => state.subtasks);
 
 
   useEffect(() => {
     setItems(taskData);
-  }, [setItems, taskData])
+  }, [taskData])
 
   const onDrop = (item, monitor, status) => {
     const mapping = statuses.find(si => si.status === status);
-
+    console.log(item.subtasks);
     // Проверка выполненных подзадач
     if (status === "done" && item.status !== "done") {
+
       const subtasks = getSubtask(item.subtasks, subtasksStore);
       const allSubtasksDone = subtasks.every(obj => obj.statusSubtask === "done");
 
+      console.log(subtasks);
 
       if (!allSubtasksDone) {
         setIsDone(allSubtasksDone);
@@ -44,6 +46,8 @@ export default function Tasks() {
         setIsDone(allSubtasksDone);
       }
     }
+
+    // useDispatch(addIconsForTask(item, status, {icon: mapping.icon}))
 
     setItems(prevState => {
       const newItems = prevState
@@ -62,7 +66,7 @@ export default function Tasks() {
   }, [isDone])
 
   const moveItem = (dragIndex, hoverIndex) => {
-    const item = items[dragIndex];
+    const item = taskData[dragIndex];
     setItems(prevState => {
       const newItems = prevState.filter((i, idx) => idx !== dragIndex);
       newItems.splice(hoverIndex, 0, item);
