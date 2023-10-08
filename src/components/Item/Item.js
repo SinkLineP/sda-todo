@@ -61,8 +61,7 @@ const Item = ({ item, index, moveItem, status }) => {
     collect: monitor => ({
       isDragging: monitor.isDragging(),
     }),
-    // canDrag: isDraggable && item.status !== "done", // Добавьте эту проверку
-    canDrag: isDraggable, // Добавьте эту проверку
+    canDrag: isDraggable && item.status !== "done", // Добавьте эту проверку
   }));
 
   const [show, setShow] = useState(false);

@@ -20,8 +20,8 @@ export default function Tasks() {
   const projectsStore = useSelector(state => state.projects);
   const [show, setShow] = useState(false);
   const [search, setSearch] = useState("");
-  const dispatch = useDispatch();
   const subtasksStore = useSelector(state => state.subtasks);
+  const [isDone, setIsDone] = useState(null);
 
 
   useEffect(() => {
@@ -34,17 +34,14 @@ export default function Tasks() {
     // Проверка выполненных подзадач
     if (status === "done" && item.status !== "done") {
       const subtasks = getSubtask(item.subtasks, subtasksStore);
-
-      console.log(subtasks);
-
       const allSubtasksDone = subtasks.every(obj => obj.statusSubtask === "done");
 
-      console.log(allSubtasksDone);
 
       if (!allSubtasksDone) {
-        console.log(allSubtasksDone);
-        // Если не все подзадачи выполнены, то не разрешаем перемещение в "done"
+        setIsDone(allSubtasksDone);
         return;
+      } else {
+        setIsDone(allSubtasksDone);
       }
     }
 
@@ -56,6 +53,13 @@ export default function Tasks() {
       return [...newItems];
     });
   };
+
+
+  useEffect(() => {
+    if (isDone !== null) {
+      if (isDone === false) setTimeout(() => setIsDone(null), 3000);
+    }
+  }, [isDone])
 
   const moveItem = (dragIndex, hoverIndex) => {
     const item = items[dragIndex];
@@ -84,17 +88,39 @@ export default function Tasks() {
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.container_header}>
-        <div>
+    <div className={styles.container_task}>
+      <div style={{width: "100%"}} className={styles.container_header}>
+        <div style={{
+          width: "25%"
+        }}>
           <NavLink to={"/"}>
             <p className={styles.button_header}>
               ◀ Вернуться к проектам
             </p>
           </NavLink>
         </div>
+
+        {isDone !== null && isDone === false && (
+          <div style={{
+            width: "40%"
+          }}>
+            <p style={{
+              fontWeight: "bolder",
+              color: "#6c4407",
+              textAlign: "center",
+              backgroundColor: "#fddda7",
+              padding: '2.8%',
+              borderRadius: '0.4rem',
+            }}>У вас остались еще не выполненые подзадачи!</p>
+          </div>
+        )}
+
         {IsAuth() && checkProjectsAuthor(projectsStore, project_id, currentUser) ? (
-          <div>
+          <div style={{
+            width: "25%",
+            textAlign: "right",
+            alignItems: "center"
+          }}>
             <p
               className={styles.button_header}
               onClick={onOpen}
@@ -117,6 +143,8 @@ export default function Tasks() {
           />
         </div>
       </div>
+
+
 
       <div className={styles.container_card}>
         {statuses.map((s, index) => {
