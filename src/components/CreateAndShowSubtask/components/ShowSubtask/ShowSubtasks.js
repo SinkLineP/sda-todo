@@ -116,7 +116,7 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
               fontWeight: "bold",
               color: setRangeValue(item.statusSubtask, "status").color
             }}>{item.statusSubtask.toUpperCase()}</span></div>
-            {location === "info" && (
+            {location === "info" && currentItem.status !== "done" && (
               <input
                 ref={inputStatusRef}
                 className={`${styles.input} ${changeClassName(
@@ -150,7 +150,7 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
               fontWeight: "bold",
               color: setRangeValue(item.prioritySubtask, "priority").color
             }}>{item.prioritySubtask.toUpperCase()}</span></div>
-            {location === "info" && (
+            {location === "info" && currentItem.status !== "done" && (
               <input
                 ref={inputPriorityRef}
                 className={`${styles.input} ${changeClassName(
@@ -175,10 +175,18 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
         </div>
 
         {isAuth && currentUser.id === item.author && (
-          <div className={styles.container_buttons} style={{
-          }}>
-            <button className={styles.edit} onClick={() => editSubtask(item.id)}>Редактировать</button>
-            <button className={styles.delete} onClick={() => deleteSubtask(item)}>Удалить</button>
+          <div className={styles.container_buttons}>
+            {location !== "form" ? currentItem.status !== "done" && (
+              <>
+                {currentItem.status !== "development" && (<button className={styles.edit} onClick={() => editSubtask(item.id)}>Редактировать</button>)}
+                <button className={styles.delete} onClick={() => deleteSubtask(item)}>Удалить</button>
+              </>
+            ) : (
+              <>
+                <button className={styles.edit} onClick={() => editSubtask(item.id)}>Редактировать</button>
+                <button className={styles.delete} onClick={() => deleteSubtask(item)}>Удалить</button>
+              </>
+            )}
           </div>
         )}
       </div>

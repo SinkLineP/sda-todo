@@ -98,7 +98,6 @@ export default function InfoTask({ show, onClose, item }) {
         <div className={"close-btn-ctn"}>
           <div className={"container-title"}>
             <ColorizeWrapText text={item.status} label={`${item.title} #${item.numberTask}`} type={"title"} />
-
             <p>Автор: {getAuthorProject(item.author, usersStore)}</p>
           </div>
 
@@ -123,7 +122,7 @@ export default function InfoTask({ show, onClose, item }) {
                   backgroundAfterClick={"#70a138"}
                 />
 
-                {item.status !== "done" && (
+                {item.status === "queue" && (
                   <HoverButton
                     onClick={() => {}}
                     IconButton={IconDeleteCrossSVG}
@@ -142,7 +141,6 @@ export default function InfoTask({ show, onClose, item }) {
             <h3>Описание задачи:</h3>
             <p>{item.description}</p>
           </div>
-
 
           <ColorizeWrapText text={item.priority} label={"Приоритет задачи: "} type={"text"} />
 
@@ -180,17 +178,15 @@ export default function InfoTask({ show, onClose, item }) {
 
           <h3>{getSubtask(item.subtasks, subtasksStore).length === 0 && (<p>Подзадач не найденно!</p>)}</h3>
 
-          {item.status !== "done" && (
-            <CreateAndShowSubtask
-              currentItem={item}
-              subtasks={getSubtask(item.subtasks, subtasksStore)}
-              location={"info"}
-              showForm={showFormSubtask}
-              setShowForm={(val) => setShowFormSubtask(val)}
-              task_id={item.id}
-              task_author={item.author}
-            />
-          )}
+          <CreateAndShowSubtask
+            currentItem={item}
+            subtasks={getSubtask(item.subtasks, subtasksStore)}
+            location={"info"}
+            showForm={showFormSubtask}
+            setShowForm={(val) => setShowFormSubtask(val)}
+            task_id={item.id}
+            task_author={item.author}
+          />
         </div>
 
         <div style={{
