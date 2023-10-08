@@ -3,16 +3,20 @@ import { useDrag, useDrop } from "react-dnd";
 import InfoTask from "../InfoTask/InfoTask";
 import ITEM_TYPE from "../../data/types";
 import {useDispatch, useSelector} from "react-redux";
-import {startTask, endTask, editTask, editStatusTask} from "../../store/Reducers/taskReducer";
+import {
+  startTask,
+  endTask,
+  editTask,
+  editStartDate,
+  editEndDate
+} from "../../store/Reducers/taskReducer";
 import IsAuth from "../../hooks/IsAuth";
 import styles from "./Item.module.css";
-import {getSubtask} from "../../Functions";
 
 const Item = ({ item, index, moveItem, status }) => {
   const ref = useRef(null);
   const dispatch = useDispatch();
   const tasksStore = useSelector(state => state.tasks);
-  const subtasksStore = useSelector(state => state.subtasks);
 
   // Определение, разрешено ли перетаскивание
   const isDraggable = IsAuth();
@@ -91,41 +95,22 @@ const Item = ({ item, index, moveItem, status }) => {
 
   useEffect(() => {
     if (!isDragging) {
-      if (item.status === "development" && tasksStore.find(task => task.id === item.id).startDate === null) {
-        dispatch(editTask(item.id, {
-          ...item,
-          startDate: startDate
-        }));
-      } else if (item.status === "queue" && tasksStore.find(task => task.id === item.id).startDate !== null) {
-        dispatch(editTask(item.id, {
-          ...item,
-          startDate: null,
-          endDate: null
-        }));
-      } else if (item.status === "done" && tasksStore.find(task => task.id === item.id).startDate !== null && tasksStore.find(task => task.id === item.id).endDate === null) {
-        dispatch(editTask(item.id, {
-          ...item,
-          startDate: tasksStore.find(task => task.id === item.id).startDate,
-          endDate: endDate
-        }));
-      } else {
-        dispatch(editTask(item.id, item));
+      if (item.status === "queue" && tasksStore.find(task => task.id === item.id).startDate !== null) {
+        dispatch(editStartDate(item.id, null, item.status, "⭕️"));
+        dispatch(editEndDate(item.id, null, item.status, "⭕️"));
       }
 
-      if (isOver) {
-        if (item.status !== "done") {
-          const subtasks = getSubtask(item.subtasks, subtasksStore);
-          const allSubtasksDone = subtasks.every((obj) => obj.statusSubtask === "done");
+      if (item.status === "development" && tasksStore.find(task => task.id === item.id).startDate === null) {
+        dispatch(editStartDate(item.id, startDate, item.status, "🔆️"));
+        dispatch(editEndDate(item.id, null, item.status, "🔆️"));
+      }
 
-          if (allSubtasksDone) {
-            console.log("all subtask done");
-          } else {
-            console.log("all subtask failed");
-          }
-        }
+      if (item.status === "done" && tasksStore.find(task => task.id === item.id).startDate !== null && tasksStore.find(task => task.id === item.id).endDate === null) {
+        dispatch(editStartDate(item.id, tasksStore.find(task => task.id === item.id).startDate, item.status, "✅️"));
+        dispatch(editEndDate(item.id, endDate, item.status, "✅️"));
       }
     }
-  }, [dispatch, isDragging, item.status, isOver]);
+  }, [dispatch, isDragging, item.status, item.subtasks]);
 
   return (
     <Fragment>
@@ -140,6 +125,7 @@ const Item = ({ item, index, moveItem, status }) => {
         <p className={"item-title"}>
           {item.title} #{item.numberTask}
         </p>
+        <p>Колличество подзадач: {item.subtasks.length}</p>
         <p className={"item-status"}>{item.icon}</p>
         {/* Кнопка начала задачи */}
         {item.status === "queue" && IsAuth() && (

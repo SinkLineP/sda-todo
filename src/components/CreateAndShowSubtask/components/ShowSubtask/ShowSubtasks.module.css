@@ -24,7 +24,7 @@
 
 .container_buttons button {
     width: 7vw;
-    height: 4vh;
+    height: 40px;
     border: none;
     font-weight: bold;
     text-transform: uppercase;

@@ -2,12 +2,11 @@ import React, {useEffect, useState} from "react";
 import Item from "../components/Item/Item";
 import DropWrapper from "../components/DropWrapper/DropWrapper";
 import Col from "../components/Col/Col";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {NavLink, useParams} from "react-router-dom";
 import IsAuth from "../hooks/IsAuth";
 import CreateTaskModal from "../components/CreateTaskModal/CreateTaskModal";
 import styles from "./styles/Tasks.module.css";
-import {addTask, endTask, startTask} from "../store/Reducers/taskReducer";
 import {checkProjectsAuthor, getSubtask} from "../Functions";
 
 
@@ -33,7 +32,7 @@ export default function Tasks() {
 
     // Проверка выполненных подзадач
     if (status === "done" && item.status !== "done") {
-      const subtasks = getSubtask(item.subtasks, subtasksStore);
+      const subtasks = getSubtask(taskData.find(i => i.id === item.id).subtasks, subtasksStore);
       const allSubtasksDone = subtasks.every(obj => obj.statusSubtask === "done");
 
 

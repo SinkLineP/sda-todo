@@ -12,6 +12,8 @@ const ActionTypes = {
   END_TASK: 'END_TASK',
   EDIT_STATUS_TASK: 'EDIT_STATUS_TASK',
   EDIT_PRIORITY_TASK: 'EDIT_PRIORITY_TASK',
+  EDIT_START_DATE: 'EDIT_START_DATE',
+  EDIT_END_DATE: 'EDIT_END_DATE'
 };
 
 function TaskReducer(state = initialState, action) {
@@ -120,6 +122,34 @@ function TaskReducer(state = initialState, action) {
         return task;
       });
 
+    case ActionTypes.EDIT_START_DATE:
+      const { id_start, start_date, start_status, start_icon } = action.payload;
+      return state.map((task) => {
+        if (task.id === id_start) {
+          return {
+            ...task,
+            startDate: start_date,
+            status: start_status,
+            icon: start_icon
+          };
+        }
+        return task;
+      });
+
+    case ActionTypes.EDIT_END_DATE:
+      const { id_end, end_date, end_status, end_icon } = action.payload;
+      return state.map((task) => {
+        if (task.id === id_end) {
+          return {
+            ...task,
+            endDate: end_date,
+            status: end_status,
+            icon: end_icon
+          };
+        }
+        return task;
+      });
+
     default:
       return state;
   }
@@ -174,6 +204,15 @@ export const editStatusTask = (id_status, status) => ({
   type: ActionTypes.EDIT_STATUS_TASK,
   payload: { id_status, status }
 })
+
+export const editStartDate = (id_start, start_date, start_status, start_icon) => ({
+  type: ActionTypes.EDIT_START_DATE,
+  payload: { id_start, start_date, start_status, start_icon }
+});
+export const editEndDate = (id_end, end_date, end_status, end_icon) => ({
+  type: ActionTypes.EDIT_END_DATE,
+  payload: { id_end, end_date, end_status, end_icon }
+});
 
 
 export default TaskReducer;

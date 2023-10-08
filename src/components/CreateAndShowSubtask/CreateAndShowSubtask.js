@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./CreateAndShowSubtask.module.css";
-import {ErrorMessage} from "formik";
 import ButtonShowOrHideSubtask from "./components/ButtonShowOrHideSubtask/ButtonShowOrHideSubtask";
 import FormSubtask from "./components/FormSubtask/FormSubtask";
 import ShowSubtasks from "./components/ShowSubtask/ShowSubtasks";
@@ -32,14 +31,13 @@ const CreateAndShowSubtask = ({ subtasks, setSubtasks, location, showForm, setSh
     }
   }
 
-
   return (
     <div className={styles.container_field}>
       <div>
         <div>
-          {location === "form" && (<p className={styles.title_subtask}>Подзадачи: <ErrorMessage className={"errors"} name="status" component="span" /></p>)}
+          <p className={styles.title_subtask}>Подзадачи: </p>
         </div>
-        <CheckModify setShowForm={setShowForm} location={location} isAuth={isAuth} showForm={showForm} />
+        {location === "form" && <CheckModify setShowForm={setShowForm} location={location} isAuth={isAuth} showForm={showForm} />}
       </div>
 
       {showForm === true && (
@@ -57,8 +55,6 @@ const CreateAndShowSubtask = ({ subtasks, setSubtasks, location, showForm, setSh
 
       {subtasks.length !== 0 && (
         <>
-          <p className={styles.title_subtask}>Список подзадач: </p>
-
           <div className={styles.container_show}>
             {subtasks.map((item) => {
               return (
