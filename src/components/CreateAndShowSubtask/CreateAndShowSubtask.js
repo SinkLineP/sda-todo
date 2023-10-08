@@ -11,12 +11,9 @@ const CreateAndShowSubtask = ({ subtasks, setSubtasks, location, showForm, setSh
   const currentUser = useSelector(state => state.auth.currentUser);
   const isAuth = IsAuth();
 
+
   const IsShowCreateSubtask = ({showForm, setShowForm}) => {
-    if (showForm === false) {
-      return <ButtonShowOrHideSubtask title={"Добавить подзадачи"} func={() => setShowForm(true)} />;
-    } else {
-      return <ButtonShowOrHideSubtask title={"Скрыть форму"} func={() => setShowForm(false)} />;
-    }
+      return <ButtonShowOrHideSubtask title={!showForm ? "Добавить подзадачи" : "Скрыть форму"} func={() => setShowForm(!showForm)} />;
   }
 
   const CheckModify = ({ location, setShowForm, showForm, isAuth }) => {
