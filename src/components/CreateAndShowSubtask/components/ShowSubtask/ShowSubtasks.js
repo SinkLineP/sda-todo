@@ -4,7 +4,7 @@ import IsAuth from "../../../../hooks/IsAuth";
 import {useDispatch, useSelector} from "react-redux";
 import {editPriority, editStatus, removeSubtask} from "../../../../store/Reducers/subtaskReducer";
 import {removeSubtaskFromTask} from "../../../../store/Reducers/taskReducer";
-import {StatusesColors} from "../../../../Functions";
+import {getSubtask, StatusesColors} from "../../../../Functions";
 
 const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) => {
   const isAuth = IsAuth();
@@ -178,8 +178,8 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
           <div className={styles.container_buttons}>
             {location !== "form" ? currentItem.status !== "done" && (
               <>
-                {currentItem.status !== "development" && (<button className={styles.edit} onClick={() => editSubtask(item.id)}>Редактировать</button>)}
-                <button className={styles.delete} onClick={() => deleteSubtask(item)}>Удалить</button>
+                {currentItem.status !== "development" && item.statusSubtask !== "done" && (<button className={styles.edit} onClick={() => editSubtask(item.id)}>Редактировать</button>)}
+                {item.statusSubtask !== "done" && (<button className={styles.delete} onClick={() => deleteSubtask(item)}>Удалить</button>)}
               </>
             ) : (
               <>
