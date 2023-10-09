@@ -33,6 +33,7 @@ export default function ColorizeWrapText({ text, label, type, isEditing, setEdit
               return (
                 <>
                   <EditView
+                    sizeIcon={"30px"}
                     handleChange={handleChange}
                     value={value}
                     tag="h1"

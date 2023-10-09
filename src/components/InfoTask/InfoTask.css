@@ -10,7 +10,7 @@
 }
 
 .task-description {
-    /*background-color: #27aa80;*/
+    max-width: 50%;
 }
 
 .icon-file {

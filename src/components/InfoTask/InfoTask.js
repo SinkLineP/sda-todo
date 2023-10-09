@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import Modal from "react-modal";
 import {
-  calculateTimeInWork,
+  calculateTimeInWork, EditView,
   formatFileSize,
   getAuthorProject,
   getCurrentDate, getSubtask, showShortNameFile
@@ -219,7 +219,21 @@ export default function InfoTask({ show, onClose, item }) {
         <div>
           <div className={"task-description"}>
             <h3>Описание задачи:</h3>
-            <p>{item.description}</p>
+            {isEditing ? (
+              <>
+                <EditView
+                  sizeIcon={"30px"}
+                  handleChange={(val) => setDesc(val)}
+                  value={desc}
+                  tag="p"
+                  style={{
+                    borderRadius: "0.3rem",
+                    minWidth: "100px",
+                    marginLeft: "2px"
+                  }}
+                />
+              </>
+            ) : (<p>{item.description}</p>)}
           </div>
 
           <ColorizeWrapText text={item.priority} label={"Приоритет задачи: "} type={"text"} />

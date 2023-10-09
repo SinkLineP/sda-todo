@@ -174,7 +174,6 @@ export const EditView = ({ tag, style, handleChange, value }) => {
         >
           {value}
         </Tag>
-        {/*<IconEditSVG style={{ width: "30px", height: "30px", marginLeft: "20px" }} />*/}
       </div>
     </div>
   );
