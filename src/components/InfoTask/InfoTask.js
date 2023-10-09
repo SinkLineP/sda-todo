@@ -91,7 +91,7 @@ export default function InfoTask({ show, onClose, item }) {
   };
 
   const ShowButtonWithStatus = (status, task_id) => {
-    if (status === "queue") {
+    if (status === "queue" && !isEditing) {
       return (
         <HoverButton
           onClick={() => {
@@ -131,16 +131,23 @@ export default function InfoTask({ show, onClose, item }) {
     return value.length !== 0 && value[0] !== " ";
   }
 
+  const handleChange = (T) => {
+    setDesc(T);
+  }
+
   const ButtonIsEditing = () => {
     if (isEditing) {
+      // console.log(title);
+      // console.log(desc);
+
       return (
         <>
           <HoverButton
-            onClick={checkIsNotEmptyValue(title) ? handleSaveEditTask : () => {}}
+            onClick={checkIsNotEmptyValue(title) && checkIsNotEmptyValue(desc) ? handleSaveEditTask : () => {}}
             IconButton={IconDeleteCrossSVG}
             titleButton={"Сохранить"}
-            backgroundBeforeClick={checkIsNotEmptyValue(title) ? "#99c07f" : "#cccccc"}
-            backgroundAfterClick={checkIsNotEmptyValue(title) ? "#70a138" : "#a1a1a1"}
+            backgroundBeforeClick={checkIsNotEmptyValue(title) && checkIsNotEmptyValue(desc) ? "#99c07f" : "#cccccc"}
+            backgroundAfterClick={checkIsNotEmptyValue(title) && checkIsNotEmptyValue(desc) ? "#70a138" : "#a1a1a1"}
           />
 
           <HoverButton
@@ -192,23 +199,25 @@ export default function InfoTask({ show, onClose, item }) {
           <div className={"container-buttons-info"}>
             {IsAuth() && currentUser.id === item.author ? (
               <>
-                <HoverButton
-                  onClick={() => {
-                    item.subtasks.map((id) => {
-                      dispatch(removeSubtask(id));
-                    })
+                {!isEditing && (
+                  <HoverButton
+                    onClick={() => {
+                      item.subtasks.map((id) => {
+                        dispatch(removeSubtask(id));
+                      })
 
-                    item.comments.map((id) => {
-                      dispatch(removeComment(id));
-                    })
+                      item.comments.map((id) => {
+                        dispatch(removeComment(id));
+                      })
 
-                    dispatch(removeTask(item.id));
-                  }}
-                  IconButton={IconDeleteCrossSVG}
-                  titleButton={"Удалить"}
-                  backgroundBeforeClick={"#d00000"}
-                  backgroundAfterClick={"#70a138"}
-                />
+                      dispatch(removeTask(item.id));
+                    }}
+                    IconButton={IconDeleteCrossSVG}
+                    titleButton={"Удалить"}
+                    backgroundBeforeClick={"#d00000"}
+                    backgroundAfterClick={"#70a138"}
+                  />
+                )}
 
                 {item.status === "queue" && <ButtonIsEditing />}
               </>
@@ -222,7 +231,6 @@ export default function InfoTask({ show, onClose, item }) {
             {isEditing ? (
               <>
                 <EditView
-                  sizeIcon={"30px"}
                   handleChange={(val) => setDesc(val)}
                   value={desc}
                   tag="p"
@@ -237,6 +245,9 @@ export default function InfoTask({ show, onClose, item }) {
           </div>
 
           <ColorizeWrapText text={item.priority} label={"Приоритет задачи: "} type={"text"} />
+          {/*{isEditing && (*/}
+          {/*  */}
+          {/*)}*/}
 
           {item.files !== null ? (
             <>

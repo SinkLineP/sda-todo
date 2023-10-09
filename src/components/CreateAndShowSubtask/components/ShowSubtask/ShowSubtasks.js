@@ -167,7 +167,8 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
                   setRangePriority(parseInt(e.target.value))
                 }}
                 style={{cursor: "pointer"}}
-            />)}
+              />
+            )}
           </div>
         </div>
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {ReactComponent as IconEditSVG} from "./icons/edit.svg";
 
 
@@ -146,31 +146,82 @@ export const getSubtask = (data, subtasksStore) => {
   return subtasksStore.filter(item => data.includes(item.id));
 }
 
-export const EditView = ({ tag, style, handleChange, value }) => {
-  const Tag = tag || 'h1'; // По умолчанию используется <h1> тег
+// export const EditView = ({ tag, style, handleChange, value }) => {
+//   const Tag = tag || "h1"
+//   const [isValid, setIsValid] = useState(true);
+//
+//   const handleBlur = (e) => {
+//     const newValue = e.currentTarget.textContent.trim();
+//     if (newValue.trim() === '') {
+//       setIsValid(false);
+//     } else {
+//       setIsValid(true);
+//       handleChange(newValue);
+//     }
+//   };
+//
+//   return (
+//     <div>
+//       {!isValid && <div className="errors">Значение не может быть пустым.</div>}
+//       <div style={{
+//         display: 'flex',
+//         flexDirection: 'row',
+//         alignItems: 'center',
+//         height: "40px"
+//       }}>
+//         <Tag
+//           className={`shadow-box ${isValid ? '' : 'error'}`}
+//           style={{
+//             borderWidth: '1px',
+//             borderStyle: 'solid',
+//             borderColor: !isValid ? '#d00000' : '',
+//             minWidth: "100px",
+//             padding: "0.3rem",
+//             ...style
+//           }}
+//           suppressContentEditableWarning={true}
+//           contentEditable='true'
+//           onBlur={handleBlur}
+//         >
+//           {value}
+//         </Tag>
+//       </div>
+//     </div>
+//   );
+// };
+
+
+export const EditView = ({ tag, handleChange, value, style }) => {
+  const Tag = tag || "h1"
+
+  const handleBlur = (e) => {
+    const newValue = e.currentTarget.textContent.trim();
+    handleChange(newValue);
+  };
 
   return (
-    <div style={{
-      display: "flex",
-      flexDirection: "column",
-    }}>
-
+    <div>
+      {!value && <div className="errors">Значение не может быть пустым.</div>}
       <div style={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: "40px",
+        marginTop: "4px"
       }}>
         <Tag
-          className={"shadow-box"}
+          className={`shadow-box`}
           style={{
-            borderWidth: "1px",
-            borderStyle: "solid",
-            borderColor: value === "" && "#d00000",
-            ...style // Переданные стили будут объединены с этими стилями
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            borderColor: !value ? '#d00000' : '',
+            minWidth: "100px",
+            padding: "0.3rem",
+            ...style
           }}
           suppressContentEditableWarning={true}
           contentEditable='true'
-          onBlur={e => handleChange(e.currentTarget.textContent)}
+          onBlur={handleBlur}
         >
           {value}
         </Tag>
