@@ -12,7 +12,7 @@ import "./InfoTask.css";
 import iconFile from "./icons/file.png";
 import iconDownload from "./icons/download.png";
 import ScrollableWrap from "../ScrollableWrap/ScrollableWrap";
-import {endTask, removeTask, startTask} from "../../store/Reducers/taskReducer";
+import {editTask, endTask, removeTask, startTask} from "../../store/Reducers/taskReducer";
 import IsAuth from "../../hooks/IsAuth";
 import {ReactComponent as IconDeleteCrossSVG} from "./icons/delete-cross.svg";
 import Comments from "../Comments/Comments";
@@ -20,6 +20,7 @@ import {removeSubtask} from "../../store/Reducers/subtaskReducer";
 import {removeComment} from "../../store/Reducers/commentReducer";
 import CreateAndShowSubtask from "../CreateAndShowSubtask/CreateAndShowSubtask";
 import HoverButton from "../CreateTaskModal/components/HoverButton";
+
 
 
 
@@ -33,6 +34,9 @@ export default function InfoTask({ show, onClose, item }) {
   const [showFormSubtask, setShowFormSubtask] = useState(false);
   const [isDone, setIsDone] = useState(null);
   const taskData = useSelector(state => state.tasks);
+  const [isEditing, setIsEditing] = useState(false);
+  const [title, setTitle] = useState(item.title);
+  const [desc, setDesc] = useState(item.description);
 
 
   useEffect(() => {
@@ -49,6 +53,30 @@ export default function InfoTask({ show, onClose, item }) {
       a.click();
     }
   };
+
+  const handleEditTask = () => {
+    setIsEditing(true);
+  }
+
+  const handleSaveEditTask = () => {
+    setIsEditing(false);
+    dispatch(editTask(item.id, {
+      ...item,
+      title: title,
+      description: desc,
+      priority: item.priority,
+      subtasks: item.subtasks,
+      files: item.files,
+      status: item.status,
+    }));
+  }
+
+
+
+  const handleCancelEditTask = () => {
+    setIsEditing(false);
+    setTitle(item.title);
+  }
 
   const customStyles = {
     content: {
@@ -102,6 +130,40 @@ export default function InfoTask({ show, onClose, item }) {
     }
   }
 
+  const ButtonIsEditing = () => {
+    if (isEditing) {
+      return (
+        <>
+          <HoverButton
+            onClick={handleSaveEditTask}
+            IconButton={IconDeleteCrossSVG}
+            titleButton={"Сохранить"}
+            backgroundBeforeClick={"#99c07f"}
+            backgroundAfterClick={"#70a138"}
+          />
+
+          <HoverButton
+            onClick={handleCancelEditTask}
+            IconButton={IconDeleteCrossSVG}
+            titleButton={"Отменить"}
+            backgroundBeforeClick={"#f36464"}
+            backgroundAfterClick={"#70a138"}
+          />
+        </>
+      )
+    } else {
+      return (
+        <HoverButton
+          onClick={handleEditTask}
+          IconButton={IconDeleteCrossSVG}
+          titleButton={"Редактировать"}
+          backgroundBeforeClick={"#2681c4"}
+          backgroundAfterClick={"#70a138"}
+        />
+      )
+    }
+  }
+
   return (
     <Modal
       isOpen={show}
@@ -112,7 +174,17 @@ export default function InfoTask({ show, onClose, item }) {
       <div className={"container-info-task"}>
         <div className={"close-btn-ctn"}>
           <div className={"container-title"}>
-            <ColorizeWrapText text={item.status} label={`${item.title} #${item.numberTask}`} type={"title"} />
+            <ColorizeWrapText
+              setEditValue={(val) => setTitle(val)}
+              isEditing={isEditing}
+              text={item.status}
+              label={item.title}
+              numberTask={item.numberTask}
+              type={"title"}
+              value={title}
+              setValue={(val) => setTitle(val)}
+            />
+
             <p>Автор: {getAuthorProject(item.author, usersStore)}</p>
           </div>
 
@@ -137,15 +209,7 @@ export default function InfoTask({ show, onClose, item }) {
                   backgroundAfterClick={"#70a138"}
                 />
 
-                {item.status === "queue" && (
-                  <HoverButton
-                    onClick={() => {}}
-                    IconButton={IconDeleteCrossSVG}
-                    titleButton={"Редактировать"}
-                    backgroundBeforeClick={"#2681c4"}
-                    backgroundAfterClick={"#70a138"}
-                  />
-                )}
+                {item.status === "queue" && <ButtonIsEditing />}
               </>
             ) : ("")}
             {IsAuth() && ShowButtonWithStatus(item.status, item.id)}

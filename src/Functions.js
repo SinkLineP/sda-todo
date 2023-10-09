@@ -1,3 +1,8 @@
+import React from "react";
+import {ReactComponent as IconEditSVG} from "./icons/edit.svg";
+
+
+
 export const StatusesColors = {
   Queue: "#eba946",
   Development: "#00C2E0",
@@ -139,4 +144,21 @@ export const maxSizeFileUpload = 104857600;
 
 export const getSubtask = (data, subtasksStore) => {
   return subtasksStore.filter(item => data.includes(item.id));
+}
+
+export const EditView = ({children}) => {
+  return (
+    <div style={{
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center"
+    }}>
+      {children}
+      <IconEditSVG style={{
+        height: "auto",
+        width: "30px",
+        marginLeft: "10px"
+      }} />
+    </div>
+  )
 }
