@@ -146,19 +146,36 @@ export const getSubtask = (data, subtasksStore) => {
   return subtasksStore.filter(item => data.includes(item.id));
 }
 
-export const EditView = ({children}) => {
+export const EditView = ({ tag, style, handleChange, value }) => {
+  const Tag = tag || 'h1'; // По умолчанию используется <h1> тег
+
   return (
     <div style={{
       display: "flex",
-      flexDirection: "row",
-      alignItems: "center"
+      flexDirection: "column",
     }}>
-      {children}
-      <IconEditSVG style={{
-        height: "auto",
-        width: "30px",
-        marginLeft: "10px"
-      }} />
+
+      <div style={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+      }}>
+        <Tag
+          className={"shadow-box"}
+          style={{
+            borderWidth: "1px",
+            borderStyle: "solid",
+            borderColor: value === "" && "#d00000",
+            ...style // Переданные стили будут объединены с этими стилями
+          }}
+          suppressContentEditableWarning={true}
+          contentEditable='true'
+          onBlur={e => handleChange(e.currentTarget.textContent)}
+        >
+          {value}
+        </Tag>
+        {/*<IconEditSVG style={{ width: "30px", height: "30px", marginLeft: "20px" }} />*/}
+      </div>
     </div>
-  )
-}
+  );
+};

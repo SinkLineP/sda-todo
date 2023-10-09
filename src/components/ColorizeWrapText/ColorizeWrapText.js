@@ -30,24 +30,23 @@ export default function ColorizeWrapText({ text, label, type, isEditing, setEdit
     const IsEdit = ({isEditing, type, label}) => {
         if (isEditing) {
             if (type === "title") {
-              return <EditView>
-                <h1
-                  className={"shadow-box"}
-                  style={{
-                    borderWidth: "1px",
-                    borderColor: "#cccccc",
-                    borderStyle: "solid",
-                    borderRadius: "0.3rem",
-                    minWidth: "100px"
-                  }}
-                  suppressContentEditableWarning={true}
-                  contentEditable='true'
-                  onBlur={e => handleChange(e.currentTarget.textContent)}
-                >{value}</h1>
-                <h1 style={{
-                  marginLeft: "20px"
-                }}> #{numberTask}</h1>
-              </EditView>
+              return (
+                <>
+                  <EditView
+                    handleChange={handleChange}
+                    value={value}
+                    tag="h1"
+                    style={{
+                      borderRadius: "0.3rem",
+                      minWidth: "100px",
+                      marginLeft: "2px"
+                    }}
+                  />
+                  <h1 style={{
+                    marginLeft: "20px"
+                  }}> #{numberTask}</h1>
+                </>
+              )
             } else {
               return (
                 <>
@@ -77,7 +76,7 @@ export default function ColorizeWrapText({ text, label, type, isEditing, setEdit
 
     return (
       <>
-      {type === "title" && value === "" && <p className={"errors"}>Поле не должно быть пустым</p>}
+
         <div className={"wrap-container"}>
             <IsEdit type={type} isEditing={isEditing} label={label} />
             <p style={{backgroundColor: StatusColor(text)}} className={"wrap-text"}>{text}</p>
