@@ -60,6 +60,7 @@ export default function InfoTask({ show, onClose, item }) {
 
   const handleSaveEditTask = () => {
     setIsEditing(false);
+
     dispatch(editTask(item.id, {
       ...item,
       title: title,
@@ -70,8 +71,6 @@ export default function InfoTask({ show, onClose, item }) {
       status: item.status,
     }));
   }
-
-
 
   const handleCancelEditTask = () => {
     setIsEditing(false);
@@ -90,8 +89,6 @@ export default function InfoTask({ show, onClose, item }) {
       overflowY: "auto",
     }
   };
-
-
 
   const ShowButtonWithStatus = (status, task_id) => {
     if (status === "queue") {
@@ -130,16 +127,20 @@ export default function InfoTask({ show, onClose, item }) {
     }
   }
 
+  const checkIsNotEmptyValue = (value) => {
+    return value.length !== 0 && value[0] !== " ";
+  }
+
   const ButtonIsEditing = () => {
     if (isEditing) {
       return (
         <>
           <HoverButton
-            onClick={handleSaveEditTask}
+            onClick={checkIsNotEmptyValue(title) ? handleSaveEditTask : () => {}}
             IconButton={IconDeleteCrossSVG}
             titleButton={"Сохранить"}
-            backgroundBeforeClick={"#99c07f"}
-            backgroundAfterClick={"#70a138"}
+            backgroundBeforeClick={checkIsNotEmptyValue(title) ? "#99c07f" : "#cccccc"}
+            backgroundAfterClick={checkIsNotEmptyValue(title) ? "#70a138" : "#a1a1a1"}
           />
 
           <HoverButton

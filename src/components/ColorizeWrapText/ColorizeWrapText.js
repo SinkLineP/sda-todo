@@ -37,7 +37,8 @@ export default function ColorizeWrapText({ text, label, type, isEditing, setEdit
                     borderWidth: "1px",
                     borderColor: "#cccccc",
                     borderStyle: "solid",
-                    borderRadius: "0.3rem"
+                    borderRadius: "0.3rem",
+                    minWidth: "100px"
                   }}
                   suppressContentEditableWarning={true}
                   contentEditable='true'
@@ -75,9 +76,12 @@ export default function ColorizeWrapText({ text, label, type, isEditing, setEdit
     }
 
     return (
+      <>
+      {type === "title" && value === "" && <p className={"errors"}>Поле не должно быть пустым</p>}
         <div className={"wrap-container"}>
             <IsEdit type={type} isEditing={isEditing} label={label} />
             <p style={{backgroundColor: StatusColor(text)}} className={"wrap-text"}>{text}</p>
         </div>
+      </>
     )
 }
