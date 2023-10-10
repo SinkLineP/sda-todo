@@ -2,32 +2,21 @@ import React, {useState} from "react";
 import styles from "./ShowSubtasks.module.css";
 import IsAuth from "../../../../hooks/IsAuth";
 import {useDispatch, useSelector} from "react-redux";
-import {
-  editPrioritySubtask,
-  editStatusSubtask,
-  removeSubtask
-} from "../../../../store/Reducers/subtaskReducer";
+import {editPrioritySubtask, editStatusSubtask, removeSubtask} from "../../../../store/Reducers/subtaskReducer";
 import {removeSubtaskFromTask} from "../../../../store/Reducers/taskReducer";
-import {setRangeValuePriority, setRangeValueStatus, StatusesColors} from "../../../../Functions";
+import {setRangeValuePriority, setRangeValueStatus} from "../../../../Functions";
 import RangePriority from "../../../RangeComponents/RangePriority/RangePriority";
 import RangeStatus from "../../../RangeComponents/RangeStatus/RangeStatus";
+import {deleteSubtask} from "./Functions";
+import DeleteSubtaskButton from "./components/DeleteSubtaskButton";
+
 
 const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) => {
   const isAuth = IsAuth();
   const currentUser = useSelector(state => state.auth.currentUser);
   const dispatch = useDispatch();
 
-  const deleteSubtask = (item) => {
-    if (location === "form") {
-      const updatedData = data.filter((subtask) => subtask.id !== item.id);
 
-      return setData(updatedData);
-    } else {
-      dispatch(removeSubtask(item.id));
-
-      dispatch(removeSubtaskFromTask(item.id, task_id))
-    }
-  };
   const editSubtask = () => {
     if (location === "form") {
       console.log("local-subtask");
@@ -116,11 +105,25 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
             {location !== "form" ? currentItem.status !== "done" && (
               <>
                 {currentItem.status !== "development" && item.statusSubtask !== "done" && (<button className={styles.edit} onClick={() => editSubtask(item.id)}>Редактировать</button>)}
-                {item.statusSubtask !== "done" && (<button className={styles.delete} onClick={() => deleteSubtask(item)}>Удалить</button>)}
+                {item.statusSubtask !== "done" && (
+                  <DeleteSubtaskButton
+                    item={item}
+                    task_id={task_id}
+                    location={location}
+                    data={data}
+                    setData={setData}
+                  />
+                )}
               </>
             ) : (
               <>
-                <button className={styles.delete} onClick={() => deleteSubtask(item)}>Удалить</button>
+                <DeleteSubtaskButton
+                  item={item}
+                  task_id={task_id}
+                  location={location}
+                  data={data}
+                  setData={setData}
+                />
               </>
             )}
           </div>
