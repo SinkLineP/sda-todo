@@ -83,8 +83,16 @@
 }
 
 
+.container_status_and_priority {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 100%;
+    padding-left: 10%;
+}
 
-
-
+.title_status {
+    font-weight: bold;
+}
 
 

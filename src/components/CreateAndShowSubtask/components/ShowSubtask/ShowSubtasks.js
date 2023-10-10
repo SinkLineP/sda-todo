@@ -1,14 +1,13 @@
 import React, {useState} from "react";
-import styles from "./ShowSubtasks.module.css";
 import IsAuth from "../../../../hooks/IsAuth";
 import {useDispatch, useSelector} from "react-redux";
-import {editPrioritySubtask, editStatusSubtask, removeSubtask} from "../../../../store/Reducers/subtaskReducer";
-import {removeSubtaskFromTask} from "../../../../store/Reducers/taskReducer";
+import {editPrioritySubtask, editStatusSubtask} from "../../../../store/Reducers/subtaskReducer";
 import {setRangeValuePriority, setRangeValueStatus} from "../../../../Functions";
 import RangePriority from "../../../RangeComponents/RangePriority/RangePriority";
 import RangeStatus from "../../../RangeComponents/RangeStatus/RangeStatus";
-import {deleteSubtask} from "./Functions";
 import DeleteSubtaskButton from "./components/DeleteSubtaskButton";
+import styles from "./ShowSubtasks.module.css";
+import RangeWrap from "./components/RangeWrap";
 
 
 const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) => {
@@ -53,51 +52,26 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
           </div>
         </div>
 
-        <div style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-around",
-          width: "100%",
-          paddingLeft: "10%",
-        }}>
-          <div>
-            <div className={"no-select-text"} style={{
-              fontWeight: "bold"
-            }}>Статус: <span style={{
-              fontWeight: "bold",
-              color: setRangeValueStatus(item.statusSubtask).color
-            }}>{item.statusSubtask.toUpperCase()}</span></div>
-            {location === "info" && currentItem.status !== "done" && (
-              <RangeStatus
-                item={item}
-                rangeStatus={rangeStatus}
-                setRangeStatus={(val) => setRangeStatus(val)}
-                dispatchFunc={(e) => dispatch(editStatusSubtask(item.id, parseInt(e.target.value)))}
-                disabled={setRangeValueStatus(item.statusSubtask).value === 2 || currentItem.status === "queue"}
-              />
+        <div className={styles.container_status_and_priority}>
+          <RangeWrap location={location} label={"Статус"} subtask={item.statusSubtask} currentStatus={currentItem.status} type={"status"} >
+            <RangeStatus
+              item={item}
+              rangeStatus={rangeStatus}
+              setRangeStatus={(val) => setRangeStatus(val)}
+              dispatchFunc={(e) => dispatch(editStatusSubtask(item.id, parseInt(e.target.value)))}
+              disabled={setRangeValueStatus(item.statusSubtask).value === 2 || currentItem.status === "queue"}
+            />
+          </RangeWrap>
 
-            )}
-          </div>
-
-
-
-          <div>
-            <div className={"no-select-text"} style={{
-              fontWeight: "bold"
-            }}>Приоритет: <span style={{
-              fontWeight: "bold",
-              color: setRangeValuePriority(item.prioritySubtask).color
-            }}>{item.prioritySubtask.toUpperCase()}</span></div>
-            {location === "info" && currentItem.status !== "done" && (
-              <RangePriority
-                rangePriority={rangePriority}
-                item={item}
-                setRangePriority={(val) => setRangePriority(val)}
-                dispatchFunc={(e) => dispatch(editPrioritySubtask(item.id, parseInt(e.target.value)))}
-                disabled={setRangeValueStatus(item.statusSubtask).value === 2}
-              />
-            )}
-          </div>
+          <RangeWrap location={location} label={"Приоритет"} subtask={item.prioritySubtask} currentStatus={currentItem.status} type={"priority"} >
+            <RangePriority
+              rangePriority={rangePriority}
+              item={item}
+              setRangePriority={(val) => setRangePriority(val)}
+              dispatchFunc={(e) => dispatch(editPrioritySubtask(item.id, parseInt(e.target.value)))}
+              disabled={setRangeValueStatus(item.statusSubtask).value === 2}
+            />
+          </RangeWrap>
         </div>
 
         {isAuth && currentUser.id === item.author && (
