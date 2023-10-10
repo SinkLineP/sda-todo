@@ -20,7 +20,7 @@ import {removeSubtask} from "../../store/Reducers/subtaskReducer";
 import {removeComment} from "../../store/Reducers/commentReducer";
 import CreateAndShowSubtask from "../CreateAndShowSubtask/CreateAndShowSubtask";
 import HoverButton from "../CreateTaskModal/components/HoverButton";
-import RangePriority from "../RangePriority/RangePriority";
+import RangePriority from "../RangeComponents/RangePriority/RangePriority";
 
 
 

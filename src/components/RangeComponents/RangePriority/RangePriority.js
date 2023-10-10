@@ -1,19 +1,8 @@
-import React, {useState} from "react";
-import {setRangeValue, StatusesColors} from "../../Functions";
+import React from "react";
 import styles from "./RangePriority.module.css";
+import {changeClassName} from "../Functions";
 
 const RangePriority = ({ item, disabled, rangePriority, setRangePriority, dispatchFunc }) => {
-  const changeClassName = (value, class1, class2, class3) => {
-    const nValue = Number(value);
-    if (nValue === 0) {
-      return class1;
-    } else if (nValue === 1) {
-      return class2;
-    } else if (nValue === 2) {
-      return class3;
-    }
-  }
-
   return (
     <input
       className={`

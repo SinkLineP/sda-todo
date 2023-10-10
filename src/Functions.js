@@ -232,8 +232,6 @@ export const EditView = ({ tag, handleChange, value, style }) => {
 
 
 export const setRangeValuePriority = (value) => {
-  console.log(value);
-
   if (value === "low") {
     return {
       value: 0,
@@ -248,6 +246,25 @@ export const setRangeValuePriority = (value) => {
     return {
       value: 2,
       color: StatusesColors.Height,
+    };
+  }
+}
+
+export const setRangeValueStatus = (value) => {
+  if (value === "queue") {
+    return {
+      value: 0,
+      color: StatusesColors.Queue,
+    };
+  } else if (value === "development") {
+    return {
+      value: 1,
+      color: StatusesColors.Development,
+    };
+  } else if (value === "done") {
+    return {
+      value: 2,
+      color: StatusesColors.Done,
     };
   }
 }

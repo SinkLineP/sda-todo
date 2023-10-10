@@ -1,0 +1,22 @@
+.input {
+    cursor: pointer;
+}
+
+.input_disabled {
+    cursor: no-drop;
+}
+
+.status_range_1 {
+    accent-color: var(--queue);
+    width: 200px;
+}
+
+.status_range_2 {
+    accent-color: var(--development);
+    width: 200px;
+}
+
+.status_range_3 {
+    accent-color: var(--done);
+    width: 200px;
+}

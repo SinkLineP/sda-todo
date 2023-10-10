@@ -8,8 +8,9 @@ import {
   removeSubtask
 } from "../../../../store/Reducers/subtaskReducer";
 import {removeSubtaskFromTask} from "../../../../store/Reducers/taskReducer";
-import {setRangeValuePriority, StatusesColors} from "../../../../Functions";
-import RangePriority from "../../../RangePriority/RangePriority";
+import {setRangeValuePriority, setRangeValueStatus, StatusesColors} from "../../../../Functions";
+import RangePriority from "../../../RangeComponents/RangePriority/RangePriority";
+import RangeStatus from "../../../RangeComponents/RangeStatus/RangeStatus";
 
 const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) => {
   const isAuth = IsAuth();
@@ -35,37 +36,11 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
     }
   };
 
-  const setRangeValueStatus = (value) => {
-    if (value === "queue") {
-      return {
-        value: 0,
-        color: StatusesColors.Queue,
-      };
-    } else if (value === "development") {
-      return {
-        value: 1,
-        color: StatusesColors.Development,
-      };
-    } else if (value === "done") {
-      return {
-        value: 2,
-        color: StatusesColors.Done,
-      };
-    }
-  }
+  const [rangeStatus, setRangeStatus] = useState({
+    id: null,
+    value: setRangeValueStatus(item.statusSubtask).value,
+  });
 
-  const changeClassName = (value, class1, class2, class3) => {
-    const nValue = Number(value);
-    if (nValue === 0) {
-      return class1;
-    } else if (nValue === 1) {
-      return class2;
-    } else if (nValue === 2) {
-      return class3;
-    }
-  }
-
-  const [rangeStatus, setRangeStatus] = useState(setRangeValueStatus(item.statusSubtask).value);
   const [rangePriority, setRangePriority] = useState({
     id: null,
     value: setRangeValuePriority(item.prioritySubtask).value,
@@ -104,24 +79,15 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
               color: setRangeValueStatus(item.statusSubtask).color
             }}>{item.statusSubtask.toUpperCase()}</span></div>
             {location === "info" && currentItem.status !== "done" && (
-              <input
-                className={`${styles.input} ${changeClassName(
-                  rangeStatus,
-                  styles.status_range_1,
-                  styles.status_range_2,
-                  styles.status_range_3
-                )}`}
+              <RangeStatus
+                item={item}
+                rangeStatus={rangeStatus}
+                setRangeStatus={(val) => setRangeStatus(val)}
+                dispatchFunc={(e) => dispatch(editStatusSubtask(item.id, parseInt(e.target.value)))}
                 disabled={setRangeValueStatus(item.statusSubtask).value === 2 || currentItem.status === "queue"}
-                type={"range"}
-                min="0"
-                max="2"
-                step="1"
-                value={rangeStatus}
-                onChange={(e) => {
-                  dispatch(editStatusSubtask(item.id, parseInt(e.target.value)));
-                  setRangeStatus(e.target.value)
-                }}
-            />)}
+              />
+
+            )}
           </div>
 
 
@@ -134,7 +100,13 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
               color: setRangeValuePriority(item.prioritySubtask).color
             }}>{item.prioritySubtask.toUpperCase()}</span></div>
             {location === "info" && currentItem.status !== "done" && (
-              <RangePriority rangePriority={rangePriority} item={item} setRangePriority={(val) => setRangePriority(val)} dispatchFunc={(e) => dispatch(editPrioritySubtask(item.id, parseInt(e.target.value)))} disabled={setRangeValueStatus(item.statusSubtask).value === 2} />
+              <RangePriority
+                rangePriority={rangePriority}
+                item={item}
+                setRangePriority={(val) => setRangePriority(val)}
+                dispatchFunc={(e) => dispatch(editPrioritySubtask(item.id, parseInt(e.target.value)))}
+                disabled={setRangeValueStatus(item.statusSubtask).value === 2}
+              />
             )}
           </div>
         </div>
