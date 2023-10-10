@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {getAuthorProject } from "../Functions";
 import {useSelector} from "react-redux";
-import ProjectModal from "../components/ProjectModal/ProjectModal";
+import ProjectModal from "../components/Modals/ProjectModal/ProjectModal";
 import IsAuth from "../hooks/IsAuth";
 import styles from "./styles/SelectProject.module.css";
 

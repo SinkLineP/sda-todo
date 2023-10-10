@@ -1,9 +1,8 @@
 import React from "react";
 import styles from "../ShowSubtasks.module.css";
 import {deleteSubtask} from "../Functions";
-import {removeSubtask} from "../../../../../store/Reducers/subtaskReducer";
 import {useDispatch} from "react-redux";
-import {removeSubtaskFromTask} from "../../../../../store/Actions/Actions";
+import {removeSubtask, removeSubtaskFromTask} from "../../../../../store/Actions/Actions";
 
 
 const DeleteSubtaskButton = ({ item, location, setData, task_id, data }) => {

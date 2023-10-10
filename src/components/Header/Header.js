@@ -1,10 +1,10 @@
 import React, {useState} from "react";
-import AuthModal from "../AuthModal/AuthModal";
+import AuthModal from "../Modals/AuthModal/AuthModal";
 import "./Header.css";
 import {useDispatch, useSelector} from "react-redux";
-import {logout} from "../../store/Reducers/authReducer";
 import ChangeButton from "./components/ChangeButton";
 import {useNavigate} from "react-router-dom";
+import {logout} from "../../store/Actions/Actions";
 
 export default function Header() {
   const [show, setShow] = useState(false);

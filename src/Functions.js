@@ -2,8 +2,6 @@ import React, {useEffect, useState} from "react";
 import {ReactComponent as IconEditSVG} from "./icons/edit.svg";
 import {endTask} from "./store/Actions/Actions";
 
-
-
 export const StatusesColors = {
   Queue: "#eba946",
   Development: "#00C2E0",
@@ -11,8 +9,6 @@ export const StatusesColors = {
   Height: "#f36464",
   Default: "#a1a1a1"
 }
-
-
 
 export const getAuthorProject = (project_user_id, usersStore) => {
   if (project_user_id !== null) {
@@ -36,9 +32,6 @@ export const getUser = (user_id, users) => {
   })
 }
 
-
-
-
 export function formatFileSize(bytes) {
   if (bytes === 0) return '0 Bytes';
 
@@ -47,18 +40,6 @@ export function formatFileSize(bytes) {
 
   return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
 }
-
-
-
-export function convertTypeObjectToFile(arrayFiles) {
-  return arrayFiles.map(obj => {
-    const { name, type, size } = obj;
-    const uint8Array = new Uint8Array(size);
-    const blobData = new Blob([uint8Array], { type });
-    return new File([blobData], name, {type});
-  });
-}
-
 
 export const getCurrentDate = (date, withTime) => {
   const currentDate = new Date(date);

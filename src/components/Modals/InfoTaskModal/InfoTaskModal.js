@@ -5,29 +5,35 @@ import {
   formatFileSize,
   getAuthorProject,
   getCurrentDate, getSubtask, priorities, setRangeValuePriority, showShortNameFile
-} from "../../Functions";
+} from "../../../Functions";
 import {useDispatch, useSelector} from "react-redux";
-import ColorizeWrapText from "../ColorizeWrapText/ColorizeWrapText";
-import "./InfoTask.css";
+import ColorizeWrapText from "../../ColorizeWrapText/ColorizeWrapText";
+import "./InfoTaskModal.css";
 import iconFile from "./icons/file.png";
 import iconDownload from "./icons/download.png";
-import ScrollableWrap from "../ScrollableWrap/ScrollableWrap";
-import IsAuth from "../../hooks/IsAuth";
+import ScrollableWrap from "../../ScrollableWrap/ScrollableWrap";
+import IsAuth from "../../../hooks/IsAuth";
 import {ReactComponent as IconDeleteCrossSVG} from "./icons/delete-cross.svg";
-import Comments from "../Comments/Comments";
-import {removeSubtask} from "../../store/Reducers/subtaskReducer";
-import {removeComment} from "../../store/Reducers/commentReducer";
-import CreateAndShowSubtask from "../CreateAndShowSubtask/CreateAndShowSubtask";
+import Comments from "../../Comments/Comments";
+import CreateAndShowSubtask from "../../CreateAndShowSubtask/CreateAndShowSubtask";
 import HoverButton from "../CreateTaskModal/components/HoverButton";
-import RangePriority from "../RangeComponents/RangePriority/RangePriority";
-import {editPriorityTask, editTask, endTask, removeTask, startTask} from "../../store/Actions/Actions";
+import RangePriority from "../../RangeComponents/RangePriority/RangePriority";
+import {
+  editPriorityTask,
+  editTask,
+  endTask,
+  removeComment,
+  removeSubtask,
+  removeTask,
+  startTask
+} from "../../../store/Actions/Actions";
 
 
 
 
 Modal.setAppElement("#root");
 
-export default function InfoTask({ show, onClose, item }) {
+export default function InfoTaskModal({ show, onClose, item }) {
   const usersStore = useSelector(state => state.auth.users);
   const dispatch = useDispatch();
   const currentUser = useSelector(state => state.auth.currentUser);
@@ -136,15 +142,8 @@ export default function InfoTask({ show, onClose, item }) {
     return value.length !== 0 && value[0] !== " ";
   }
 
-  const handleChange = (T) => {
-    setDesc(T);
-  }
-
   const ButtonIsEditing = () => {
     if (isEditing) {
-      // console.log(title);
-      // console.log(desc);
-
       return (
         <>
           <HoverButton

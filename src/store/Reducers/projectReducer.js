@@ -1,12 +1,11 @@
 import { initialState } from "../States/projectInitialState";
+import {ProjectActionTypes} from "../Types/ActionTypes";
 
-const ActionTypes = {
-  ADD_PROJECT: 'ADD_PROJECT',
-};
+
 
 function ProjectReducer(state = initialState, action) {
   switch (action.type) {
-    case ActionTypes.ADD_PROJECT:
+    case ProjectActionTypes.ADD_PROJECT:
       return [...state, action.payload];
 
     default:
@@ -14,9 +13,6 @@ function ProjectReducer(state = initialState, action) {
   }
 }
 
-export const addProject = (projectData) => ({
-  type: ActionTypes.ADD_PROJECT,
-  payload: projectData,
-});
+
 
 export default ProjectReducer;

@@ -34,8 +34,6 @@ export const onDropHandler = (e, setFieldValue, setErrorFile, setSelectedFiles) 
   e.preventDefault();
   let files = [...e.dataTransfer.files]
   setSelectedFiles(files);
-  // setFieldValue("file", files);
-  // SliceSelectedFiles(files, setFieldValue, e.dataTransfer.files, setErrorFile);
 };
 
 export const uploadedFilesShow = (files, uploadedFiles) => {

@@ -5,7 +5,7 @@ import Col from "../components/Col/Col";
 import {useSelector} from "react-redux";
 import {NavLink, useParams} from "react-router-dom";
 import IsAuth from "../hooks/IsAuth";
-import CreateTaskModal from "../components/CreateTaskModal/CreateTaskModal";
+import CreateTaskModal from "../components/Modals/CreateTaskModal/CreateTaskModal";
 import styles from "./styles/Tasks.module.css";
 import {checkProjectsAuthor, getSubtask} from "../Functions";
 

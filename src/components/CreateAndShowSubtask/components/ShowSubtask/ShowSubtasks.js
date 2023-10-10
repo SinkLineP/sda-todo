@@ -1,13 +1,13 @@
 import React, {useState} from "react";
 import IsAuth from "../../../../hooks/IsAuth";
 import {useDispatch, useSelector} from "react-redux";
-import {editPrioritySubtask, editStatusSubtask} from "../../../../store/Reducers/subtaskReducer";
 import {setRangeValuePriority, setRangeValueStatus} from "../../../../Functions";
 import RangePriority from "../../../RangeComponents/RangePriority/RangePriority";
 import RangeStatus from "../../../RangeComponents/RangeStatus/RangeStatus";
 import DeleteSubtaskButton from "./components/DeleteSubtaskButton";
 import styles from "./ShowSubtasks.module.css";
 import RangeWrap from "./components/RangeWrap";
+import {editPrioritySubtask, editStatusSubtask} from "../../../../store/Actions/Actions";
 
 
 const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) => {
@@ -77,7 +77,6 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
           <div className={styles.container_buttons}>
             {location !== "form" ? currentItem.status !== "done" && (
               <>
-                {currentItem.status !== "development" && item.statusSubtask !== "done" && (<button className={styles.edit} onClick={() => editSubtask(item.id)}>Редактировать</button>)}
                 {item.statusSubtask !== "done" && (
                   <DeleteSubtaskButton
                     item={item}

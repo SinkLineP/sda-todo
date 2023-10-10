@@ -1,6 +1,6 @@
 import React from "react";
-import {changeForm} from "../../../store/Reducers/authReducer";
 import {useDispatch} from "react-redux";
+import {changeForm} from "../../../../store/Actions/Actions";
 
 
 export const FormLink = ({ title, linkTitle, props, resetForm, clearErrorMessages }) => {

@@ -5,8 +5,7 @@ import {v4 as uuid} from "uuid";
 import {validationChildSchema} from "./Schema";
 import {initialChildValues} from "./InitialValues";
 import {useDispatch} from "react-redux";
-import {addSubtask} from "../../../../store/Reducers/subtaskReducer";
-import {addSubtaskToTask} from "../../../../store/Actions/Actions";
+import {addSubtask, addSubtaskToTask} from "../../../../store/Actions/Actions";
 
 
 const FormSubtask = ({ author, setSubtasks, location, task_id, setShowForm }) => {

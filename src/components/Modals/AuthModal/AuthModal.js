@@ -4,10 +4,10 @@ import {Formik} from "formik";
 import * as yup from 'yup';
 import "./AuthModal.css";
 import {useDispatch, useSelector} from "react-redux";
-import {createUser, setCurrentUser} from "../../store/Reducers/authReducer";
 import {FormLink} from "./components/FormLink";
-import {FormSubmit} from "../FormSubmit/FormSubmit";
+import {FormSubmit} from "../../FormSubmit/FormSubmit";
 import { v4 as uuid } from 'uuid';
+import {createUser, setCurrentUser} from "../../../store/Actions/Actions";
 
 
 export default function AuthModal({ show, onClose }) {

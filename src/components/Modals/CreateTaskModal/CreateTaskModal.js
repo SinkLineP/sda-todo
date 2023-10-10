@@ -8,10 +8,9 @@ import {iconWithStatus,} from "./Functions";
 import styles from "./CreateTaskModal.module.css";
 import {initialValues} from "./InitialValues";
 import {validationSchema} from "./Schema";
-import {addSubtask} from "../../store/Reducers/subtaskReducer";
-import CreateAndShowSubtask from "../CreateAndShowSubtask/CreateAndShowSubtask";
-import {formatFileSize, maxSizeFileUpload, showShortNameFile} from "../../Functions";
-import {addTask} from "../../store/Actions/Actions";
+import CreateAndShowSubtask from "../../CreateAndShowSubtask/CreateAndShowSubtask";
+import {formatFileSize, maxSizeFileUpload, showShortNameFile} from "../../../Functions";
+import {addSubtask, addTask} from "../../../store/Actions/Actions";
 
 export default function CreateTaskModal({ show, onClose, project_id }) {
   const currentUser = useSelector(state => state.auth.currentUser);

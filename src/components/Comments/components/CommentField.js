@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import IsAuth from "../../../hooks/IsAuth";
-import AuthModal from "../../AuthModal/AuthModal";
+import AuthModal from "../../Modals/AuthModal/AuthModal";
 import CommentForm from "./CommentForm";
 
 

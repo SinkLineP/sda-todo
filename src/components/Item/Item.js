@@ -1,6 +1,6 @@
 import React, {Fragment, useState, useRef, useEffect} from "react";
 import { useDrag, useDrop } from "react-dnd";
-import InfoTask from "../InfoTask/InfoTask";
+import InfoTaskModal from "../Modals/InfoTaskModal/InfoTaskModal";
 import ITEM_TYPE from "../../data/types";
 import {useDispatch, useSelector} from "react-redux";
 import IsAuth from "../../hooks/IsAuth";
@@ -134,7 +134,7 @@ const Item = ({ item, index, moveItem, status, setIsDone }) => {
       </div>
 
       {/* Модальное окно с информацией о задаче */}
-      <InfoTask item={item} onClose={onClose} show={show} />
+      <InfoTaskModal item={item} onClose={onClose} show={show} />
     </Fragment>
   );
 };

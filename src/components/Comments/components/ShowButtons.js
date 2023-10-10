@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import ButtonCustom from "./ButtonCustom";
-import { removeComment, removeReply } from "../../../store/Reducers/commentReducer";
 import { useDispatch, useSelector } from "react-redux";
 import {
   CheckStatusReplyComments,
   EditReply
 } from "../functions";
-import {removeCommentFromTask} from "../../../store/Actions/Actions";
+import {removeComment, removeCommentFromTask, removeReply} from "../../../store/Actions/Actions";
 
 const ShowButtons = ({
   commentID,

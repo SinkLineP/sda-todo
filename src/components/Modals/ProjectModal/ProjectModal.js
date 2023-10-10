@@ -1,12 +1,12 @@
 import React from "react";
 import Modal from "react-modal";
-import {FormSubmit} from "../FormSubmit/FormSubmit";
+import {FormSubmit} from "../../FormSubmit/FormSubmit";
 import {ErrorMessage, Field, Formik} from "formik";
 import * as yup from "yup";
 import {useDispatch, useSelector} from "react-redux";
-import {addProject} from "../../store/Reducers/projectReducer";
 import {v4 as uuid} from "uuid";
 import styles from "./ProjectModal.module.css";
+import {addProject} from "../../../store/Actions/Actions";
 
 
 export default function ProjectModal({ onClose, show }) {

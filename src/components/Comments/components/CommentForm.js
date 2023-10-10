@@ -3,8 +3,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {useDispatch, useSelector} from "react-redux";
 import { v4 as uuid } from 'uuid';
-import {addComment} from "../../../store/Reducers/commentReducer";
-import {addCommentToTask} from "../../../store/Actions/Actions";
+import {addComment, addCommentToTask} from "../../../store/Actions/Actions";
 
 
 
