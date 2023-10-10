@@ -20,9 +20,6 @@ export default function Header() {
     navigate("/");
   }
 
-
-
-
   return (
     <>
       <div className={"page-header"}>

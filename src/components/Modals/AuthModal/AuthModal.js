@@ -8,6 +8,8 @@ import {FormLink} from "./components/FormLink";
 import {FormSubmit} from "../../FormSubmit/FormSubmit";
 import { v4 as uuid } from 'uuid';
 import {createUser, setCurrentUser} from "../../../store/Actions/Actions";
+import {validationsSchema} from "./Schema";
+import {initialValues} from "./InitialValues";
 
 
 export default function AuthModal({ show, onClose }) {
@@ -35,17 +37,6 @@ export default function AuthModal({ show, onClose }) {
   const [errorUsername, setErrorUsername] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
 
-  const validationsSchema = yup.object().shape({
-    username: yup.string()
-      .min(3, "Имя пользователя должно быть минимум 3 символа")
-      .max(20, "Имя пользователя должно быть максимум 20 символов")
-      .required('Enter your username!'),
-    password: yup.string()
-      .required("This field is required")
-      .min(8, "Пароль должен быть минимум 8 символов")
-      .matches(/\d/, "Пароль должен содержать хотя бы одну цифру"),
-  })
-
   useEffect(() => {
     if (isShowPassword) {
       setTypePassword("string")
@@ -69,10 +60,7 @@ export default function AuthModal({ show, onClose }) {
       <p className={"title-form"}>{currentForm === "login" ? ("Авторизация") : ("Регистрация")}</p>
 
       <Formik
-        initialValues={{
-          username: '',
-          password: '',
-        }}
+        initialValues={initialValues}
         validateOnBlur
         onSubmit={(values) => {
           if (currentForm === "login") {

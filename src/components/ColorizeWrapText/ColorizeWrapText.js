@@ -42,9 +42,7 @@ export default function ColorizeWrapText({ text, label, type, isEditing, setEdit
                       marginLeft: "2px"
                     }}
                   />
-                  <h1 style={{
-                    marginLeft: "20px"
-                  }}> #{numberTask}</h1>
+                  <h1 className={"number_task"}> #{numberTask}</h1>
                 </>
               )
             } else {
@@ -59,9 +57,7 @@ export default function ColorizeWrapText({ text, label, type, isEditing, setEdit
               return (
                 <>
                   <h1>{label}</h1>
-                  <h1 style={{
-                    marginLeft: "20px"
-                  }}> #{numberTask}</h1>
+                  <h1 className={"number_task"}> #{numberTask}</h1>
                 </>
               )
             } else {
