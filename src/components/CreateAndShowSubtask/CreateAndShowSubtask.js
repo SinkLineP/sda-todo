@@ -33,7 +33,7 @@ const CreateAndShowSubtask = ({ subtasks, setSubtasks, location, showForm, setSh
     <div className={styles.container_field}>
       <div>
         <div>
-          <p className={styles.title_subtask}>Подзадачи: </p>
+          {!isEditing && <p className={styles.title_subtask}>Подзадачи: </p>}
         </div>
         <CheckModify setShowForm={setShowForm} location={location} isAuth={isAuth} showForm={showForm} />
       </div>
@@ -51,7 +51,7 @@ const CreateAndShowSubtask = ({ subtasks, setSubtasks, location, showForm, setSh
         </div>
       )}
 
-      {subtasks.length !== 0 && (
+      {subtasks.length !== 0 && !isEditing && (
         <>
           <div className={styles.container_show}>
             {subtasks.map((item, index) => {
