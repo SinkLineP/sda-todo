@@ -52,10 +52,6 @@ const Item = ({ item, index, moveItem, status, setIsDone }) => {
       }
 
       moveItem(dragIndex, hoverIndex);
-
-      // Обновите объект draggedItem с правильным индексом и передайте его в editTask
-      const updatedItem = { ...draggedItem, index: hoverIndex };
-      dispatch(editTask(updatedItem.id, updatedItem));
     },
     collect: monitor => ({
       isOver: monitor.isOver(),

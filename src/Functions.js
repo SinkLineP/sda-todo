@@ -1,3 +1,8 @@
+import React, {useEffect, useState} from "react";
+import {ReactComponent as IconEditSVG} from "./icons/edit.svg";
+
+
+
 export const StatusesColors = {
   Queue: "#eba946",
   Development: "#00C2E0",
@@ -139,4 +144,94 @@ export const maxSizeFileUpload = 104857600;
 
 export const getSubtask = (data, subtasksStore) => {
   return subtasksStore.filter(item => data.includes(item.id));
+}
+
+export const EditView = ({ tag, handleChange, value, style }) => {
+  const Tag = tag || "h1"
+
+  const handleBlur = (e) => {
+    const newValue = e.currentTarget.textContent.trim();
+    handleChange(newValue);
+  };
+
+  return (
+    <div>
+      {!value && <div className="errors">Значение не может быть пустым.</div>}
+      <div style={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: "40px",
+        marginTop: "4px"
+      }}>
+        <Tag
+          className={`shadow-box`}
+          style={{
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            borderColor: !value ? '#d00000' : '',
+            minWidth: "100px",
+            padding: "0.3rem",
+            ...style
+          }}
+          suppressContentEditableWarning={true}
+          contentEditable='true'
+          onBlur={handleBlur}
+        >
+          {value}
+        </Tag>
+      </div>
+    </div>
+  );
+};
+
+
+export const setRangeValuePriority = (value) => {
+  if (value === "low") {
+    return {
+      value: 0,
+      color: StatusesColors.Queue,
+    };
+  } else if (value === "medium") {
+    return {
+      value: 1,
+      color: StatusesColors.Development,
+    };
+  } else if (value === "height") {
+    return {
+      value: 2,
+      color: StatusesColors.Height,
+    };
+  }
+}
+
+export const setRangeValueStatus = (value) => {
+  if (value === "queue") {
+    return {
+      value: 0,
+      color: StatusesColors.Queue,
+    };
+  } else if (value === "development") {
+    return {
+      value: 1,
+      color: StatusesColors.Development,
+    };
+  } else if (value === "done") {
+    return {
+      value: 2,
+      color: StatusesColors.Done,
+    };
+  }
+}
+
+export const priorities = {
+  0: "low",
+  1: "medium",
+  2: "height",
+}
+
+export const statuses = {
+  0: "queue",
+  1: "development",
+  2: "done",
 }

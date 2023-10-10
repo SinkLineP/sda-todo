@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import Modal from "react-modal";
 import {
-  calculateTimeInWork,
+  calculateTimeInWork, EditView,
   formatFileSize,
   getAuthorProject,
-  getCurrentDate, getSubtask, showShortNameFile
+  getCurrentDate, getSubtask, priorities, setRangeValuePriority, showShortNameFile
 } from "../../Functions";
 import {useDispatch, useSelector} from "react-redux";
 import ColorizeWrapText from "../ColorizeWrapText/ColorizeWrapText";
@@ -12,7 +12,7 @@ import "./InfoTask.css";
 import iconFile from "./icons/file.png";
 import iconDownload from "./icons/download.png";
 import ScrollableWrap from "../ScrollableWrap/ScrollableWrap";
-import {endTask, removeTask, startTask} from "../../store/Reducers/taskReducer";
+import {editPriorityTask, editTask, endTask, removeTask, startTask} from "../../store/Reducers/taskReducer";
 import IsAuth from "../../hooks/IsAuth";
 import {ReactComponent as IconDeleteCrossSVG} from "./icons/delete-cross.svg";
 import Comments from "../Comments/Comments";
@@ -20,6 +20,8 @@ import {removeSubtask} from "../../store/Reducers/subtaskReducer";
 import {removeComment} from "../../store/Reducers/commentReducer";
 import CreateAndShowSubtask from "../CreateAndShowSubtask/CreateAndShowSubtask";
 import HoverButton from "../CreateTaskModal/components/HoverButton";
+import RangePriority from "../RangeComponents/RangePriority/RangePriority";
+
 
 
 
@@ -33,6 +35,14 @@ export default function InfoTask({ show, onClose, item }) {
   const [showFormSubtask, setShowFormSubtask] = useState(false);
   const [isDone, setIsDone] = useState(null);
   const taskData = useSelector(state => state.tasks);
+  const [isEditing, setIsEditing] = useState(false);
+  // ========== edit values ==============
+  const [title, setTitle] = useState(item.title);
+  const [desc, setDesc] = useState(item.description);
+  const [rangePriority, setRangePriority] = useState({
+    id: null,
+    value: setRangeValuePriority(item.priority).value,
+  });
 
 
   useEffect(() => {
@@ -50,6 +60,37 @@ export default function InfoTask({ show, onClose, item }) {
     }
   };
 
+  const handleEditTask = () => {
+    setIsEditing(true);
+  }
+
+  const handleSaveEditTask = () => {
+    setIsEditing(false);
+
+    if (rangePriority.id !== null) {
+      dispatch(editPriorityTask(rangePriority.id, rangePriority.value))
+    }
+
+    dispatch(editTask(item.id, {
+      ...item,
+      title: title,
+      description: desc,
+      priority: priorities[rangePriority.value],
+      subtasks: item.subtasks,
+      files: item.files,
+      status: item.status,
+    }));
+  }
+
+  const handleCancelEditTask = () => {
+    setIsEditing(false);
+    setTitle(item.title);
+    setRangePriority({
+      id: null,
+      value: setRangeValuePriority(item.priority).value,
+    })
+  }
+
   const customStyles = {
     content: {
       top: '50%',
@@ -63,10 +104,8 @@ export default function InfoTask({ show, onClose, item }) {
     }
   };
 
-
-
   const ShowButtonWithStatus = (status, task_id) => {
-    if (status === "queue") {
+    if (status === "queue" && !isEditing) {
       return (
         <HoverButton
           onClick={() => {
@@ -102,6 +141,51 @@ export default function InfoTask({ show, onClose, item }) {
     }
   }
 
+  const checkIsNotEmptyValue = (value) => {
+    return value.length !== 0 && value[0] !== " ";
+  }
+
+  const handleChange = (T) => {
+    setDesc(T);
+  }
+
+  const ButtonIsEditing = () => {
+    if (isEditing) {
+      // console.log(title);
+      // console.log(desc);
+
+      return (
+        <>
+          <HoverButton
+            onClick={checkIsNotEmptyValue(title) && checkIsNotEmptyValue(desc) ? handleSaveEditTask : () => {}}
+            IconButton={IconDeleteCrossSVG}
+            titleButton={"Сохранить"}
+            backgroundBeforeClick={checkIsNotEmptyValue(title) && checkIsNotEmptyValue(desc) ? "#99c07f" : "#cccccc"}
+            backgroundAfterClick={checkIsNotEmptyValue(title) && checkIsNotEmptyValue(desc) ? "#70a138" : "#a1a1a1"}
+          />
+
+          <HoverButton
+            onClick={handleCancelEditTask}
+            IconButton={IconDeleteCrossSVG}
+            titleButton={"Отменить"}
+            backgroundBeforeClick={"#f36464"}
+            backgroundAfterClick={"#70a138"}
+          />
+        </>
+      )
+    } else {
+      return (
+        <HoverButton
+          onClick={handleEditTask}
+          IconButton={IconDeleteCrossSVG}
+          titleButton={"Редактировать"}
+          backgroundBeforeClick={"#2681c4"}
+          backgroundAfterClick={"#70a138"}
+        />
+      )
+    }
+  }
+
   return (
     <Modal
       isOpen={show}
@@ -112,40 +196,44 @@ export default function InfoTask({ show, onClose, item }) {
       <div className={"container-info-task"}>
         <div className={"close-btn-ctn"}>
           <div className={"container-title"}>
-            <ColorizeWrapText text={item.status} label={`${item.title} #${item.numberTask}`} type={"title"} />
+            <ColorizeWrapText
+              setEditValue={(val) => setTitle(val)}
+              isEditing={isEditing}
+              text={item.status}
+              label={item.title}
+              numberTask={item.numberTask}
+              type={"title"}
+              value={title}
+              setValue={(val) => setTitle(val)}
+            />
+
             <p>Автор: {getAuthorProject(item.author, usersStore)}</p>
           </div>
 
           <div className={"container-buttons-info"}>
             {IsAuth() && currentUser.id === item.author ? (
               <>
-                <HoverButton
-                  onClick={() => {
-                    item.subtasks.map((id) => {
-                      dispatch(removeSubtask(id));
-                    })
-
-                    item.comments.map((id) => {
-                      dispatch(removeComment(id));
-                    })
-
-                    dispatch(removeTask(item.id));
-                  }}
-                  IconButton={IconDeleteCrossSVG}
-                  titleButton={"Удалить"}
-                  backgroundBeforeClick={"#d00000"}
-                  backgroundAfterClick={"#70a138"}
-                />
-
-                {item.status === "queue" && (
+                {!isEditing && (
                   <HoverButton
-                    onClick={() => {}}
+                    onClick={() => {
+                      item.subtasks.map((id) => {
+                        dispatch(removeSubtask(id));
+                      })
+
+                      item.comments.map((id) => {
+                        dispatch(removeComment(id));
+                      })
+
+                      dispatch(removeTask(item.id));
+                    }}
                     IconButton={IconDeleteCrossSVG}
-                    titleButton={"Редактировать"}
-                    backgroundBeforeClick={"#2681c4"}
+                    titleButton={"Удалить"}
+                    backgroundBeforeClick={"#d00000"}
                     backgroundAfterClick={"#70a138"}
                   />
                 )}
+
+                {item.status === "queue" && <ButtonIsEditing />}
               </>
             ) : ("")}
             {IsAuth() && ShowButtonWithStatus(item.status, item.id)}
@@ -154,12 +242,31 @@ export default function InfoTask({ show, onClose, item }) {
         <div>
           <div className={"task-description"}>
             <h3>Описание задачи:</h3>
-            <p>{item.description}</p>
+            {isEditing ? (
+              <EditView
+                handleChange={(val) => setDesc(val)}
+                value={desc}
+                tag="p"
+                style={{
+                  borderRadius: "0.3rem",
+                  minWidth: "100px",
+                  marginLeft: "2px"
+                }}
+              />
+            ) : (<p>{item.description}</p>)}
           </div>
 
-          <ColorizeWrapText text={item.priority} label={"Приоритет задачи: "} type={"text"} />
 
-          {item.files !== null ? (
+          {isEditing ? (
+            <>
+              <ColorizeWrapText text={priorities[rangePriority.value]} label={"Приоритет задачи: "} type={"text"} />
+              <RangePriority item={item} disabled={null} rangePriority={rangePriority} setRangePriority={(val) => setRangePriority(val)} />
+            </>
+          ) : (
+            <ColorizeWrapText text={item.priority} label={"Приоритет задачи: "} type={"text"} />
+          )}
+
+          {item.files !== null && !isEditing ? (
             <>
               <h3>Вложеные файлы: ({item.files.length})</h3>
               <ScrollableWrap>
@@ -185,7 +292,7 @@ export default function InfoTask({ show, onClose, item }) {
                 })}
               </ScrollableWrap>
             </>
-          ) : (
+          ) : !isEditing && (
             <>
               <h3>Вложеных файлов не найдено!</h3>
             </>
@@ -207,6 +314,7 @@ export default function InfoTask({ show, onClose, item }) {
           )}
 
           <CreateAndShowSubtask
+            isEditing={isEditing}
             currentItem={item}
             subtasks={getSubtask(item.subtasks, subtasksStore)}
             location={"info"}
@@ -217,17 +325,20 @@ export default function InfoTask({ show, onClose, item }) {
           />
         </div>
 
-        <div style={{
-          marginTop: "40px"
-        }}>
-          <h3>Коментарии: </h3>
-
+        {!isEditing && (
           <div style={{
-            padding: "2px 2px 2px 2px"
+            marginTop: "40px"
           }}>
-            <Comments task_id={item.id} />
+            <h3>Коментарии: </h3>
+
+            <div style={{
+              padding: "2px 2px 2px 2px"
+            }}>
+              <Comments task_id={item.id} />
+            </div>
           </div>
-        </div>
+        )}
+
 
         <div style={{
           display: "flex",

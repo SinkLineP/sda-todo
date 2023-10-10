@@ -1,27 +1,21 @@
-import React, {useEffect, useRef, useState} from "react";
-import styles from "./ShowSubtasks.module.css";
+import React, {useState} from "react";
 import IsAuth from "../../../../hooks/IsAuth";
 import {useDispatch, useSelector} from "react-redux";
-import {editPriority, editStatus, removeSubtask} from "../../../../store/Reducers/subtaskReducer";
-import {removeSubtaskFromTask} from "../../../../store/Reducers/taskReducer";
-import {getSubtask, StatusesColors} from "../../../../Functions";
+import {editPrioritySubtask, editStatusSubtask} from "../../../../store/Reducers/subtaskReducer";
+import {setRangeValuePriority, setRangeValueStatus} from "../../../../Functions";
+import RangePriority from "../../../RangeComponents/RangePriority/RangePriority";
+import RangeStatus from "../../../RangeComponents/RangeStatus/RangeStatus";
+import DeleteSubtaskButton from "./components/DeleteSubtaskButton";
+import styles from "./ShowSubtasks.module.css";
+import RangeWrap from "./components/RangeWrap";
+
 
 const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) => {
   const isAuth = IsAuth();
   const currentUser = useSelector(state => state.auth.currentUser);
   const dispatch = useDispatch();
 
-  const deleteSubtask = (item) => {
-    if (location === "form") {
-      const updatedData = data.filter((subtask) => subtask.id !== item.id);
 
-      return setData(updatedData);
-    } else {
-      dispatch(removeSubtask(item.id));
-
-      dispatch(removeSubtaskFromTask(item.id, task_id))
-    }
-  };
   const editSubtask = () => {
     if (location === "form") {
       console.log("local-subtask");
@@ -30,62 +24,18 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
     }
   };
 
-  const setRangeValue = (value, type) => {
-    if (type === "status") {
-      if (value === "queue") {
-        return {
-          value: 0,
-          color: StatusesColors.Queue,
-        };
-      } else if (value === "development") {
-        return {
-          value: 1,
-          color: StatusesColors.Development,
-        };
-      } else if (value === "done") {
-        return {
-          value: 2,
-          color: StatusesColors.Done,
-        };
-      }
-    } else if (type === "priority") {
-      if (value === "low") {
-        return {
-          value: 0,
-          color: StatusesColors.Queue,
-        };
-      } else if (value === "medium") {
-        return {
-          value: 1,
-          color: StatusesColors.Development,
-        };
-      } else if (value === "height") {
-        return {
-          value: 2,
-          color: StatusesColors.Height,
-        };
-      }
-    }
-  }
+  const [rangeStatus, setRangeStatus] = useState({
+    id: null,
+    value: setRangeValueStatus(item.statusSubtask).value,
+  });
 
-  const changeClassName = (value, class1, class2, class3) => {
-    const nValue = Number(value);
-    if (nValue === 0) {
-      return class1;
-    } else if (nValue === 1) {
-      return class2;
-    } else if (nValue === 2) {
-      return class3;
-    }
-  }
-
-  const [rangeStatus, setRangeStatus] = useState(setRangeValue(item.statusSubtask, "status").value);
-  const [rangePriority, setRangePriority] = useState(setRangeValue(item.prioritySubtask, "priority").value);
-  const inputStatusRef = useRef(null);
-  const inputPriorityRef = useRef(null);
+  const [rangePriority, setRangePriority] = useState({
+    id: null,
+    value: setRangeValuePriority(item.prioritySubtask).value,
+  });
 
   return (
-    <div key={item.id} className={`${styles.list} shadow-box`}>
+    <div key={item.id} className={`shadow-box`}>
       <div className={`${styles.container} shadow-box`}>
         <div style={{
         }}>
@@ -102,73 +52,26 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
           </div>
         </div>
 
-        <div style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-around",
-          width: "100%",
-          paddingLeft: "10%",
-        }}>
-          <div>
-            <div className={"no-select-text"} style={{
-              fontWeight: "bold"
-            }}>Статус: <span style={{
-              fontWeight: "bold",
-              color: setRangeValue(item.statusSubtask, "status").color
-            }}>{item.statusSubtask.toUpperCase()}</span></div>
-            {location === "info" && currentItem.status !== "done" && (
-              <input
-                ref={inputStatusRef}
-                className={`${styles.input} ${changeClassName(
-                  rangeStatus,
-                  styles.status_range_1,
-                  styles.status_range_2,
-                  styles.status_range_3
-                )}`}
-                disabled={setRangeValue(item.statusSubtask, "status").value === 2 || currentItem.status === "queue"}
-                type={"range"}
-                min="0"
-                max="2"
-                step="1"
-                value={rangeStatus}
-                onChange={(e) => {
-                  dispatch(editStatus(item.id, parseInt(e.target.value)));
-                  setRangeStatus(e.target.value)
-                }}
-            />)}
-          </div>
+        <div className={styles.container_status_and_priority}>
+          <RangeWrap location={location} label={"Статус"} subtask={item.statusSubtask} currentStatus={currentItem.status} type={"status"} >
+            <RangeStatus
+              item={item}
+              rangeStatus={rangeStatus}
+              setRangeStatus={(val) => setRangeStatus(val)}
+              dispatchFunc={(e) => dispatch(editStatusSubtask(item.id, parseInt(e.target.value)))}
+              disabled={setRangeValueStatus(item.statusSubtask).value === 2 || currentItem.status === "queue"}
+            />
+          </RangeWrap>
 
-
-
-          <div>
-            <div className={"no-select-text"} style={{
-              fontWeight: "bold"
-            }}>Приоритет: <span style={{
-              fontWeight: "bold",
-              color: setRangeValue(item.prioritySubtask, "priority").color
-            }}>{item.prioritySubtask.toUpperCase()}</span></div>
-            {location === "info" && currentItem.status !== "done" && (
-              <input
-                ref={inputPriorityRef}
-                className={`${styles.input} ${changeClassName(
-                  rangePriority,
-                  styles.priority_range_1,
-                  styles.priority_range_2,
-                  styles.priority_range_3
-                )}`}
-                type={"range"}
-                min="0"
-                max="2"
-                step="1"
-                disabled={setRangeValue(item.statusSubtask, "status").value === 2}
-                value={rangePriority}
-                onChange={(e) => {
-                  dispatch(editPriority(item.id, parseInt(e.target.value)));
-                  setRangePriority(parseInt(e.target.value))
-                }}
-                style={{cursor: "pointer"}}
-            />)}
-          </div>
+          <RangeWrap location={location} label={"Приоритет"} subtask={item.prioritySubtask} currentStatus={currentItem.status} type={"priority"} >
+            <RangePriority
+              rangePriority={rangePriority}
+              item={item}
+              setRangePriority={(val) => setRangePriority(val)}
+              dispatchFunc={(e) => dispatch(editPrioritySubtask(item.id, parseInt(e.target.value)))}
+              disabled={setRangeValueStatus(item.statusSubtask).value === 2}
+            />
+          </RangeWrap>
         </div>
 
         {isAuth && currentUser.id === item.author && (
@@ -176,11 +79,25 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
             {location !== "form" ? currentItem.status !== "done" && (
               <>
                 {currentItem.status !== "development" && item.statusSubtask !== "done" && (<button className={styles.edit} onClick={() => editSubtask(item.id)}>Редактировать</button>)}
-                {item.statusSubtask !== "done" && (<button className={styles.delete} onClick={() => deleteSubtask(item)}>Удалить</button>)}
+                {item.statusSubtask !== "done" && (
+                  <DeleteSubtaskButton
+                    item={item}
+                    task_id={task_id}
+                    location={location}
+                    data={data}
+                    setData={setData}
+                  />
+                )}
               </>
             ) : (
               <>
-                <button className={styles.delete} onClick={() => deleteSubtask(item)}>Удалить</button>
+                <DeleteSubtaskButton
+                  item={item}
+                  task_id={task_id}
+                  location={location}
+                  data={data}
+                  setData={setData}
+                />
               </>
             )}
           </div>

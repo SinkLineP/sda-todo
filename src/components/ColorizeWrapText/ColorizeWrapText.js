@@ -1,9 +1,9 @@
-import React from "react";
-import {StatusesColors} from "../../Functions";
+import React, {useState} from "react";
+import {EditView, StatusesColors} from "../../Functions";
 import "./ColorizeWrapText.css";
 
 
-export default function ColorizeWrapText({ text, label, type }) {
+export default function ColorizeWrapText({ text, label, type, isEditing, setEditValue, numberTask, setValue, value }) {
     const StatusColor = (status) => {
         if (status.toLowerCase() === "height") {
             return StatusesColors.Height;
@@ -19,15 +19,68 @@ export default function ColorizeWrapText({ text, label, type }) {
         }
     }
 
-    return (
-        <div className={"wrap-container"}>
-            {type === "title" ? (
-              <h1>{label}</h1>
-            ) : (
-              <h3>{label}</h3>
-            )}
 
+    const handleChange = (T) => {
+      setValue(T);
+      setEditValue(T);
+    }
+
+
+
+    const IsEdit = ({isEditing, type, label}) => {
+        if (isEditing) {
+            if (type === "title") {
+              return (
+                <>
+                  <EditView
+                    handleChange={handleChange}
+                    value={value}
+                    tag="h1"
+                    style={{
+                      borderRadius: "0.3rem",
+                      minWidth: "100px",
+                      marginLeft: "2px"
+                    }}
+                  />
+                  <h1 style={{
+                    marginLeft: "20px"
+                  }}> #{numberTask}</h1>
+                </>
+              )
+            } else {
+              return (
+                <>
+                  <h3>{label}</h3>
+                </>
+              )
+            }
+        } else {
+            if (type === "title") {
+              return (
+                <>
+                  <h1>{label}</h1>
+                  <h1 style={{
+                    marginLeft: "20px"
+                  }}> #{numberTask}</h1>
+                </>
+              )
+            } else {
+              return (
+                <>
+                  <h3>{label}</h3>
+                </>
+              )
+            }
+        }
+    }
+
+    return (
+      <>
+
+        <div className={"wrap-container"}>
+            <IsEdit type={type} isEditing={isEditing} label={label} />
             <p style={{backgroundColor: StatusColor(text)}} className={"wrap-text"}>{text}</p>
         </div>
+      </>
     )
 }
