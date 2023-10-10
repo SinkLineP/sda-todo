@@ -4,7 +4,7 @@ import {
   calculateTimeInWork, EditView,
   formatFileSize,
   getAuthorProject,
-  getCurrentDate, getSubtask, showShortNameFile
+  getCurrentDate, getSubtask, priorities, setRangeValue, showShortNameFile
 } from "../../Functions";
 import {useDispatch, useSelector} from "react-redux";
 import ColorizeWrapText from "../ColorizeWrapText/ColorizeWrapText";
@@ -12,7 +12,7 @@ import "./InfoTask.css";
 import iconFile from "./icons/file.png";
 import iconDownload from "./icons/download.png";
 import ScrollableWrap from "../ScrollableWrap/ScrollableWrap";
-import {editTask, endTask, removeTask, startTask} from "../../store/Reducers/taskReducer";
+import {editPriorityTask, editTask, endTask, removeTask, startTask} from "../../store/Reducers/taskReducer";
 import IsAuth from "../../hooks/IsAuth";
 import {ReactComponent as IconDeleteCrossSVG} from "./icons/delete-cross.svg";
 import Comments from "../Comments/Comments";
@@ -20,6 +20,7 @@ import {removeSubtask} from "../../store/Reducers/subtaskReducer";
 import {removeComment} from "../../store/Reducers/commentReducer";
 import CreateAndShowSubtask from "../CreateAndShowSubtask/CreateAndShowSubtask";
 import HoverButton from "../CreateTaskModal/components/HoverButton";
+import RangePriority from "../RangePriority/RangePriority";
 
 
 
@@ -35,8 +36,13 @@ export default function InfoTask({ show, onClose, item }) {
   const [isDone, setIsDone] = useState(null);
   const taskData = useSelector(state => state.tasks);
   const [isEditing, setIsEditing] = useState(false);
+  // ========== edit values ==============
   const [title, setTitle] = useState(item.title);
   const [desc, setDesc] = useState(item.description);
+  const [rangePriority, setRangePriority] = useState({
+    id: null,
+    value: setRangeValue(item.priority).value,
+  });
 
 
   useEffect(() => {
@@ -61,11 +67,15 @@ export default function InfoTask({ show, onClose, item }) {
   const handleSaveEditTask = () => {
     setIsEditing(false);
 
+    if (rangePriority.id !== null) {
+      dispatch(editPriorityTask(rangePriority.id, rangePriority.value))
+    }
+
     dispatch(editTask(item.id, {
       ...item,
       title: title,
       description: desc,
-      priority: item.priority,
+      priority: priorities[rangePriority.value],
       subtasks: item.subtasks,
       files: item.files,
       status: item.status,
@@ -75,6 +85,10 @@ export default function InfoTask({ show, onClose, item }) {
   const handleCancelEditTask = () => {
     setIsEditing(false);
     setTitle(item.title);
+    setRangePriority({
+      id: null,
+      value: setRangeValue(item.priority).value,
+    })
   }
 
   const customStyles = {
@@ -244,10 +258,15 @@ export default function InfoTask({ show, onClose, item }) {
             ) : (<p>{item.description}</p>)}
           </div>
 
-          <ColorizeWrapText text={item.priority} label={"Приоритет задачи: "} type={"text"} />
-          {/*{isEditing && (*/}
-          {/*  */}
-          {/*)}*/}
+
+          {isEditing ? (
+            <>
+              <ColorizeWrapText text={priorities[rangePriority.value]} label={"Приоритет задачи: "} type={"text"} />
+              <RangePriority item={item} disabled={null} rangePriority={rangePriority} setRangePriority={(val) => setRangePriority(val)} />
+            </>
+          ) : (
+            <ColorizeWrapText text={item.priority} label={"Приоритет задачи: "} type={"text"} />
+          )}
 
           {item.files !== null ? (
             <>

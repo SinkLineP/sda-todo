@@ -82,13 +82,7 @@
     white-space: nowrap;
 }
 
-.input {
-    cursor: pointer;
-}
 
-.input_disabled {
-    cursor: no-drop;
-}
 
 .status_range_1 {
     accent-color: var(--queue);
@@ -106,18 +100,4 @@
 }
 
 
-.priority_range_1 {
-    accent-color: var(--queue);
-    width: 200px;
-}
-
-.priority_range_2 {
-    accent-color: var(--development);
-    width: 200px;
-}
-
-.priority_range_3 {
-    accent-color: var(--queue);
-    width: 200px;
-}
 

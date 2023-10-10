@@ -1,0 +1,22 @@
+.priority_range_1 {
+    accent-color: var(--queue);
+    width: 200px;
+}
+
+.priority_range_2 {
+    accent-color: var(--development);
+    width: 200px;
+}
+
+.priority_range_3 {
+    accent-color: var(--queue);
+    width: 200px;
+}
+
+.input {
+    cursor: pointer;
+}
+
+.input_disabled {
+    cursor: no-drop;
+}

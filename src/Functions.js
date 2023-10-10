@@ -229,3 +229,35 @@ export const EditView = ({ tag, handleChange, value, style }) => {
     </div>
   );
 };
+
+
+export const setRangeValue = (value) => {
+  if (value === "low") {
+    return {
+      value: 0,
+      color: StatusesColors.Queue,
+    };
+  } else if (value === "medium") {
+    return {
+      value: 1,
+      color: StatusesColors.Development,
+    };
+  } else if (value === "height") {
+    return {
+      value: 2,
+      color: StatusesColors.Height,
+    };
+  }
+}
+
+export const priorities = {
+  0: "low",
+  1: "medium",
+  2: "height",
+}
+
+export const statuses = {
+  0: "queue",
+  1: "development",
+  2: "done",
+}

@@ -2,7 +2,13 @@ import React, {useEffect, useRef, useState} from "react";
 import styles from "./ShowSubtasks.module.css";
 import IsAuth from "../../../../hooks/IsAuth";
 import {useDispatch, useSelector} from "react-redux";
-import {editPriority, editStatus, removeSubtask} from "../../../../store/Reducers/subtaskReducer";
+import {
+  editPriority,
+  editPrioritySubtask,
+  editStatus,
+  editStatusSubtask,
+  removeSubtask
+} from "../../../../store/Reducers/subtaskReducer";
 import {removeSubtaskFromTask} from "../../../../store/Reducers/taskReducer";
 import {getSubtask, StatusesColors} from "../../../../Functions";
 
@@ -81,11 +87,9 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
 
   const [rangeStatus, setRangeStatus] = useState(setRangeValue(item.statusSubtask, "status").value);
   const [rangePriority, setRangePriority] = useState(setRangeValue(item.prioritySubtask, "priority").value);
-  const inputStatusRef = useRef(null);
-  const inputPriorityRef = useRef(null);
 
   return (
-    <div key={item.id} className={`${styles.list} shadow-box`}>
+    <div key={item.id} className={`shadow-box`}>
       <div className={`${styles.container} shadow-box`}>
         <div style={{
         }}>
@@ -118,7 +122,6 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
             }}>{item.statusSubtask.toUpperCase()}</span></div>
             {location === "info" && currentItem.status !== "done" && (
               <input
-                ref={inputStatusRef}
                 className={`${styles.input} ${changeClassName(
                   rangeStatus,
                   styles.status_range_1,
@@ -132,7 +135,7 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
                 step="1"
                 value={rangeStatus}
                 onChange={(e) => {
-                  dispatch(editStatus(item.id, parseInt(e.target.value)));
+                  dispatch(editStatusSubtask(item.id, parseInt(e.target.value)));
                   setRangeStatus(e.target.value)
                 }}
             />)}
@@ -149,7 +152,6 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
             }}>{item.prioritySubtask.toUpperCase()}</span></div>
             {location === "info" && currentItem.status !== "done" && (
               <input
-                ref={inputPriorityRef}
                 className={`${styles.input} ${changeClassName(
                   rangePriority,
                   styles.priority_range_1,
@@ -163,7 +165,7 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
                 disabled={setRangeValue(item.statusSubtask, "status").value === 2}
                 value={rangePriority}
                 onChange={(e) => {
-                  dispatch(editPriority(item.id, parseInt(e.target.value)));
+                  dispatch(editPrioritySubtask(item.id, parseInt(e.target.value)));
                   setRangePriority(parseInt(e.target.value))
                 }}
                 style={{cursor: "pointer"}}

@@ -1,4 +1,5 @@
 import {initialState} from "../States/taskInitialState";
+import {priorities} from "../../Functions";
 
 const ActionTypes = {
   ADD_TASK: 'ADD_TASK',
@@ -13,8 +14,12 @@ const ActionTypes = {
   EDIT_STATUS_TASK: 'EDIT_STATUS_TASK',
   EDIT_PRIORITY_TASK: 'EDIT_PRIORITY_TASK',
   EDIT_START_DATE: 'EDIT_START_DATE',
-  EDIT_END_DATE: 'EDIT_END_DATE'
+  EDIT_END_DATE: 'EDIT_END_DATE',
 };
+
+
+
+
 
 function TaskReducer(state = initialState, action) {
   switch (action.type) {
@@ -122,6 +127,22 @@ function TaskReducer(state = initialState, action) {
         return task;
       });
 
+    case ActionTypes.EDIT_PRIORITY_TASK:
+      const { id_priority, priority } = action.payload;
+      return state.map((task) => {
+        if (task.id === id_priority) {
+          console.log({
+            ...task,
+            priority: priorities[priority],
+          });
+          return {
+            ...task,
+            priority: priorities[priority],
+          };
+        }
+        return task;
+      });
+
     case ActionTypes.EDIT_START_DATE:
       const { id_start, start_date, start_status, start_icon } = action.payload;
       return state.map((task) => {
@@ -204,6 +225,11 @@ export const editStatusTask = (id_status, status) => ({
   type: ActionTypes.EDIT_STATUS_TASK,
   payload: { id_status, status }
 })
+
+export const editPriorityTask = (id_priority, priority) => ({
+  type: ActionTypes.EDIT_PRIORITY_TASK,
+  payload: { id_priority, priority },
+});
 
 export const editStartDate = (id_start, start_date, start_status, start_icon) => ({
   type: ActionTypes.EDIT_START_DATE,

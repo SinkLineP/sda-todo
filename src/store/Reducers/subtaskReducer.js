@@ -1,4 +1,5 @@
 import {initialState} from "../States/subtaskInitialState";
+import {priorities, statuses} from "../../Functions";
 
 const SubtaskActionTypes = {
   ADD_SUBTASK: 'ADD_SUBTASK',
@@ -8,17 +9,7 @@ const SubtaskActionTypes = {
   EDIT_PRIORITY_SUBTASK: 'EDIT_PRIORITY_SUBTASK'
 };
 
-const statuses = {
-  0: "queue",
-  1: "development",
-  2: "done",
-}
 
-const priorities = {
-  0: "low",
-  1: "medium",
-  2: "height",
-}
 
 function SubtaskReducer(state = initialState, action) {
   switch (action.type) {
@@ -68,12 +59,12 @@ export const editSubtask = (subtaskId, updatedSubtask) => ({
   payload: { subtaskId, updatedSubtask },
 });
 
-export const editStatus = (id_status, status) => ({
+export const editStatusSubtask = (id_status, status) => ({
   type: SubtaskActionTypes.EDIT_STATUS_SUBTASK,
   payload: { id_status, status },
 });
 
-export const editPriority = (id_priority, priority) => ({
+export const editPrioritySubtask = (id_priority, priority) => ({
   type: SubtaskActionTypes.EDIT_PRIORITY_SUBTASK,
   payload: { id_priority, priority },
 });
