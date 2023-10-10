@@ -1,32 +1,13 @@
 import {initialState} from "../States/taskInitialState";
 import {priorities} from "../../Functions";
-
-const ActionTypes = {
-  ADD_TASK: 'ADD_TASK',
-  REMOVE_TASK: 'REMOVE_TASK',
-  EDIT_TASK: 'EDIT_TASK',
-  ADD_COMMENT_TO_TASK: 'ADD_COMMENT_TO_TASK',
-  REMOVE_SUBTASK_FROM_TASK: 'REMOVE_SUBTASK_FROM_TASK',
-  REMOVE_COMMENT_FROM_TASK: 'REMOVE_COMMENT_FROM_TASK',
-  ADD_SUBTASK_TO_TASK: 'ADD_SUBTASK_TO_TASK',
-  START_TASK: 'START_TASK',
-  END_TASK: 'END_TASK',
-  EDIT_STATUS_TASK: 'EDIT_STATUS_TASK',
-  EDIT_PRIORITY_TASK: 'EDIT_PRIORITY_TASK',
-  EDIT_START_DATE: 'EDIT_START_DATE',
-  EDIT_END_DATE: 'EDIT_END_DATE',
-};
-
-
-
-
+import {TASKActionTypes} from "../Types/ActionTypes.js";
 
 function TaskReducer(state = initialState, action) {
   switch (action.type) {
-    case ActionTypes.ADD_TASK:
+    case TASKActionTypes.ADD_TASK:
       return [...state, action.payload];
 
-    case ActionTypes.ADD_COMMENT_TO_TASK:
+    case TASKActionTypes.ADD_COMMENT_TO_TASK:
       const { commentID, taskID } = action.payload;
       return state.map((task) => {
         if (task.id === taskID) {
@@ -38,7 +19,7 @@ function TaskReducer(state = initialState, action) {
         return task;
       });
 
-    case ActionTypes.ADD_SUBTASK_TO_TASK:
+    case TASKActionTypes.ADD_SUBTASK_TO_TASK:
       const { subtask_ID, ID_task } = action.payload;
       return state.map((task) => {
         if (task.id === ID_task) {
@@ -50,7 +31,7 @@ function TaskReducer(state = initialState, action) {
         return task;
       });
 
-    case ActionTypes.REMOVE_SUBTASK_FROM_TASK:
+    case TASKActionTypes.REMOVE_SUBTASK_FROM_TASK:
       const { subtaskID, task_ID } = action.payload;
 
       return state.map((task) => {
@@ -63,7 +44,7 @@ function TaskReducer(state = initialState, action) {
         return task;
       });
 
-    case ActionTypes.REMOVE_COMMENT_FROM_TASK:
+    case TASKActionTypes.REMOVE_COMMENT_FROM_TASK:
       const { commentId, task_id } = action.payload;
 
       return state.map((task) => {
@@ -76,13 +57,13 @@ function TaskReducer(state = initialState, action) {
         return task;
       });
 
-    case ActionTypes.EDIT_TASK:
+    case TASKActionTypes.EDIT_TASK:
       const { taskId, updatedTask } = action.payload;
       return state.map((task) => {
         return task.id === taskId ? {...task, ...updatedTask} : task
       });
 
-    case ActionTypes.START_TASK:
+    case TASKActionTypes.START_TASK:
       const { status_start, startDate, Id_task_start, icon_start } = action.payload;
 
       return state.map((task) => {
@@ -97,7 +78,7 @@ function TaskReducer(state = initialState, action) {
         return task;
       });
 
-    case ActionTypes.END_TASK:
+    case TASKActionTypes.END_TASK:
       const { status_end, endDate, Id_task_end, icon_end } = action.payload;
 
       return state.map((task) => {
@@ -112,10 +93,10 @@ function TaskReducer(state = initialState, action) {
         return task;
       });
 
-    case ActionTypes.REMOVE_TASK:
+    case TASKActionTypes.REMOVE_TASK:
       return state.filter((task) => task.id !== action.payload);
 
-    case ActionTypes.EDIT_STATUS_TASK:
+    case TASKActionTypes.EDIT_STATUS_TASK:
       const { id_status, status } = action.payload;
       return state.map((task) => {
         if (task.id === id_status) {
@@ -127,7 +108,7 @@ function TaskReducer(state = initialState, action) {
         return task;
       });
 
-    case ActionTypes.EDIT_PRIORITY_TASK:
+    case TASKActionTypes.EDIT_PRIORITY_TASK:
       const { id_priority, priority } = action.payload;
       return state.map((task) => {
         if (task.id === id_priority) {
@@ -143,7 +124,7 @@ function TaskReducer(state = initialState, action) {
         return task;
       });
 
-    case ActionTypes.EDIT_START_DATE:
+    case TASKActionTypes.EDIT_START_DATE:
       const { id_start, start_date, start_status, start_icon } = action.payload;
       return state.map((task) => {
         if (task.id === id_start) {
@@ -157,7 +138,7 @@ function TaskReducer(state = initialState, action) {
         return task;
       });
 
-    case ActionTypes.EDIT_END_DATE:
+    case TASKActionTypes.EDIT_END_DATE:
       const { id_end, end_date, end_status, end_icon } = action.payload;
       return state.map((task) => {
         if (task.id === id_end) {
@@ -175,70 +156,6 @@ function TaskReducer(state = initialState, action) {
       return state;
   }
 }
-
-export const editTask = (taskId, updatedTask) => ({
-  type: ActionTypes.EDIT_TASK,
-  payload: { taskId, updatedTask },
-});
-
-export const addTask = (formData) => ({
-  type: ActionTypes.ADD_TASK,
-  payload: formData,
-});
-
-export const addCommentToTask = (commentID, taskID) => ({
-  type: ActionTypes.ADD_COMMENT_TO_TASK,
-  payload: { commentID, taskID },
-});
-
-export const addSubtaskToTask = (subtask_ID, ID_task) => ({
-  type: ActionTypes.ADD_SUBTASK_TO_TASK,
-  payload: { subtask_ID, ID_task },
-});
-
-export const removeTask = (taskId) => ({
-  type: ActionTypes.REMOVE_TASK,
-  payload: taskId,
-});
-
-export const removeSubtaskFromTask = (subtaskID, task_ID) => ({
-  type: ActionTypes.REMOVE_SUBTASK_FROM_TASK,
-  payload: { subtaskID, task_ID },
-});
-
-export const removeCommentFromTask = (commentId, task_id) => ({
-  type: ActionTypes.REMOVE_COMMENT_FROM_TASK,
-  payload: { commentId, task_id },
-});
-
-export const startTask = (status_start, startDate, Id_task_start, icon_start) => ({
-  type: ActionTypes.START_TASK,
-  payload: { status_start, startDate, Id_task_start, icon_start }
-})
-
-export const endTask = (status_end, endDate, Id_task_end, icon_end) => ({
-  type: ActionTypes.END_TASK,
-  payload: { status_end, endDate, Id_task_end, icon_end }
-})
-
-export const editStatusTask = (id_status, status) => ({
-  type: ActionTypes.EDIT_STATUS_TASK,
-  payload: { id_status, status }
-})
-
-export const editPriorityTask = (id_priority, priority) => ({
-  type: ActionTypes.EDIT_PRIORITY_TASK,
-  payload: { id_priority, priority },
-});
-
-export const editStartDate = (id_start, start_date, start_status, start_icon) => ({
-  type: ActionTypes.EDIT_START_DATE,
-  payload: { id_start, start_date, start_status, start_icon }
-});
-export const editEndDate = (id_end, end_date, end_status, end_icon) => ({
-  type: ActionTypes.EDIT_END_DATE,
-  payload: { id_end, end_date, end_status, end_icon }
-});
 
 
 export default TaskReducer;

@@ -3,16 +3,10 @@ import { useDrag, useDrop } from "react-dnd";
 import InfoTask from "../InfoTask/InfoTask";
 import ITEM_TYPE from "../../data/types";
 import {useDispatch, useSelector} from "react-redux";
-import {
-  startTask,
-  endTask,
-  editTask,
-  editStartDate,
-  editEndDate
-} from "../../store/Reducers/taskReducer";
 import IsAuth from "../../hooks/IsAuth";
 import styles from "./Item.module.css";
-import {getSubtask} from "../../Functions";
+import {checkIsDoneSubtask, getSubtask} from "../../Functions";
+import {editEndDate, editStartDate, endTask, startTask} from "../../store/Actions/Actions";
 
 const Item = ({ item, index, moveItem, status, setIsDone }) => {
   const ref = useRef(null);
@@ -84,16 +78,7 @@ const Item = ({ item, index, moveItem, status, setIsDone }) => {
   const handleEndTask = (e) => {
     e.stopPropagation();
     if (item.status === "development") {
-      // Проверка выполненных подзадач
-      const subtasks = getSubtask(taskData.find(i => i.id === item.id).subtasks, subtasksStore);
-      const allSubtasksDone = subtasks.every(obj => obj.statusSubtask === "done");
-
-      if (!allSubtasksDone) {
-        setIsDone(allSubtasksDone);
-      } else {
-        setIsDone(allSubtasksDone);
-        dispatch(endTask("done", new Date(), item.id, "✅️"));
-      }
+      checkIsDoneSubtask(item, taskData, subtasksStore, (val) => setIsDone(val), dispatch)
     }
   };
 

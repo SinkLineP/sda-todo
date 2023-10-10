@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {ReactComponent as IconEditSVG} from "./icons/edit.svg";
+import {endTask} from "./store/Actions/Actions";
 
 
 
@@ -234,4 +235,16 @@ export const statuses = {
   0: "queue",
   1: "development",
   2: "done",
+}
+
+export const checkIsDoneSubtask = (item, taskData, subtasksStore, setIsDone, dispatch) => {
+  const subtasks = getSubtask(taskData.find(i => i.id === item.id).subtasks, subtasksStore);
+  const allSubtasksDone = subtasks.every(obj => obj.statusSubtask === "done");
+
+  if (!allSubtasksDone) {
+    setIsDone(allSubtasksDone);
+  } else {
+    setIsDone(allSubtasksDone);
+    dispatch(endTask("done", new Date(), item.id, "✅️"));
+  }
 }

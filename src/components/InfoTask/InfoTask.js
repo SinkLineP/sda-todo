@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import Modal from "react-modal";
 import {
-  calculateTimeInWork, EditView,
+  calculateTimeInWork, checkIsDoneSubtask, EditView,
   formatFileSize,
   getAuthorProject,
   getCurrentDate, getSubtask, priorities, setRangeValuePriority, showShortNameFile
@@ -12,7 +12,6 @@ import "./InfoTask.css";
 import iconFile from "./icons/file.png";
 import iconDownload from "./icons/download.png";
 import ScrollableWrap from "../ScrollableWrap/ScrollableWrap";
-import {editPriorityTask, editTask, endTask, removeTask, startTask} from "../../store/Reducers/taskReducer";
 import IsAuth from "../../hooks/IsAuth";
 import {ReactComponent as IconDeleteCrossSVG} from "./icons/delete-cross.svg";
 import Comments from "../Comments/Comments";
@@ -21,6 +20,7 @@ import {removeComment} from "../../store/Reducers/commentReducer";
 import CreateAndShowSubtask from "../CreateAndShowSubtask/CreateAndShowSubtask";
 import HoverButton from "../CreateTaskModal/components/HoverButton";
 import RangePriority from "../RangeComponents/RangePriority/RangePriority";
+import {editPriorityTask, editTask, endTask, removeTask, startTask} from "../../store/Actions/Actions";
 
 
 
@@ -121,16 +121,7 @@ export default function InfoTask({ show, onClose, item }) {
       return (
         <HoverButton
           onClick={() => {
-              // Проверка выполненных подзадач
-            const subtasks = getSubtask(taskData.find(i => i.id === item.id).subtasks, subtasksStore);
-            const allSubtasksDone = subtasks.every(obj => obj.statusSubtask === "done");
-
-            if (!allSubtasksDone) {
-              setIsDone(allSubtasksDone);
-            } else {
-              setIsDone(allSubtasksDone);
-              dispatch(endTask("done", new Date(), item.id, "✅️"));
-            }
+            checkIsDoneSubtask(item, taskData, subtasksStore, (val) => setIsDone(val), dispatch)
           }}
           IconButton={IconDeleteCrossSVG}
           titleButton={"Завершить"}

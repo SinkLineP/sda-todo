@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import styles from "./CreateAndShowSubtask.module.css";
 import ButtonShowOrHideSubtask from "./components/ButtonShowOrHideSubtask/ButtonShowOrHideSubtask";
 import FormSubtask from "./components/FormSubtask/FormSubtask";

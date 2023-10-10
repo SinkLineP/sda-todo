@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import Modal from "react-modal";
 import {ErrorMessage, Field, Formik} from "formik";
 import {useDispatch, useSelector} from "react-redux";
-import {addTask} from "../../store/Reducers/taskReducer";
 import ButtonSubmit from "./components/ButtonSubmit";
 import {v4 as uuid} from "uuid";
 import {iconWithStatus,} from "./Functions";
@@ -12,6 +11,7 @@ import {validationSchema} from "./Schema";
 import {addSubtask} from "../../store/Reducers/subtaskReducer";
 import CreateAndShowSubtask from "../CreateAndShowSubtask/CreateAndShowSubtask";
 import {formatFileSize, maxSizeFileUpload, showShortNameFile} from "../../Functions";
+import {addTask} from "../../store/Actions/Actions";
 
 export default function CreateTaskModal({ show, onClose, project_id }) {
   const currentUser = useSelector(state => state.auth.currentUser);

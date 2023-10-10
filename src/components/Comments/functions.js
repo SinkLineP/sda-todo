@@ -1,6 +1,6 @@
 import {addReply, editComment} from "../../store/Reducers/commentReducer";
 import {v4 as uuid} from "uuid";
-import {addCommentToTask} from "../../store/Reducers/taskReducer";
+import {addCommentToTask} from "../../store/Actions/Actions";
 
 const functionAddReply = (comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setInputReplyValues, setShowInputFromID) => {
   setErrorReply("")
