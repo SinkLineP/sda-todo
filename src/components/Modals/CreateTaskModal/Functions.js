@@ -36,10 +36,3 @@ export const onDropHandler = (e, setFieldValue, setErrorFile, setSelectedFiles) 
   setSelectedFiles(files);
 };
 
-export const uploadedFilesShow = (files, uploadedFiles) => {
-  if (uploadedFiles.length === 1) {
-    return `${files.name}`
-  }
-  return `${files.name} / `
-}
-

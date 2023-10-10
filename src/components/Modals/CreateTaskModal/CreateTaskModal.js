@@ -79,36 +79,21 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
     setFieldValue("file", base64Array);
   };
 
-  // [...e.dataTransfer.files]
   const PreviewFiles = () => {
     const SelectedFilesChild = () => {
       return selectedFiles.map((f, index) => {
-          return (
-            <div className={"shadow-box"} style={{
-              borderWidth: "1px",
-              borderColor: "lightgray",
-              borderStyle: "solid",
-              borderRadius: "1rem",
-              padding: "0 1rem",
-              width: "auto"
-            }} key={index}>
-              <p style={{ whiteSpace: "nowrap" }}>Name: {showShortNameFile(f.name, 8)}</p>
-              <p style={{ whiteSpace: "nowrap" }}>Size: {formatFileSize(f.size)}</p>
-              <p style={{ whiteSpace: "nowrap" }}>Date: {f.lastModifiedDate.toLocaleDateString()}</p>
-            </div>
-          )
-
+        return (
+          <div className={`${styles.card_file} shadow-box`} key={index}>
+            <p className={styles.card_file_title}>Name: {showShortNameFile(f.name, 8)}</p>
+            <p className={styles.card_file_title}>Size: {formatFileSize(f.size)}</p>
+            <p className={styles.card_file_title}>Date: {f.lastModifiedDate.toLocaleDateString()}</p>
+          </div>
+        )
       })
     }
 
     return (
-      <div style={{
-        display: "flex",
-        flexDirection: "row",
-        overflowX: "scroll",
-        gap: "10px",
-        paddingBottom: "5px",
-      }}>
+      <div className={styles.container_selected_files}>
         <SelectedFilesChild />
       </div>
     )
@@ -141,20 +126,17 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
       overlayClassName={"overlay"}
       style={customStyles}
     >
-      <div className={styles.container}>
+      <div>
         <h1 className={styles.title}>Создание задачи</h1>
           <Formik
             initialValues={initialValues}
             validateOnMount
             validateOnBlur
             onSubmit={({ title, file, numberTask, description, priority, status}, { resetForm }) => {
-
-
               const subtaskIDs = subtasks.map((item) => {
                 dispatch(addSubtask(item));
                 return item.id;
               })
-
 
               dispatch(addTask({
                 id: uuid(),
@@ -174,8 +156,6 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                 author: currentUser.id,
                 startDate: null
               }));
-
-
 
               setSelectedFiles([]);
               setSubtasks([]);
@@ -279,12 +259,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                     }>
                       {selectedFiles.length === 0 && <p className={styles.title_drop_file}>Выберите или перетащите файл в это окно</p>}
 
-                      <div style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        gap: "10px",
-                        marginTop: "20px"
-                      }}>
+                      <div className={styles.input_file}>
                         {selectedFiles.length === 0 && (
                           <div>
                             <label htmlFor="file" className={styles.button_select_file}>Выбрать файлы</label>
@@ -314,7 +289,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
                             <p>Колличество загруженных файлов: {selectedFiles.length}</p>
                           </div>
 
-                          <div className={styles.list_uploaded_files} style={{ boxSizing: "border-box", width: "100%" }}>
+                          <div className={styles.list_uploaded_files}>
                             <PreviewFiles />
                           </div>
                         </>
