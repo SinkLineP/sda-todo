@@ -53,23 +53,23 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
 
         <div className={styles.container_status_and_priority}>
           <RangeWrap location={location} label={"Статус"} subtask={item.statusSubtask} currentStatus={currentItem} type={"status"} >
-            <RangeStatus
+            {IsAuth() && <RangeStatus
               item={item}
               rangeStatus={rangeStatus}
               setRangeStatus={(val) => setRangeStatus(val)}
               dispatchFunc={(e) => dispatch(editStatusSubtask(item.id, parseInt(e.target.value)))}
               disabled={location === "info" ? setRangeValueStatus(item.statusSubtask).value === 2 || currentItem.status === "queue" : setRangeValueStatus(item.statusSubtask).value === 2}
-            />
+            />}
           </RangeWrap>
 
           <RangeWrap location={location} label={"Приоритет"} subtask={item.prioritySubtask} currentStatus={currentItem} type={"priority"} >
-            <RangePriority
+            {IsAuth() && <RangePriority
               rangePriority={rangePriority}
               item={item}
               setRangePriority={(val) => setRangePriority(val)}
               dispatchFunc={(e) => dispatch(editPrioritySubtask(item.id, parseInt(e.target.value)))}
               disabled={setRangeValueStatus(item.statusSubtask).value === 2}
-            />
+            />}
           </RangeWrap>
         </div>
 
