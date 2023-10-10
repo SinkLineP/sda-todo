@@ -8,7 +8,7 @@ import {
 } from "../../../Functions";
 import {useDispatch, useSelector} from "react-redux";
 import ColorizeWrapText from "../../ColorizeWrapText/ColorizeWrapText";
-import "./InfoTaskModal.css";
+import styles from "./InfoTaskModal.module.css";
 import iconFile from "./icons/file.png";
 import iconDownload from "./icons/download.png";
 import ScrollableWrap from "../../ScrollableWrap/ScrollableWrap";
@@ -21,7 +21,6 @@ import RangePriority from "../../RangeComponents/RangePriority/RangePriority";
 import {
   editPriorityTask,
   editTask,
-  endTask,
   removeComment,
   removeSubtask,
   removeTask,
@@ -183,9 +182,9 @@ export default function InfoTaskModal({ show, onClose, item }) {
       overlayClassName={"overlay"}
       style={customStyles}
     >
-      <div className={"container-info-task"}>
+      <div className={styles.container_info_task}>
         <div className={"close-btn-ctn"}>
-          <div className={"container-title"}>
+          <div className={styles.container_title}>
             <ColorizeWrapText
               setEditValue={(val) => setTitle(val)}
               isEditing={isEditing}
@@ -196,11 +195,10 @@ export default function InfoTaskModal({ show, onClose, item }) {
               value={title}
               setValue={(val) => setTitle(val)}
             />
-
             <p>Автор: {getAuthorProject(item.author, usersStore)}</p>
           </div>
 
-          <div className={"container-buttons-info"}>
+          <div className={styles.container_buttons_info}>
             {IsAuth() && currentUser.id === item.author ? (
               <>
                 {!isEditing && (
@@ -230,7 +228,7 @@ export default function InfoTaskModal({ show, onClose, item }) {
           </div>
         </div>
         <div>
-          <div className={"task-description"}>
+          <div className={styles.task_description}>
             <h3>Описание задачи:</h3>
             {isEditing ? (
               <EditView
@@ -265,18 +263,18 @@ export default function InfoTaskModal({ show, onClose, item }) {
                   const currentIndex = index + 1;
 
                   return (
-                    <div key={file.id || index} className={`container-file ${filesArrayLength !== currentIndex ? "space-between-elements" : ""}`}
-                         onClick={() => {
-                           handleDownloadClick(file.data)
-                         }}>
-                      <img className={"icon-file"} src={iconFile} alt={"icon file"}/>
-                      <img className={"icon-file download-icon"} src={iconDownload} alt={"icon download file"}/>
+                    <div key={file.id || index} className={`${styles.container_file} ${filesArrayLength !== currentIndex ? styles.space_between_elements : ""}`}
+                       onClick={() => {
+                         handleDownloadClick(file.data)
+                       }}>
+                      <img className={styles.icon_file} src={iconFile} alt={"icon file"}/>
+                      <img className={`${styles.icon_file} ${styles.download_icon}`} src={iconDownload} alt={"icon download file"}/>
                       {
                         file.fileName !== undefined && (
-                          <p className={"no-select-text file-title"}>{file.fileName.length > 10 ? `${showShortNameFile(file.fileName, 8)}` : file.fileName}</p>
+                          <p className={`no-select-text ${styles.file_title}`}>{file.fileName.length > 10 ? `${showShortNameFile(file.fileName, 8)}` : file.fileName}</p>
                         )
                       }
-                      <p className={"no-select-text file-size"}>({formatFileSize(file.fileSize)})</p>
+                      <p className={`no-select-text ${styles.file_size}`}>({formatFileSize(file.fileSize)})</p>
                     </div>
                   )
                 })}
@@ -292,14 +290,7 @@ export default function InfoTaskModal({ show, onClose, item }) {
 
           {isDone !== null && isDone === false && (
             <div>
-              <p style={{
-                fontWeight: "bolder",
-                color: "#6c4407",
-                textAlign: "center",
-                backgroundColor: "#fddda7",
-                padding: '1%',
-                borderRadius: '0.4rem',
-              }}>У вас остались еще не выполненые подзадачи!</p>
+              <p className={styles.warning}>У вас остались еще не выполненые подзадачи!</p>
             </div>
           )}
 
@@ -316,25 +307,16 @@ export default function InfoTaskModal({ show, onClose, item }) {
         </div>
 
         {!isEditing && (
-          <div style={{
-            marginTop: "40px"
-          }}>
+          <div className={styles.container_comments}>
             <h3>Коментарии: </h3>
 
-            <div style={{
-              padding: "2px 2px 2px 2px"
-            }}>
+            <div className={styles.content_comments}>
               <Comments task_id={item.id} />
             </div>
           </div>
         )}
 
-
-        <div style={{
-          display: "flex",
-          flexDirection: "column",
-          marginTop: "2rem",
-        }}>
+        <div className={styles.container_data}>
           <p><b>Дата создания задачи: </b><i>{getCurrentDate(item.dateOfCreation, true)}</i></p>
 
           {item.startDate !== null && item.status !== "queue" && (

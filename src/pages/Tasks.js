@@ -6,21 +6,21 @@ import {useSelector} from "react-redux";
 import {NavLink, useParams} from "react-router-dom";
 import IsAuth from "../hooks/IsAuth";
 import CreateTaskModal from "../components/Modals/CreateTaskModal/CreateTaskModal";
-import styles from "./styles/Tasks.module.css";
 import {checkProjectsAuthor, getSubtask} from "../Functions";
+import styles from "./styles/Tasks.module.css";
 
 
 export default function Tasks() {
-  const statuses = useSelector(state => state.categories);
   const [items, setItems] = useState([]);
-  const { project_id } = useParams();
-  const currentUser = useSelector(state => state.auth.currentUser);
-  const projectsStore = useSelector(state => state.projects);
   const [show, setShow] = useState(false);
   const [search, setSearch] = useState("");
+  const [isDone, setIsDone] = useState(null);
+  const statuses = useSelector(state => state.categories);
+  const currentUser = useSelector(state => state.auth.currentUser);
+  const projectsStore = useSelector(state => state.projects);
   const taskData = useSelector(state => state.tasks);
   const subtasksStore = useSelector(state => state.subtasks);
-  const [isDone, setIsDone] = useState(null);
+  const { project_id } = useParams();
 
 
   useEffect(() => {
@@ -97,10 +97,8 @@ export default function Tasks() {
 
   return (
     <div className={styles.container_task}>
-      <div style={{width: "100%"}} className={styles.container_header}>
-        <div style={{
-          width: "25%"
-        }}>
+      <div className={styles.container_header}>
+        <div className={styles.container_header_col_1}>
           <NavLink to={"/"}>
             <p className={styles.button_header}>
               ◀ Вернуться к проектам
@@ -109,26 +107,13 @@ export default function Tasks() {
         </div>
 
         {isDone !== null && isDone === false && (
-          <div style={{
-            width: "40%"
-          }}>
-            <p style={{
-              fontWeight: "bolder",
-              color: "#6c4407",
-              textAlign: "center",
-              backgroundColor: "#fddda7",
-              padding: '2.8%',
-              borderRadius: '0.4rem',
-            }}>У вас остались еще не выполненые подзадачи!</p>
+          <div className={styles.container_header_col_2}>
+            <p className={styles.message_warning}>У вас остались еще не выполненые подзадачи!</p>
           </div>
         )}
 
         {IsAuth() && checkProjectsAuthor(projectsStore, project_id, currentUser) ? (
-          <div style={{
-            width: "25%",
-            textAlign: "right",
-            alignItems: "center"
-          }}>
+          <div className={styles.container_header_col_3}>
             <p
               className={styles.button_header}
               onClick={onOpen}

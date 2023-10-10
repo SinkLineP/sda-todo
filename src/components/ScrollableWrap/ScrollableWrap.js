@@ -1,14 +1,9 @@
 import React from "react";
-import "./ScrollableWrap.css";
+import styles from "./ScrollableWrap.module.css";
 
 export default function ScrollableWrap({ children }) {
   return (
-    <div style={{
-      display: "flex",
-      flexDirection: "row",
-      overflow: "auto",
-      padding: "10px"
-    }}>
+    <div className={styles.scrollable_wrap_container}>
       {children}
     </div>
   )

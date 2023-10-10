@@ -2,11 +2,12 @@ import React from "react";
 import Modal from "react-modal";
 import {FormSubmit} from "../../FormSubmit/FormSubmit";
 import {ErrorMessage, Field, Formik} from "formik";
-import * as yup from "yup";
 import {useDispatch, useSelector} from "react-redux";
 import {v4 as uuid} from "uuid";
 import styles from "./ProjectModal.module.css";
 import {addProject} from "../../../store/Actions/Actions";
+import {validationsSchema} from "./Schema";
+import {initialValues} from "./initialValues";
 
 
 export default function ProjectModal({ onClose, show }) {
@@ -22,12 +23,7 @@ export default function ProjectModal({ onClose, show }) {
     }
   }
 
-  const validationsSchema = yup.object().shape({
-    projectName: yup.string()
-      .min(2, "Название проекта должно быть минимум 2 символа")
-      .max(25, "Название проекта должно быть максимум 25 символов")
-      .required('Введите ваше название проекта'),
-  })
+
 
   const dispatch = useDispatch();
   const currentUser = useSelector(state => state.auth.currentUser);
@@ -44,9 +40,7 @@ export default function ProjectModal({ onClose, show }) {
       <div>
         <h1 className={styles.title}>Создание проекта</h1>
         <Formik
-          initialValues={{
-            projectName: '',
-          }}
+          initialValues={initialValues}
           validateOnBlur
           onSubmit={(values, { resetForm }) => {
             dispatch(addProject({
@@ -60,7 +54,7 @@ export default function ProjectModal({ onClose, show }) {
             resetForm();
           }}
           validationSchema={validationsSchema}>
-          {({ values, errors, touched, handleChange, handleBlur, isValid, handleSubmit, dirty, resetForm }) => {
+          {({ handleChange, handleBlur, isValid, handleSubmit, dirty }) => {
             return (
               <div className={'form'}>
                 <div>
