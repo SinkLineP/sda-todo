@@ -231,7 +231,9 @@ export const EditView = ({ tag, handleChange, value, style }) => {
 };
 
 
-export const setRangeValue = (value) => {
+export const setRangeValuePriority = (value) => {
+  console.log(value);
+
   if (value === "low") {
     return {
       value: 0,

@@ -4,7 +4,7 @@ import {
   calculateTimeInWork, EditView,
   formatFileSize,
   getAuthorProject,
-  getCurrentDate, getSubtask, priorities, setRangeValue, showShortNameFile
+  getCurrentDate, getSubtask, priorities, setRangeValuePriority, showShortNameFile
 } from "../../Functions";
 import {useDispatch, useSelector} from "react-redux";
 import ColorizeWrapText from "../ColorizeWrapText/ColorizeWrapText";
@@ -41,7 +41,7 @@ export default function InfoTask({ show, onClose, item }) {
   const [desc, setDesc] = useState(item.description);
   const [rangePriority, setRangePriority] = useState({
     id: null,
-    value: setRangeValue(item.priority).value,
+    value: setRangeValuePriority(item.priority).value,
   });
 
 
@@ -87,7 +87,7 @@ export default function InfoTask({ show, onClose, item }) {
     setTitle(item.title);
     setRangePriority({
       id: null,
-      value: setRangeValue(item.priority).value,
+      value: setRangeValuePriority(item.priority).value,
     })
   }
 
@@ -315,28 +315,33 @@ export default function InfoTask({ show, onClose, item }) {
             </div>
           )}
 
-          <CreateAndShowSubtask
-            currentItem={item}
-            subtasks={getSubtask(item.subtasks, subtasksStore)}
-            location={"info"}
-            showForm={showFormSubtask}
-            setShowForm={(val) => setShowFormSubtask(val)}
-            task_id={item.id}
-            task_author={item.author}
-          />
+          {!isEditing && (
+            <CreateAndShowSubtask
+              currentItem={item}
+              subtasks={getSubtask(item.subtasks, subtasksStore)}
+              location={"info"}
+              showForm={showFormSubtask}
+              setShowForm={(val) => setShowFormSubtask(val)}
+              task_id={item.id}
+              task_author={item.author}
+            />
+          )}
         </div>
 
-        <div style={{
-          marginTop: "40px"
-        }}>
-          <h3>Коментарии: </h3>
-
+        {!isEditing && (
           <div style={{
-            padding: "2px 2px 2px 2px"
+            marginTop: "40px"
           }}>
-            <Comments task_id={item.id} />
+            <h3>Коментарии: </h3>
+
+            <div style={{
+              padding: "2px 2px 2px 2px"
+            }}>
+              <Comments task_id={item.id} />
+            </div>
           </div>
-        </div>
+        )}
+
 
         <div style={{
           display: "flex",

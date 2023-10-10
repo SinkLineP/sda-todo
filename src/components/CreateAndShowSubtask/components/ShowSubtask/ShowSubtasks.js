@@ -1,16 +1,15 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useState} from "react";
 import styles from "./ShowSubtasks.module.css";
 import IsAuth from "../../../../hooks/IsAuth";
 import {useDispatch, useSelector} from "react-redux";
 import {
-  editPriority,
   editPrioritySubtask,
-  editStatus,
   editStatusSubtask,
   removeSubtask
 } from "../../../../store/Reducers/subtaskReducer";
 import {removeSubtaskFromTask} from "../../../../store/Reducers/taskReducer";
-import {getSubtask, StatusesColors} from "../../../../Functions";
+import {setRangeValuePriority, StatusesColors} from "../../../../Functions";
+import RangePriority from "../../../RangePriority/RangePriority";
 
 const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) => {
   const isAuth = IsAuth();
@@ -36,41 +35,22 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
     }
   };
 
-  const setRangeValue = (value, type) => {
-    if (type === "status") {
-      if (value === "queue") {
-        return {
-          value: 0,
-          color: StatusesColors.Queue,
-        };
-      } else if (value === "development") {
-        return {
-          value: 1,
-          color: StatusesColors.Development,
-        };
-      } else if (value === "done") {
-        return {
-          value: 2,
-          color: StatusesColors.Done,
-        };
-      }
-    } else if (type === "priority") {
-      if (value === "low") {
-        return {
-          value: 0,
-          color: StatusesColors.Queue,
-        };
-      } else if (value === "medium") {
-        return {
-          value: 1,
-          color: StatusesColors.Development,
-        };
-      } else if (value === "height") {
-        return {
-          value: 2,
-          color: StatusesColors.Height,
-        };
-      }
+  const setRangeValueStatus = (value) => {
+    if (value === "queue") {
+      return {
+        value: 0,
+        color: StatusesColors.Queue,
+      };
+    } else if (value === "development") {
+      return {
+        value: 1,
+        color: StatusesColors.Development,
+      };
+    } else if (value === "done") {
+      return {
+        value: 2,
+        color: StatusesColors.Done,
+      };
     }
   }
 
@@ -85,8 +65,11 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
     }
   }
 
-  const [rangeStatus, setRangeStatus] = useState(setRangeValue(item.statusSubtask, "status").value);
-  const [rangePriority, setRangePriority] = useState(setRangeValue(item.prioritySubtask, "priority").value);
+  const [rangeStatus, setRangeStatus] = useState(setRangeValueStatus(item.statusSubtask).value);
+  const [rangePriority, setRangePriority] = useState({
+    id: null,
+    value: setRangeValuePriority(item.prioritySubtask).value,
+  });
 
   return (
     <div key={item.id} className={`shadow-box`}>
@@ -118,7 +101,7 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
               fontWeight: "bold"
             }}>Статус: <span style={{
               fontWeight: "bold",
-              color: setRangeValue(item.statusSubtask, "status").color
+              color: setRangeValueStatus(item.statusSubtask).color
             }}>{item.statusSubtask.toUpperCase()}</span></div>
             {location === "info" && currentItem.status !== "done" && (
               <input
@@ -128,7 +111,7 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
                   styles.status_range_2,
                   styles.status_range_3
                 )}`}
-                disabled={setRangeValue(item.statusSubtask, "status").value === 2 || currentItem.status === "queue"}
+                disabled={setRangeValueStatus(item.statusSubtask).value === 2 || currentItem.status === "queue"}
                 type={"range"}
                 min="0"
                 max="2"
@@ -148,28 +131,10 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
               fontWeight: "bold"
             }}>Приоритет: <span style={{
               fontWeight: "bold",
-              color: setRangeValue(item.prioritySubtask, "priority").color
+              color: setRangeValuePriority(item.prioritySubtask).color
             }}>{item.prioritySubtask.toUpperCase()}</span></div>
             {location === "info" && currentItem.status !== "done" && (
-              <input
-                className={`${styles.input} ${changeClassName(
-                  rangePriority,
-                  styles.priority_range_1,
-                  styles.priority_range_2,
-                  styles.priority_range_3
-                )}`}
-                type={"range"}
-                min="0"
-                max="2"
-                step="1"
-                disabled={setRangeValue(item.statusSubtask, "status").value === 2}
-                value={rangePriority}
-                onChange={(e) => {
-                  dispatch(editPrioritySubtask(item.id, parseInt(e.target.value)));
-                  setRangePriority(parseInt(e.target.value))
-                }}
-                style={{cursor: "pointer"}}
-              />
+              <RangePriority rangePriority={rangePriority} item={item} setRangePriority={(val) => setRangePriority(val)} dispatchFunc={(e) => dispatch(editPrioritySubtask(item.id, parseInt(e.target.value)))} disabled={setRangeValueStatus(item.statusSubtask).value === 2} />
             )}
           </div>
         </div>

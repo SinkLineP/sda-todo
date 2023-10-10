@@ -32,6 +32,7 @@ const RangePriority = ({ item, disabled, rangePriority, setRangePriority, dispat
       disabled={disabled}
       value={rangePriority.value.toString()}
       onChange={(e) => {
+        dispatchFunc && dispatchFunc(e);
         setRangePriority({
           id: item.id,
           value: parseInt(e.target.value)
