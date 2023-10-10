@@ -10,7 +10,7 @@ import styles from "./ShowSubtasks.module.css";
 import RangeWrap from "./components/RangeWrap";
 
 
-const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) => {
+const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem, isEditing }) => {
   const isAuth = IsAuth();
   const currentUser = useSelector(state => state.auth.currentUser);
   const dispatch = useDispatch();
@@ -52,27 +52,29 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
           </div>
         </div>
 
-        <div className={styles.container_status_and_priority}>
-          <RangeWrap location={location} label={"Статус"} subtask={item.statusSubtask} currentStatus={currentItem.status} type={"status"} >
-            <RangeStatus
-              item={item}
-              rangeStatus={rangeStatus}
-              setRangeStatus={(val) => setRangeStatus(val)}
-              dispatchFunc={(e) => dispatch(editStatusSubtask(item.id, parseInt(e.target.value)))}
-              disabled={setRangeValueStatus(item.statusSubtask).value === 2 || currentItem.status === "queue"}
-            />
-          </RangeWrap>
+        {!isEditing && (
+          <div className={styles.container_status_and_priority}>
+            <RangeWrap location={location} label={"Статус"} subtask={item.statusSubtask} currentStatus={currentItem.status} type={"status"} >
+              <RangeStatus
+                item={item}
+                rangeStatus={rangeStatus}
+                setRangeStatus={(val) => setRangeStatus(val)}
+                dispatchFunc={(e) => dispatch(editStatusSubtask(item.id, parseInt(e.target.value)))}
+                disabled={setRangeValueStatus(item.statusSubtask).value === 2 || currentItem.status === "queue"}
+              />
+            </RangeWrap>
 
-          <RangeWrap location={location} label={"Приоритет"} subtask={item.prioritySubtask} currentStatus={currentItem.status} type={"priority"} >
-            <RangePriority
-              rangePriority={rangePriority}
-              item={item}
-              setRangePriority={(val) => setRangePriority(val)}
-              dispatchFunc={(e) => dispatch(editPrioritySubtask(item.id, parseInt(e.target.value)))}
-              disabled={setRangeValueStatus(item.statusSubtask).value === 2}
-            />
-          </RangeWrap>
-        </div>
+            <RangeWrap location={location} label={"Приоритет"} subtask={item.prioritySubtask} currentStatus={currentItem.status} type={"priority"} >
+              <RangePriority
+                rangePriority={rangePriority}
+                item={item}
+                setRangePriority={(val) => setRangePriority(val)}
+                dispatchFunc={(e) => dispatch(editPrioritySubtask(item.id, parseInt(e.target.value)))}
+                disabled={setRangeValueStatus(item.statusSubtask).value === 2}
+              />
+            </RangeWrap>
+          </div>
+        )}
 
         {isAuth && currentUser.id === item.author && (
           <div className={styles.container_buttons}>

@@ -243,18 +243,16 @@ export default function InfoTask({ show, onClose, item }) {
           <div className={"task-description"}>
             <h3>Описание задачи:</h3>
             {isEditing ? (
-              <>
-                <EditView
-                  handleChange={(val) => setDesc(val)}
-                  value={desc}
-                  tag="p"
-                  style={{
-                    borderRadius: "0.3rem",
-                    minWidth: "100px",
-                    marginLeft: "2px"
-                  }}
-                />
-              </>
+              <EditView
+                handleChange={(val) => setDesc(val)}
+                value={desc}
+                tag="p"
+                style={{
+                  borderRadius: "0.3rem",
+                  minWidth: "100px",
+                  marginLeft: "2px"
+                }}
+              />
             ) : (<p>{item.description}</p>)}
           </div>
 
@@ -268,7 +266,7 @@ export default function InfoTask({ show, onClose, item }) {
             <ColorizeWrapText text={item.priority} label={"Приоритет задачи: "} type={"text"} />
           )}
 
-          {item.files !== null ? (
+          {item.files !== null && !isEditing ? (
             <>
               <h3>Вложеные файлы: ({item.files.length})</h3>
               <ScrollableWrap>
@@ -294,7 +292,7 @@ export default function InfoTask({ show, onClose, item }) {
                 })}
               </ScrollableWrap>
             </>
-          ) : (
+          ) : !isEditing && (
             <>
               <h3>Вложеных файлов не найдено!</h3>
             </>
@@ -315,17 +313,16 @@ export default function InfoTask({ show, onClose, item }) {
             </div>
           )}
 
-          {!isEditing && (
-            <CreateAndShowSubtask
-              currentItem={item}
-              subtasks={getSubtask(item.subtasks, subtasksStore)}
-              location={"info"}
-              showForm={showFormSubtask}
-              setShowForm={(val) => setShowFormSubtask(val)}
-              task_id={item.id}
-              task_author={item.author}
-            />
-          )}
+          <CreateAndShowSubtask
+            isEditing={isEditing}
+            currentItem={item}
+            subtasks={getSubtask(item.subtasks, subtasksStore)}
+            location={"info"}
+            showForm={showFormSubtask}
+            setShowForm={(val) => setShowFormSubtask(val)}
+            task_id={item.id}
+            task_author={item.author}
+          />
         </div>
 
         {!isEditing && (

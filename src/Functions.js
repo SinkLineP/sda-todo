@@ -146,51 +146,6 @@ export const getSubtask = (data, subtasksStore) => {
   return subtasksStore.filter(item => data.includes(item.id));
 }
 
-// export const EditView = ({ tag, style, handleChange, value }) => {
-//   const Tag = tag || "h1"
-//   const [isValid, setIsValid] = useState(true);
-//
-//   const handleBlur = (e) => {
-//     const newValue = e.currentTarget.textContent.trim();
-//     if (newValue.trim() === '') {
-//       setIsValid(false);
-//     } else {
-//       setIsValid(true);
-//       handleChange(newValue);
-//     }
-//   };
-//
-//   return (
-//     <div>
-//       {!isValid && <div className="errors">Значение не может быть пустым.</div>}
-//       <div style={{
-//         display: 'flex',
-//         flexDirection: 'row',
-//         alignItems: 'center',
-//         height: "40px"
-//       }}>
-//         <Tag
-//           className={`shadow-box ${isValid ? '' : 'error'}`}
-//           style={{
-//             borderWidth: '1px',
-//             borderStyle: 'solid',
-//             borderColor: !isValid ? '#d00000' : '',
-//             minWidth: "100px",
-//             padding: "0.3rem",
-//             ...style
-//           }}
-//           suppressContentEditableWarning={true}
-//           contentEditable='true'
-//           onBlur={handleBlur}
-//         >
-//           {value}
-//         </Tag>
-//       </div>
-//     </div>
-//   );
-// };
-
-
 export const EditView = ({ tag, handleChange, value, style }) => {
   const Tag = tag || "h1"
 
