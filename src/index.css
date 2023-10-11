@@ -320,3 +320,15 @@ select {
     width: 100%;
   }
 }
+
+@media screen and (max-width: 335px) {
+  .btn {
+    width: 100%;
+    height: 3rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 0.5rem;
+  }
+}
+

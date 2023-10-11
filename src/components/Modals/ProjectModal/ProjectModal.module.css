@@ -26,3 +26,33 @@
 .error {
     font-size: 20px;
 }
+
+@media screen and (max-width: 625px) {
+    .title {
+        font-size: 30px;
+    }
+
+    .label {
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width: 465px) {
+    .title {
+        font-size: 25px;
+    }
+
+    .label {
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .title {
+        font-size: 20px;
+    }
+
+    .label {
+        font-size: 14px;
+    }
+}

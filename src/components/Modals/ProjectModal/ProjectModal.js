@@ -19,7 +19,7 @@ export default function ProjectModal({ onClose, show }) {
       bottom: 'auto',
       transform: 'translate(-50%, -50%)',
       width: "60%",
-      height: "18rem"
+      height: "auto"
     }
   }
 
