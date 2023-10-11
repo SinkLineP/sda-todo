@@ -8,7 +8,6 @@ import IsAuth from "../hooks/IsAuth";
 import CreateTaskModal from "../components/Modals/CreateTaskModal/CreateTaskModal";
 import {checkProjectsAuthor, getSubtask} from "../Functions";
 import styles from "./styles/Tasks.module.css";
-import {VscAdd} from "react-icons/vsc";
 
 
 export default function Tasks() {

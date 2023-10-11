@@ -5,8 +5,8 @@ import ITEM_TYPE from "../../data/types";
 import {useDispatch, useSelector} from "react-redux";
 import IsAuth from "../../hooks/IsAuth";
 import styles from "./Item.module.css";
-import {checkIsDoneSubtask, getSubtask} from "../../Functions";
-import {editEndDate, editStartDate, endTask, startTask} from "../../store/Actions/Actions";
+import {checkIsDoneSubtask} from "../../Functions";
+import {editEndDate, editStartDate, startTask} from "../../store/Actions/Actions";
 
 const Item = ({ item, index, moveItem, status, setIsDone }) => {
   const ref = useRef(null);

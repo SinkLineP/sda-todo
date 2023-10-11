@@ -39,7 +39,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
     setErrorFile("");
     const ArrayTargetFiles = Array.from(files);
 
-    ArrayTargetFiles.map((f) => {
+    ArrayTargetFiles.forEach((f) => {
       const filesLowZero = ArrayTargetFiles.filter(file => file.size <= 0);
       const filesMaxSize = ArrayTargetFiles.filter(file => file.size > maxSizeFileUpload);
 

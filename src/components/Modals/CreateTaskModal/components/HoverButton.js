@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import styles from "./HoverButton.module.css";
 import {ReactComponent as IconApplyDeleteSVG} from "./icons/apply-delete.svg";
-import {GrClose} from "react-icons/gr";
 
 const HoverButton = ({ IconButton, onClick, titleButton, backgroundBeforeClick, backgroundAfterClick }) => {
   const [isHovered, setIsHovered] = useState(false);

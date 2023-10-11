@@ -205,11 +205,11 @@ export default function InfoTaskModal({ show, onClose, item }) {
                 {!isEditing && (
                   <HoverButton
                     onClick={() => {
-                      item.subtasks.map((id) => {
+                      item.subtasks.forEach((id) => {
                         dispatch(removeSubtask(id));
                       })
 
-                      item.comments.map((id) => {
+                      item.comments.forEach((id) => {
                         dispatch(removeComment(id));
                       })
 

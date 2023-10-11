@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./RangePriority.module.css";
 import {changeClassName} from "../Functions";
-import IsAuth from "../../../hooks/IsAuth";
 
 const RangePriority = ({ item, disabled, rangePriority, setRangePriority, dispatchFunc }) => {
   return (

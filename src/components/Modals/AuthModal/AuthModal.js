@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import Modal from "react-modal";
 import {Formik} from "formik";
-import * as yup from 'yup';
 import "./AuthModal.css";
 import {useDispatch, useSelector} from "react-redux";
 import {FormLink} from "./components/FormLink";
