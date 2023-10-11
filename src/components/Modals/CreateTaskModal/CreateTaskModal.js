@@ -26,6 +26,7 @@ export default function CreateTaskModal({ show, onClose, project_id }) {
       bottom: 'auto',
       transform: 'translate(-50%, -50%)',
       width: "60%",
+      height: "auto",
       maxHeight: "82vh",
       overflowY: "auto",
     }

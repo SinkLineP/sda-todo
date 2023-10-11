@@ -73,6 +73,10 @@
     border-radius: 1rem;
 }
 
+.drop_area > * {
+    text-align: center;
+}
+
 .title_drop_file {
     font-weight: bold;
 }
@@ -139,4 +143,32 @@
 
 .btn-show:hover {
     background-color: #239671;
+}
+
+@media screen and (max-width: 650px) {
+    .drop_area {
+        padding: 10px;
+        font-size: 13px;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .title {
+        font-size: 20px;
+    }
+
+    .label {
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .title {
+        font-size: 17px;
+    }
+
+    .label {
+        font-size: 12px;
+    }
 }

@@ -103,7 +103,6 @@ export default function InfoTaskModal({ show, onClose, item }) {
       right: 'auto',
       bottom: 'auto',
       transform: 'translate(-50%, -50%)',
-      width: "80%",
       maxHeight: "90vh",
       overflowY: "auto",
     }

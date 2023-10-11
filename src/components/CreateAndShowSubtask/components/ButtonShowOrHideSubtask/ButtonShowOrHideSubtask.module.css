@@ -11,3 +11,10 @@
     background-color: #27aa80;
     color: white;
 }
+
+@media screen and (max-width: 450px) {
+    .btn_subtask {
+        font-size: 0.7rem;
+        padding: 6px;
+    }
+}

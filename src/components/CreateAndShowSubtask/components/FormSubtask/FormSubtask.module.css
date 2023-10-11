@@ -9,6 +9,7 @@
     font-size: 1.1rem;
     cursor: pointer;
     margin-bottom: 1.5rem;
+    white-space: nowrap;
 }
 
 .submit:hover {
@@ -20,6 +21,7 @@
     box-sizing: border-box;
     padding: 0.5rem;
     border-radius: 1rem;
+    height: auto
 }
 
 .container_title {
@@ -55,10 +57,38 @@
     margin-bottom: 0.5rem;
 }
 
-.hide-submit {
+@media screen and (max-width: 500px) {
+    .title {
+        font-size: 18px;
+    }
 
+    .label {
+        font-size: 13px;
+    }
+
+    .submit {
+        padding: 1rem;
+        width: 100%;
+        font-weight: bold;
+        font-size: 1rem;
+    }
 }
 
-.show-submit {
+@media screen and (max-width: 400px) {
+    .submit {
+        padding: 1rem;
+        width: 100%;
+        font-weight: bold;
+        font-size: 0.8rem;
+    }
+}
 
+@media screen and (max-width: 380px) {
+    .title {
+        font-size: 15px;
+    }
+
+    .label {
+        font-size: 12px;
+    }
 }
