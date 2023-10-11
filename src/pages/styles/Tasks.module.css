@@ -56,12 +56,14 @@
     justify-content: space-between;
     gap: 10px;
     margin-top: 1rem;
+    width: auto;
 }
 
 .card_item {
     background-color: #fff2f2;
     border-radius: 1rem;
     padding: 1rem;
+    width: 100%;
 }
 
 .card_item > .title {
@@ -96,4 +98,15 @@
     position:relative;
     right:10px;
     cursor: pointer;
+}
+
+
+
+@media screen and (max-width: 1300px) {
+    .container_task {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        box-sizing: border-box;
+    }
 }

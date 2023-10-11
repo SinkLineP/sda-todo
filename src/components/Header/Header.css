@@ -6,6 +6,9 @@
     border-radius: 5px;
     cursor: pointer;
     width: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .btn-header-auth {
@@ -23,3 +26,9 @@
     color: white;
     margin-right: 1rem;
 }
+
+.page-header {
+    /*width: 100%;*/
+}
+
+

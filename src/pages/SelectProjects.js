@@ -32,7 +32,7 @@ export default function SelectProjects() {
             <th
               className={`${styles.number_project} ${styles.th} no-select-text`}
             >
-              Номер проекта
+              №
             </th>
             <th
               className={`${styles.title_project} ${styles.th} no-select-text`}

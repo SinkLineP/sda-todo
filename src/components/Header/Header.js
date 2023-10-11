@@ -23,7 +23,11 @@ export default function Header() {
   return (
     <>
       <div className={"page-header"}>
-        <p className={"title-header"}>SPA Todo Dashboard 🗂️</p>
+        <div className={'title-header-container'}>
+          <p className={"title-header"}>SPA Todo Dashboard</p>
+          <p className={"title-icon"}>🗂️</p>
+        </div>
+
         <ChangeButton
           currentUser={currentUser}
           currentForm={currentForm}
