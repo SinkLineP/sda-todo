@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path={"/"} element={<Layout />}>
+        <Route path={"/sda-todo/"} element={<Layout />}>
           <Route path={"project-list"} element={<SelectProjects />} />
           <Route path={"project-list/:project_id"} element={<Tasks />} />
 
@@ -18,8 +18,6 @@ function App() {
             element={<Navigate to="/project-list" replace />}
           />
         </Route>
-
-        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>
   );
