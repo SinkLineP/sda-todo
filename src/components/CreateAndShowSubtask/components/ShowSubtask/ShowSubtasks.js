@@ -36,8 +36,7 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
   return (
     <div key={item.id} className={`shadow-box`}>
       <div className={`${styles.container} shadow-box`}>
-        <div style={{
-        }}>
+        <div>
           <div>
             <div>
               <p className={styles.title}>{item.titleSubtask} #{item.numberSubtask}</p>
@@ -46,7 +45,7 @@ const ShowSubtasks = ({ task_id, setData, data, location, item, currentItem }) =
 
           <div className={styles.container_desc}>
 
-            <p className={styles.title}>Описание подзадачи: </p>
+            <p className={styles.title_desc}>Описание подзадачи: </p>
             <p className={styles.desc}>{item.descriptionSubtask}</p>
           </div>
         </div>
