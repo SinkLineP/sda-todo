@@ -1,0 +1,26 @@
+::-webkit-scrollbar {
+    width: 1vh;
+    height: 1vh;
+
+}
+
+/* Установка цвета фона для скроллбара */
+/*::-webkit-scrollbar-track {*/
+/*    background: #f1f1f1;*/
+/*    border-radius: 1rem;*/
+/*}*/
+
+/* Стилизация ползунка скроллбара */
+::-webkit-scrollbar-thumb {
+    background: #c5c5c5;
+    width: 2rem;
+    height: 1rem;
+    border-radius: 1rem;
+}
+
+/* Стилизация скроллбара при наведении */
+::-webkit-scrollbar-thumb:hover {
+    background: #a9a9a9;
+    cursor: pointer;
+}
+

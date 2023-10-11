@@ -1,4 +1,4 @@
-import {StatusesColors} from "../../Variables";
+import {StatusesColors} from "../../Functions";
 
 export const initialState = [
   {

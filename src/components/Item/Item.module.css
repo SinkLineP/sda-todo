@@ -1,0 +1,25 @@
+.btn_item {
+    border-radius: 0.2rem;
+    padding: 0.4rem;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+
+.btn_start {
+    background-color: #70a138;
+    color: white
+}
+
+.btn_stop {
+    background-color: #d00000;
+    color: white
+}
+
+.btn_start:hover {
+    background-color: #5c852e;
+}
+
+.btn_stop:hover {
+    background-color: #ad0000;
+}

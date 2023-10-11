@@ -1,0 +1,30 @@
+.container_field {
+    margin-bottom: 1rem;
+}
+
+.title_subtask {
+    font-weight: bold;
+}
+
+.container_show {
+    box-sizing: border-box;
+    width: 100%;
+    max-height: 30vh;
+    padding: 0.5rem 0.2rem;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+    overflow: auto;
+    border-radius: 0.2rem;
+    border: 1px solid lightgrey;
+}
+
+.container_form {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.5rem 0.2rem;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+    overflow: auto;
+}

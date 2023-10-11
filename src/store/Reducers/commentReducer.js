@@ -1,12 +1,5 @@
 import {initialState} from "../States/commentInitialState";
-
-const ActionTypes = {
-  ADD_COMMENT: 'ADD_COMMENT',
-  REMOVE_COMMENT: 'REMOVE_COMMENT',
-  EDIT_COMMENT: 'EDIT_COMMENT',
-  REPLY_COMMENT: 'REPLY_COMMENT',
-  REMOVE_REPLY_COMMENT: 'REMOVE_REPLY_COMMENT'
-};
+import {CommentActionTypes} from "../Types/ActionTypes";
 
 
 const addChildToComment = (comment, parentId, newComment) => {
@@ -34,8 +27,7 @@ const removeItemByIdRecursive = (array, idToRemove) => {
       continue;
     } else if (currentItem.comments && currentItem.comments.length > 0) {
       // Recursively update comments
-      const updatedComments = removeItemByIdRecursive(currentItem.comments, idToRemove);
-      currentItem.comments = updatedComments;
+      currentItem.comments = removeItemByIdRecursive(currentItem.comments, idToRemove);
     }
 
     updatedArray.push(currentItem); // Add the current item to the updated array
@@ -67,10 +59,10 @@ const editCommentRecursive = (comments, commentId, newContent) => {
 
 function CommentReducer(state = initialState, action) {
   switch (action.type) {
-    case ActionTypes.ADD_COMMENT:
+    case CommentActionTypes.ADD_COMMENT:
       return [...state, action.payload];
 
-    case ActionTypes.REPLY_COMMENT:
+    case CommentActionTypes.REPLY_COMMENT:
       const newComment = {
         id: action.payload.id,
         task_id: action.payload.task_id,
@@ -85,13 +77,13 @@ function CommentReducer(state = initialState, action) {
         return addChildToComment({...comment}, action.payload.parent_id, newComment)
       });
 
-    case ActionTypes.REMOVE_REPLY_COMMENT:
+    case CommentActionTypes.REMOVE_REPLY_COMMENT:
       return removeItemByIdRecursive(state, action.payload);
 
-    case ActionTypes.EDIT_COMMENT:
+    case CommentActionTypes.EDIT_COMMENT:
       return editCommentRecursive(state, action.payload.commentId, action.payload.newContent);
 
-    case ActionTypes.REMOVE_COMMENT:
+    case CommentActionTypes.REMOVE_COMMENT:
       return state.filter((comment) => {
         return comment.id !== action.payload;
       });
@@ -101,31 +93,6 @@ function CommentReducer(state = initialState, action) {
   }
 }
 
-export const editComment = (commentId, newContent) => ({
-    type: ActionTypes.EDIT_COMMENT,
-    payload: {commentId, newContent }
-});
-
-
-export const addComment = (formData) => ({
-  type: ActionTypes.ADD_COMMENT,
-  payload: formData,
-});
-
-export const addReply = (formData) => ({
-  type: ActionTypes.REPLY_COMMENT,
-  payload: formData,
-});
-
-export const removeComment = (commentId) => ({
-  type: ActionTypes.REMOVE_COMMENT,
-  payload: commentId,
-});
-
-export const removeReply = (commentId) => ({
-  type: ActionTypes.REMOVE_REPLY_COMMENT,
-  payload: commentId,
-});
 
 
 export default CommentReducer;

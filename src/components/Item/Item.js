@@ -1,22 +1,31 @@
 import React, {Fragment, useState, useRef, useEffect} from "react";
 import { useDrag, useDrop } from "react-dnd";
-import InfoTask from "../InfoTask/InfoTask"
+import InfoTaskModal from "../Modals/InfoTaskModal/InfoTaskModal";
 import ITEM_TYPE from "../../data/types";
-import {editTask} from "../../store/Reducers/taskReducer";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import IsAuth from "../../hooks/IsAuth";
+import styles from "./Item.module.css";
+import {checkIsDoneSubtask, getSubtask} from "../../Functions";
+import {editEndDate, editStartDate, endTask, startTask} from "../../store/Actions/Actions";
 
-const Item = ({ item, index, moveItem, status }) => {
+const Item = ({ item, index, moveItem, status, setIsDone }) => {
   const ref = useRef(null);
   const dispatch = useDispatch();
+  const tasksStore = useSelector(state => state.tasks);
+  const taskData = useSelector(state => state.tasks);
+  const subtasksStore = useSelector(state => state.subtasks);
 
 
-  const [, drop] = useDrop({
+  // Определение, разрешено ли перетаскивание
+  const isDraggable = IsAuth();
+
+  const [{ isOver, canDrop }, drop] = useDrop({
     accept: ITEM_TYPE,
-    hover(item, monitor) {
+    hover(draggedItem, monitor) {
       if (!ref.current) {
-        return
+        return;
       }
-      const dragIndex = item.index;
+      const dragIndex = draggedItem.index;
       const hoverIndex = index;
 
       if (dragIndex === hoverIndex) {
@@ -35,53 +44,97 @@ const Item = ({ item, index, moveItem, status }) => {
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
         return;
       }
+
       moveItem(dragIndex, hoverIndex);
-      item.index = hoverIndex;
     },
+    collect: monitor => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    })
   });
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: ITEM_TYPE,
     item: { ...item, index },
     collect: monitor => ({
-      isDragging: monitor.isDragging()
-    })
+      isDragging: monitor.isDragging(),
+    }),
+    canDrag: isDraggable && item.status !== "done", // Добавьте эту проверку
   }));
-
 
   const [show, setShow] = useState(false);
   const onOpen = () => setShow(true);
   const onClose = () => setShow(false);
 
+  // Обработка начала задачи
+  const handleStartTask = (e) => {
+    e.stopPropagation();
+    if (item.status === "queue") {
+      dispatch(startTask("development", new Date(), item.id, "🔆️"));
+    }
+  };
+
+  // Обработка завершения задачи
+  const handleEndTask = (e) => {
+    e.stopPropagation();
+    if (item.status === "development") {
+      checkIsDoneSubtask(item, taskData, subtasksStore, (val) => setIsDone(val), dispatch)
+    }
+  };
+
   drag(drop(ref));
 
+  const startDate = new Date();
+  const endDate = new Date();
 
   useEffect(() => {
     if (!isDragging) {
-      dispatch(editTask(item.id, item))
+      if (item.status === "queue" && tasksStore.find(task => task.id === item.id).startDate !== null) {
+        dispatch(editStartDate(item.id, null, item.status, "⭕️"));
+        dispatch(editEndDate(item.id, null, item.status, "⭕️"));
+      }
+
+      if (item.status === "development" && tasksStore.find(task => task.id === item.id).startDate === null) {
+        dispatch(editStartDate(item.id, startDate, item.status, "🔆️"));
+        dispatch(editEndDate(item.id, null, item.status, "🔆️"));
+      }
+
+      if (item.status === "done" && tasksStore.find(task => task.id === item.id).startDate !== null && tasksStore.find(task => task.id === item.id).endDate === null) {
+        dispatch(editStartDate(item.id, tasksStore.find(task => task.id === item.id).startDate, item.status, "✅️"));
+        dispatch(editEndDate(item.id, endDate, item.status, "✅️"));
+      }
     }
-  }, [dispatch, isDragging, item])
+  }, [dispatch, isDragging, item.status, item.subtasks]);
 
   return (
     <Fragment>
-      {/*card task*/}
+      {/* Карточка задачи */}
       <div
         ref={ref}
         style={{ opacity: isDragging ? 0 : 1 }}
-        className={"item"}
+        className={"item shadow-box"}
         onClick={onOpen}
       >
-        <div className={"color-bar"} style={{ backgroundColor: status.color }}/>
-        <p className={"item-title"}>{item.title} #{item.numberTask}</p>
+        <div className={"color-bar shadow-box"} style={{ backgroundColor: status.color }} />
+        <p className={"item-title"}>
+          {item.title} #{item.numberTask}
+        </p>
+        {item.subtasks.length > 0 ? (<p>Колличество подзадач: {item.subtasks.length}</p>) : (<p>Подзадач не найденно!</p>)}
+
         <p className={"item-status"}>{item.icon}</p>
+        {/* Кнопка начала задачи */}
+        {item.status === "queue" && IsAuth() && (
+          <button className={`${styles.btn_item} ${styles.btn_start} shadow-box`} onClick={(e) => handleStartTask(e)}>Начать задачу</button>
+        )}
+
+        {/* Кнопка завершения задачи */}
+        {item.status === "development" && IsAuth() && (
+          <button className={`${styles.btn_item} ${styles.btn_stop} shadow-box`} onClick={(e) => handleEndTask(e)}>Завершить задачу</button>
+        )}
       </div>
 
-      {/*modal window*/}
-      <InfoTask
-        item={item}
-        onClose={onClose}
-        show={show}
-      />
+      {/* Модальное окно с информацией о задаче */}
+      <InfoTaskModal item={item} onClose={onClose} show={show} />
     </Fragment>
   );
 };

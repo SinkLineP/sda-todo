@@ -1,0 +1,109 @@
+.table {
+    border: 1px solid black;
+    border-collapse: collapse;
+    width: 100%;
+    border-radius: 7px;
+    overflow: hidden;
+    font-weight: bold
+}
+
+.thead {
+    background-color: #054F7C;
+    color: white;
+}
+
+.tbody {
+    background-color: #f5eaea;
+    max-height: 400px; /* Установите желаемую максимальную высоту для tbody */
+    overflow-y: auto;
+}
+
+.container_user_title {
+    display: flex;
+    flex-direction: row;
+}
+
+.td {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+}
+
+.tbody > .tr:hover {
+    background-color: var(--background-color-hover);
+    cursor: pointer;
+}
+
+.th {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.btn_create_project {
+    display: inline-block;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+    background-color: #054F7C;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-create-project:hover {
+    background-color: #044369;
+}
+
+
+.container_create_project {
+    width: 100%;
+    text-align: right;
+    margin-bottom: 1rem;
+}
+
+.number_project {
+    width: 10rem;
+}
+
+.title_project {
+
+}
+
+.author_project {
+    width: 20rem;
+}
+
+.project_not_found_title {
+    text-align: center;
+}
+
+.project_not_found:hover {
+    background-color: var(--background-color);
+    cursor: default;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.title_project_1 {
+    display: block;
+}
+
+.title_project_2 {
+    display: none;
+}
+
+@media screen and (max-width: 600px) {
+    .title_project_1 {
+        display: none;
+    }
+
+    .title_project_2 {
+        display: block;
+    }
+}

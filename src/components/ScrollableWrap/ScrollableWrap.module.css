@@ -1,0 +1,6 @@
+.scrollable_wrap_container {
+    display: flex;
+    flex-direction: row;
+    overflow: auto;
+    padding: 10px;
+}

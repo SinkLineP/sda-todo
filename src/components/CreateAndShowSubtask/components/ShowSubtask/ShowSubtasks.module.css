@@ -1,0 +1,155 @@
+:root {
+    --queue: #ff3400;
+    --development: #0059ff;
+    --done: #67af27;
+    --height: #f36464;
+    --default: #a1a1a1;
+}
+
+
+.container {
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: 0.2rem;
+}
+
+.container_buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+}
+
+.container_buttons button {
+    height: 40px;
+    border: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 0.2rem;
+    cursor: pointer;
+}
+
+.container_buttons > .edit {
+    background-color: #0a69a4;
+    color: white;
+    border: none;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.container_buttons > .edit:hover {
+    background-color: #085686;
+}
+
+.container_buttons > .delete {
+    background-color: #f36464;
+    color: white;
+}
+
+.container_buttons > .delete:hover {
+    background-color: #b74a4a;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 130%;
+    color: #323232;
+    overflow: auto;
+    max-height: 10vh;
+    max-width: 20vw;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+
+.title_desc {
+    font-weight: bold;
+    font-size: 130%;
+    color: #323232;
+    white-space: nowrap;
+}
+
+.container_desc {
+    width: 30vw;
+    max-width: 30vw;
+    min-width: 9vw;
+    word-break: break-all;
+    overflow: hidden;
+}
+
+.container_desc .title {
+    font-weight: bold;
+    font-size: 100%;
+    color: #323232;
+
+}
+
+.desc {
+    overflow: auto;
+    max-height: 10vh;
+    max-width: 20vw;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+
+
+.container_status_and_priority {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.title_status {
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.title_status_1 {
+    display: block;
+}
+
+.title_status_2 {
+    display: none;
+}
+
+@media screen and (max-width: 900px) {
+    .title_status {
+        font-size: 0.8rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .title_status {
+        font-size: 0.8rem;
+    }
+
+    .title_status_1 {
+        display: none;
+    }
+
+    .title_status_2 {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .title {
+        font-size: 0.9rem;
+    }
+
+    .title_desc {
+        font-size: 80%;
+    }
+
+    .desc {
+        font-size: 0.8rem;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .title_desc {
+        font-size: 60%;
+    }
+}

@@ -1,10 +1,10 @@
 import React, {useState} from "react";
-import "./styles/table.css";
 import {useNavigate} from "react-router-dom";
-import {getAuthorProject } from "../Variables";
+import {getAuthorProject, sliceTextForSmallScreen} from "../Functions";
 import {useSelector} from "react-redux";
-import ProjectModal from "../components/ProjectModal/ProjectModal";
+import ProjectModal from "../components/Modals/ProjectModal/ProjectModal";
 import IsAuth from "../hooks/IsAuth";
+import styles from "./styles/SelectProject.module.css";
 
 export default function SelectProjects() {
   const navigate = useNavigate();
@@ -12,73 +12,86 @@ export default function SelectProjects() {
   const usersStore = useSelector(state => state.auth.users);
   const [show, setShow] = useState(false);
 
-  const onOpen = () => setShow(true);
-  const onClose = () => setShow(false);
+
 
   return (
     <>
-      <div className={"container"}>
-        {IsAuth() ? (
-          <div className={"container-create-project"}>
+      <div className={styles.container}>
+        {IsAuth() && (
+          <div className={styles.container_create_project}>
             <button
-              className={"btn-create-project"}
-              onClick={onOpen}
-            >Добавить проект</button>
+              className={styles.btn_create_project}
+              onClick={() => setShow(true)}
+            >
+              Добавить проект
+            </button>
           </div>
-        ) : ("")}
-        <table className={"table"}
-               style={{
-                 fontWeight: "bold"
-               }}
-        >
-          <thead style={{
-            backgroundColor: "#054F7C",
-            color: "white"
-          }}>
-          <tr>
-            <th className={"no-select-text"} style={{
-              width: "10rem"
-            }}>Номер проекта</th>
-            <th className={"no-select-text"}>Название проекта</th>
-            <th className={"no-select-text"} style={{
-              width: "20rem"
-            }}>Владец проекта</th>
+        )}
+        <table className={styles.table}>
+          <thead className={styles.thead}>
+          <tr className={styles.tr}>
+            <th
+              className={`${styles.number_project} ${styles.th} no-select-text`}
+            >
+              №
+            </th>
+            <th
+              className={`${styles.title_project} ${styles.th} no-select-text`}
+            >
+              <span className={styles.title_project_1}>Название проекта</span>
+              <span className={styles.title_project_2}>{sliceTextForSmallScreen("Название проекта")}</span>
+            </th>
+            <th
+              className={`${styles.author_project} ${styles.th} no-select-text`}
+            >
+              <span className={styles.title_project_1}>Владелец проекта</span>
+              <span className={styles.title_project_2}>{sliceTextForSmallScreen("Владелец проекта")}</span>
+            </th>
           </tr>
           </thead>
-          <tbody style={{
-            backgroundColor: "#f5eaea"
-          }}>
-          {projectsStore.length !== 0 ? projectsStore.map((item, index) => {
-            index += 1;
+          <tbody className={styles.tbody}>
+            {projectsStore.length !== 0 ? (
+              projectsStore
+                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                .map((item, index) => {
+                  index += 1;
 
-            return (
-              <tr key={item.id} onClick={() => {
-                navigate(`${item.id}`);
-              }}>
-                <td>{index}</td>
-                <td>
-                  <p>{item.title}</p>
+                  return (
+                    <tr
+                      className={styles.tr}
+                      key={item.id}
+                      onClick={() => {
+                        navigate(`${item.id}`);
+                      }}
+                    >
+                      <td className={styles.td}>{index}</td>
+                      <td className={styles.td}>
+                        <span className={styles.title_project_1}>{item.title}</span>
+                        <span className={styles.title_project_2}>{sliceTextForSmallScreen(item.title)}</span>
+                      </td>
+                      <td className={styles.td}>
+                        <span className={styles.title_project_1}>{getAuthorProject(item.user_id, usersStore)}</span>
+                        <span className={styles.title_project_2}>{sliceTextForSmallScreen(getAuthorProject(item.user_id, usersStore))}</span>
+                      </td>
+                    </tr>
+                  );
+                })
+            ) : (
+              <tr className={styles.tr} id={styles.project_not_found}>
+                <td className={styles.td} colSpan={3}>
+                  <p className={styles.project_not_found_title}>
+                    Проектов не найдено
+                  </p>
                 </td>
-                <td>{getAuthorProject(item.user_id, usersStore)}</td>
               </tr>
-            )
-          }) : (
-            <tr id={"projects-not-found"}>
-              <td colSpan={3}>
-                Проектов не найдено
-              </td>
-            </tr>
-          )}
+            )}
           </tbody>
         </table>
       </div>
 
       <div>
-        <ProjectModal
-          onClose={onClose}
-          show={show}
-        />
+        <ProjectModal onClose={() => setShow(false)} show={show} />
       </div>
     </>
-  )
+  );
 }

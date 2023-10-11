@@ -3,7 +3,8 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {useDispatch, useSelector} from "react-redux";
 import { v4 as uuid } from 'uuid';
-import {addComment} from "../../../store/Reducers/commentReducer";
+import {addComment, addCommentToTask} from "../../../store/Actions/Actions";
+import {AiOutlineSend} from "react-icons/ai";
 
 
 
@@ -22,8 +23,11 @@ const CommentForm = ({ task_id }) => {
     },
     validationSchema,
     onSubmit: (values, { resetForm }) => {
+      const commentID = uuid();
+      dispatch(addCommentToTask(commentID, task_id));
+
       dispatch(addComment({
-        id: uuid(),
+        id: commentID,
         task_id: task_id,
         user_id: currentUser.id,
         content: values.value,
@@ -53,7 +57,7 @@ const CommentForm = ({ task_id }) => {
       <div className={"comment-form"}>
         <input
           className={"input-create-comment"}
-          type={"text"}
+          type={"search"}
           placeholder={"Введите комментарий..."}
           name="value"
           value={formik.values.value}
@@ -67,7 +71,7 @@ const CommentForm = ({ task_id }) => {
           type="submit"
           disabled={formik.isSubmitting || !formik.isValid}
         >
-          <span>Отправить</span>
+          <span><AiOutlineSend/></span>
         </button>
       </div>
     </form>

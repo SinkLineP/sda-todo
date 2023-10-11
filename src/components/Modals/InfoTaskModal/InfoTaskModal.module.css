@@ -1,0 +1,139 @@
+.container_info_task {
+    overflow-y: hidden;
+}
+
+.container_title {
+    width: 70%;
+    height: 10rem;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.task_description {
+    max-width: 50%;
+}
+
+.icon_file {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.download_icon {
+    float: right;
+}
+
+.container_file {
+    border-radius: 10px;
+    padding: 10px 10px 0 10px;
+    min-width: 5rem;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.space_between_elements {
+    margin-right: 1rem;
+}
+
+.file_title {
+    font-style: italic;
+    color: #054F7C;
+    font-weight: bolder;
+}
+
+.file_size {
+    color: gray;
+    font-style: italic;
+}
+
+.container_buttons_info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.warning {
+    font-weight: bolder;
+    color: #6c4407;
+    text-align: center;
+    background-color: #fddda7;
+    padding: 1%;
+    border-radius: 0.4rem;
+}
+
+.container_comments {
+    margin-top: 40px;
+}
+
+.content_comments {
+    padding: 2px;
+}
+
+.container_data {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+}
+
+.container_scrollable {
+    width: 100%;
+    overflow: scroll;
+}
+
+@media screen and (max-width: 1650px) {
+    .container_info_task {
+        max-width: 1000px;
+    }
+
+    .container_scrollable {
+        width: 100%;
+        overflow: scroll;
+    }
+}
+
+@media screen and (max-width: 1600px) {
+    .container_info_task {
+        max-width: 1000px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .container_info_task {
+        max-width: 800px;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .container_info_task {
+        max-width: 600px;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .container_info_task {
+        max-width: 400px;
+    }
+
+
+}
+
+@media screen and (max-width: 480px) {
+    .container_info_task {
+        max-width: 350px;
+    }
+}
+
+@media screen and (max-width: 410px) {
+    .container_info_task {
+        max-width: 300px;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .container_info_task {
+        max-width: 260px;
+    }
+}
