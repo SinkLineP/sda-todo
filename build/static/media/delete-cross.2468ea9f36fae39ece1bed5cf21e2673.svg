@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
+  <!-- Apply a 45-degree rotation -->
+  <g transform="rotate(45, 50, 50)">
+    <!-- Horizontal line with rounded corners and increased stroke-width -->
+    <rect x="10" y="45" width="80" height="10" rx="2.5" ry="2.5" fill="white" stroke="white" stroke-width="6" />
+    <!-- Vertical line with rounded corners and increased stroke-width -->
+    <rect x="45" y="10" width="10" height="80" rx="2.5" ry="2.5" fill="white" stroke="white" stroke-width="6" />
+  </g>
+</svg>
