@@ -8,6 +8,7 @@ import IsAuth from "../hooks/IsAuth";
 import CreateTaskModal from "../components/Modals/CreateTaskModal/CreateTaskModal";
 import {checkProjectsAuthor, getSubtask} from "../Functions";
 import styles from "./styles/Tasks.module.css";
+import {VscAdd} from "react-icons/vsc";
 
 
 export default function Tasks() {
@@ -100,9 +101,9 @@ export default function Tasks() {
       <div className={styles.container_header}>
         <div className={styles.container_header_col_1}>
           <NavLink to={"/"}>
-            <p className={styles.button_header}>
-              ◀ Вернуться к проектам
-            </p>
+            <div className={styles.button_header}>
+              ◀
+            </div>
           </NavLink>
         </div>
 
@@ -114,12 +115,15 @@ export default function Tasks() {
 
         {IsAuth() && checkProjectsAuthor(projectsStore, project_id, currentUser) ? (
           <div className={styles.container_header_col_3}>
-            <p
+            <div
               className={styles.button_header}
               onClick={onOpen}
             >
-              Добавить задачу
-            </p>
+              <div className={styles.container_btn_add_task}>
+                <p className={styles.title_btn_add_task}>Добавить задачу</p>
+                <p className={styles.icon_btn_add_task}>+</p>
+              </div>
+            </div>
           </div>
         ) : ("")}
       </div>

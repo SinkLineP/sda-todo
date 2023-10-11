@@ -131,7 +131,7 @@ select {
 
 .col {
   min-height: 300px;
-  max-width: 300px;
+  max-width: 100%;
   width: 300px;
 }
 
@@ -294,5 +294,29 @@ select {
     font-size: 20px;
     word-break: break-word;
     display: block;
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .col {
+    min-height: 300px;
+    max-width: 100%;
+    width: 270px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .col {
+    min-height: 300px;
+    max-width: 100%;
+    width: 210px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .col {
+    min-height: 300px;
+    max-width: 100%;
+    width: 100%;
   }
 }
