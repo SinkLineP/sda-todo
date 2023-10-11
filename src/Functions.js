@@ -229,3 +229,7 @@ export const checkIsDoneSubtask = (item, taskData, subtasksStore, setIsDone, dis
     dispatch(endTask("done", new Date(), item.id, "✅️"));
   }
 }
+
+export const sliceTextForSmallScreen = (text) => {
+  return `${text.slice(0, 5)}...`;
+}

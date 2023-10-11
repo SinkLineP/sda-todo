@@ -89,3 +89,21 @@
     padding: 20px;
     box-sizing: border-box;
 }
+
+.title_project_1 {
+    display: block;
+}
+
+.title_project_2 {
+    display: none;
+}
+
+@media screen and (max-width: 600px) {
+    .title_project_1 {
+        display: none;
+    }
+
+    .title_project_2 {
+        display: block;
+    }
+}

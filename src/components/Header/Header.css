@@ -25,6 +25,7 @@
     font-weight: bold;
     color: white;
     margin-right: 1rem;
+    display: flex;
 }
 
 .page-header {

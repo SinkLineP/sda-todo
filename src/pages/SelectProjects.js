@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {getAuthorProject } from "../Functions";
+import {getAuthorProject, sliceTextForSmallScreen} from "../Functions";
 import {useSelector} from "react-redux";
 import ProjectModal from "../components/Modals/ProjectModal/ProjectModal";
 import IsAuth from "../hooks/IsAuth";
@@ -11,6 +11,7 @@ export default function SelectProjects() {
   const projectsStore = useSelector(state => state.projects);
   const usersStore = useSelector(state => state.auth.users);
   const [show, setShow] = useState(false);
+
 
 
   return (
@@ -37,12 +38,14 @@ export default function SelectProjects() {
             <th
               className={`${styles.title_project} ${styles.th} no-select-text`}
             >
-              Название проекта
+              <span className={styles.title_project_1}>Название проекта</span>
+              <span className={styles.title_project_2}>{sliceTextForSmallScreen("Название проекта")}</span>
             </th>
             <th
               className={`${styles.author_project} ${styles.th} no-select-text`}
             >
-              Владелец проекта
+              <span className={styles.title_project_1}>Владелец проекта</span>
+              <span className={styles.title_project_2}>{sliceTextForSmallScreen("Владелец проекта")}</span>
             </th>
           </tr>
           </thead>
@@ -63,10 +66,12 @@ export default function SelectProjects() {
                     >
                       <td className={styles.td}>{index}</td>
                       <td className={styles.td}>
-                        {item.title}
+                        <span className={styles.title_project_1}>{item.title}</span>
+                        <span className={styles.title_project_2}>{sliceTextForSmallScreen(item.title)}</span>
                       </td>
                       <td className={styles.td}>
-                        {getAuthorProject(item.user_id, usersStore)}
+                        <span className={styles.title_project_1}>{getAuthorProject(item.user_id, usersStore)}</span>
+                        <span className={styles.title_project_2}>{sliceTextForSmallScreen(getAuthorProject(item.user_id, usersStore))}</span>
                       </td>
                     </tr>
                   );
