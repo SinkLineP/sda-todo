@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import styles from "./HoverButton.module.css";
 import {ReactComponent as IconApplyDeleteSVG} from "./icons/apply-delete.svg";
+import {GrClose} from "react-icons/gr";
 
 const HoverButton = ({ IconButton, onClick, titleButton, backgroundBeforeClick, backgroundAfterClick }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -34,10 +35,10 @@ const HoverButton = ({ IconButton, onClick, titleButton, backgroundBeforeClick, 
         }, 500);
       }}
     >
-      <div className={`${styles.container_title_remove_task} ${isHovered ? styles.slide_out_left_title : ""}`}>
+      <div className={`${styles.container_title_remove_task} ${styles.content_btn_1} ${isHovered ? styles.slide_out_left_title : ""}`}>
         <p>{titleButton}</p>
       </div>
-      <div className={`${styles.container_icon_remove_task} ${isHovered ? styles.slide_out_left_icon : ""}`}>
+      <div className={`${styles.container_icon_remove_task} ${styles.content_btn_2} ${isHovered ? styles.slide_out_left_icon : ""}`}>
         {isClicked ? (
           <IconApplyDeleteSVG className={styles.icon}/>
         ) : (

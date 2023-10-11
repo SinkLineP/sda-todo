@@ -20,3 +20,31 @@
 .input_disabled {
     cursor: no-drop;
 }
+
+@media screen and (max-width: 700px) {
+    .priority_range_1 {
+        width: 100px;
+    }
+
+    .priority_range_2 {
+        width: 100px;
+    }
+
+    .priority_range_3 {
+        width: 100px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .priority_range_1 {
+        width: 50px;
+    }
+
+    .priority_range_2 {
+        width: 50px;
+    }
+
+    .priority_range_3 {
+        width: 50px;
+    }
+}

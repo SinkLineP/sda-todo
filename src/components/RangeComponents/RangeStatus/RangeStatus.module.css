@@ -20,3 +20,32 @@
     accent-color: var(--done);
     width: 200px;
 }
+
+
+@media screen and (max-width: 700px) {
+    .status_range_1 {
+        width: 100px;
+    }
+
+    .status_range_2 {
+        width: 100px;
+    }
+
+    .status_range_3 {
+        width: 100px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .status_range_1 {
+        width: 50px;
+    }
+
+    .status_range_2 {
+        width: 50px;
+    }
+
+    .status_range_3 {
+        width: 50px;
+    }
+}

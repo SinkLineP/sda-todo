@@ -182,19 +182,21 @@ export default function InfoTaskModal({ show, onClose, item }) {
       style={customStyles}
     >
       <div className={styles.container_info_task}>
-        <div className={"close-btn-ctn"}>
+        <div className={styles.header}>
           <div className={styles.container_title}>
-            <ColorizeWrapText
-              setEditValue={(val) => setTitle(val)}
-              isEditing={isEditing}
-              text={item.status}
-              label={item.title}
-              numberTask={item.numberTask}
-              type={"title"}
-              value={title}
-              setValue={(val) => setTitle(val)}
-            />
-            <p>Автор: {getAuthorProject(item.author, usersStore)}</p>
+            <div className={styles.container_scrollable}>
+              <ColorizeWrapText
+                setEditValue={(val) => setTitle(val)}
+                isEditing={isEditing}
+                text={item.status}
+                label={item.title}
+                numberTask={item.numberTask}
+                type={"title"}
+                value={title}
+                setValue={(val) => setTitle(val)}
+              />
+              <p>Автор: {getAuthorProject(item.author, usersStore)}</p>
+            </div>
           </div>
 
           <div className={styles.container_buttons_info}>
@@ -228,19 +230,21 @@ export default function InfoTaskModal({ show, onClose, item }) {
         </div>
         <div>
           <div className={styles.task_description}>
-            <h3>Описание задачи:</h3>
-            {isEditing ? (
-              <EditView
-                handleChange={(val) => setDesc(val)}
-                value={desc}
-                tag="p"
-                style={{
-                  borderRadius: "0.3rem",
-                  minWidth: "100px",
-                  marginLeft: "2px"
-                }}
-              />
-            ) : (<p>{item.description}</p>)}
+            <div className={styles.container_scrollable}>
+              <h3>Описание задачи:</h3>
+              {isEditing ? (
+                <EditView
+                  handleChange={(val) => setDesc(val)}
+                  value={desc}
+                  tag="p"
+                  style={{
+                    borderRadius: "0.3rem",
+                    minWidth: "100px",
+                    marginLeft: "2px"
+                  }}
+                />
+              ) : (<p>{item.description}</p>)}
+            </div>
           </div>
 
 

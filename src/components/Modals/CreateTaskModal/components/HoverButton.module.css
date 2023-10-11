@@ -13,14 +13,11 @@
     font-family: "Calibri", serif;
     font-size: 100%;
     text-align: left;
-    /*padding-left: 10%;*/
-    /*padding-right: 10%;*/
     align-items: center;
     cursor: pointer;
     overflow: hidden;
     display: flex;
     justify-content: space-between;
-    /*background-color: #27aa80;*/
     box-sizing: border-box;
 }
 
@@ -42,6 +39,13 @@
     /*background-color: #0a69a4;*/
 }
 
+.content_btn_1 {
+    display: block;
+}
+
+.content_btn_2 {
+    display: block;
+}
 
 /* slide-out-left-title */
 
@@ -81,5 +85,19 @@
     to {
         -webkit-transform: translate3d(-300%, 0, 0);
         transform: translate3d(-300%, 0, 0);
+    }
+}
+
+@media screen and (max-width: 600px){
+    .content_btn_1 {
+        display: none;
+    }
+
+    .content_btn_2 {
+        display: block;
+    }
+
+    .btn {
+        width: auto;
     }
 }
