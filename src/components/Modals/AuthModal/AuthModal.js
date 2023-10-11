@@ -10,6 +10,7 @@ import { v4 as uuid } from 'uuid';
 import {createUser, setCurrentUser} from "../../../store/Actions/Actions";
 import {validationsSchema} from "./Schema";
 import {initialValues} from "./InitialValues";
+import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai";
 
 
 export default function AuthModal({ show, onClose }) {
@@ -20,8 +21,6 @@ export default function AuthModal({ show, onClose }) {
       right: 'auto',
       bottom: 'auto',
       transform: 'translate(-50%, -50%)',
-      width: "350px",
-      height: "27rem"
     }
   }
 
@@ -121,7 +120,7 @@ export default function AuthModal({ show, onClose }) {
                     className={"input-form input-form-show-password"}
                     onClick={() => setShowPassword(!isShowPassword)}
                   >
-                    {isShowPassword ? "Скрыть" : "Показать"}
+                    {isShowPassword ? <AiFillEye/> : <AiFillEyeInvisible />}
                   </button>
                 </div>
               </>
