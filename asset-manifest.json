@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/sda-todo/project-list/static/css/main.92d7da6a.css",
-    "main.js": "/sda-todo/project-list/static/js/main.0a49b9b1.js",
+    "main.js": "/sda-todo/project-list/static/js/main.61173e85.js",
     "static/js/787.92d5c6ab.chunk.js": "/sda-todo/project-list/static/js/787.92d5c6ab.chunk.js",
     "static/media/download.png": "/sda-todo/project-list/static/media/download.854dfd9a931d5a2dc744.png",
     "static/media/file.png": "/sda-todo/project-list/static/media/file.d725aa0dd67c3856af8f.png",
@@ -10,11 +10,11 @@
     "static/media/delete-cross.svg": "/sda-todo/project-list/static/media/delete-cross.2468ea9f36fae39ece1bed5cf21e2673.svg",
     "static/media/apply-delete.svg": "/sda-todo/project-list/static/media/apply-delete.32539c0fd356cc19db3e38c4f4c9cd6d.svg",
     "main.92d7da6a.css.map": "/sda-todo/project-list/static/css/main.92d7da6a.css.map",
-    "main.0a49b9b1.js.map": "/sda-todo/project-list/static/js/main.0a49b9b1.js.map",
+    "main.61173e85.js.map": "/sda-todo/project-list/static/js/main.61173e85.js.map",
     "787.92d5c6ab.chunk.js.map": "/sda-todo/project-list/static/js/787.92d5c6ab.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.92d7da6a.css",
-    "static/js/main.0a49b9b1.js"
+    "static/js/main.61173e85.js"
   ]
 }
