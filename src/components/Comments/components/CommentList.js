@@ -11,6 +11,8 @@ import {
   CheckStatusReplyComments,
   setActiveReplyComments
 } from "../functions";
+import {GiCancel} from "react-icons/gi";
+import {BsFillReplyFill} from "react-icons/bs";
 
 const CommentList = ({ task_id, commentsStore }) => {
   const [inputEditValues, setInputEditValues] = useState({});
@@ -61,14 +63,16 @@ const CommentList = ({ task_id, commentsStore }) => {
               ) : (
                 <div className={"container-show-comment"}>
                   <div className={"container-show-comment-header"}>
-                    <div className={"container-show-username"}>Пользователь: <b>{getUser(comment.user_id, usersStore).username}</b></div>
+                    <div className={"container-show-username"}>Пользователь:
+                      <b className={"username_1"}>{getUser(comment.user_id, usersStore).username}</b>
+                      <b className={"username_2"}>{getUser(comment.user_id, usersStore).username.slice(0, 5)}..</b>
+                    </div>
                     <div className={"container-show-dote-for-title"}>•</div>
-                    <div className={"container-show-date"}>Оставил комментарий: {moment(comment.date).fromNow()}</div>
+                    <div className={"container-show-date"}><span className={"username_1"}>Оставил комментарий: </span>{moment(comment.date).fromNow()}</div>
                     <div></div>
                   </div>
                   <div className={"container-show-content"}>
                     <p>{comment.content}</p>
-                    <p>Comment ID: {comment.id}</p>
                   </div>
                 </div>
               )}
@@ -126,7 +130,7 @@ const CommentList = ({ task_id, commentsStore }) => {
                         }}
                       />
 
-                      <ButtonCustom className={"button-on-comment button-remove"} title={"Отменить"} handleCLick={() => {
+                      <ButtonCustom className={"button-on-comment button-remove"} title={<GiCancel/>} handleCLick={() => {
                         if (errorReply !== "") setErrorReply("");
                         setInputReplyValues({
                           ...inputReplyValues,
@@ -135,7 +139,7 @@ const CommentList = ({ task_id, commentsStore }) => {
 
                         setActiveReplyComments(comment.id, false, setShowInputFromID, "default");
                       }} />
-                      <ButtonCustom className={"button-on-comment button-reply"} title={"Ответить"} handleCLick={() => {
+                      <ButtonCustom className={"button-on-comment button-reply"} title={<BsFillReplyFill/>} handleCLick={() => {
                         AddReply(comment, setErrorReply, dispatch, task_id, currentUser, inputReplyValues, setInputReplyValues, setShowInputFromID);
                         setIsShowComments({ status: true, title: "Скрыть комментарии" });
                       }} />

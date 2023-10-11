@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import {useDispatch, useSelector} from "react-redux";
 import { v4 as uuid } from 'uuid';
 import {addComment, addCommentToTask} from "../../../store/Actions/Actions";
+import {AiOutlineSend} from "react-icons/ai";
 
 
 
@@ -70,7 +71,7 @@ const CommentForm = ({ task_id }) => {
           type="submit"
           disabled={formik.isSubmitting || !formik.isValid}
         >
-          <span>Отправить</span>
+          <span><AiOutlineSend/></span>
         </button>
       </div>
     </form>

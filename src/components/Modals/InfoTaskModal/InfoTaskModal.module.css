@@ -122,6 +122,18 @@
 
 @media screen and (max-width: 480px) {
     .container_info_task {
-        max-width: 250px;
+        max-width: 350px;
+    }
+}
+
+@media screen and (max-width: 410px) {
+    .container_info_task {
+        max-width: 300px;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .container_info_task {
+        max-width: 260px;
     }
 }

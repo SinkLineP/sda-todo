@@ -166,6 +166,14 @@
 .container-show-username {
 }
 
+.username_1 {
+    display: block;
+}
+
+.username_2 {
+    display: none;
+}
+
 .container-show-date {
 }
 
@@ -208,4 +216,14 @@
 
 .is-editing-background {
     background-color: var(--backgroung-color-input-container);
+}
+
+@media screen and (max-width: 720px) {
+    .username_1 {
+        display: none;
+    }
+
+    .username_2 {
+        display: block;
+    }
 }

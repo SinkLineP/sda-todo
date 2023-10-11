@@ -6,6 +6,10 @@ import {
   EditReply
 } from "../functions";
 import {removeComment, removeCommentFromTask, removeReply} from "../../../store/Actions/Actions";
+import {BsFillReplyAllFill, BsFillReplyFill, BsFillTrashFill} from "react-icons/bs";
+import {BiSolidEditAlt} from "react-icons/bi";
+import {IoIosSave} from "react-icons/io";
+import {GiCancel} from "react-icons/gi";
 
 const ShowButtons = ({
   commentID,
@@ -42,7 +46,7 @@ const ShowButtons = ({
           handleCLick={() => {
             setShowInputFromID(commentID, true, "reply");
           }}
-          title={"Ответить"}
+          title={<BsFillReplyFill/>}
         />
         {comment.user_id === currentUser.id && (
           <>
@@ -51,7 +55,7 @@ const ShowButtons = ({
               handleCLick={() => {
                 setShowInputFromID(commentID, false, "edit");
               }}
-              title={"Редактировать"}
+              title={<BiSolidEditAlt/>}
             />
             <ButtonCustom
               className={"button-on-comment button-remove"}
@@ -65,7 +69,7 @@ const ShowButtons = ({
                   return handleRemoveReply(comment.id);
                 }
               }}
-              title={"Удалить"}
+              title={<BsFillTrashFill/>}
             />
           </>
         )}
@@ -101,7 +105,7 @@ const ShowButtons = ({
 
             setShowInputFromID(commentID, false, "default");
           }}
-          title={"Сохранить"}
+          title={<IoIosSave/>}
         />
         <ButtonCustom
           className={"button-on-comment button-cancel"}
@@ -115,7 +119,7 @@ const ShowButtons = ({
             });
             setShowInputFromID(commentID, false, "default");
           }}
-          title={"Отменить"}
+          title={<GiCancel/>}
         />
       </>
     );
