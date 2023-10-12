@@ -9,13 +9,13 @@ function App() {
     <>
       <Routes>
         <Route path={"/"} element={<Layout />}>
-          <Route path={"sda-todo/project-list"} element={<SelectProjects />} />
-          <Route path={"sda-todo/project-list/:project_id"} element={<Tasks />} />
+          <Route path={"/project-list"} element={<SelectProjects />} />
+          <Route path={"/project-list/:project_id"} element={<Tasks />} />
 
           {/* auto redirect from "/" to "/project-list" */}
           <Route
             path="/"
-            element={<Navigate to="/sda-todo/project-list" replace />}
+            element={<Navigate to="/project-list" replace />}
           />
         </Route>
       </Routes>
